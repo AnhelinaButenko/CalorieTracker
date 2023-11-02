@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33516.290
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalorieTracker", "CalorieTracker\CalorieTracker.csproj", "{AF6D5CF3-2752-4999-93A1-11A98C99C409}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{B4B1D0CD-D36D-4B99-BA50-DBEF8A9800B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domains", "Domains\Domains.csproj", "{A2445340-D204-4C0C-8D93-CB3532B4FD7C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AF6D5CF3-2752-4999-93A1-11A98C99C409}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF6D5CF3-2752-4999-93A1-11A98C99C409}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF6D5CF3-2752-4999-93A1-11A98C99C409}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF6D5CF3-2752-4999-93A1-11A98C99C409}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4B1D0CD-D36D-4B99-BA50-DBEF8A9800B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4B1D0CD-D36D-4B99-BA50-DBEF8A9800B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4B1D0CD-D36D-4B99-BA50-DBEF8A9800B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4B1D0CD-D36D-4B99-BA50-DBEF8A9800B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2445340-D204-4C0C-8D93-CB3532B4FD7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2445340-D204-4C0C-8D93-CB3532B4FD7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2445340-D204-4C0C-8D93-CB3532B4FD7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2445340-D204-4C0C-8D93-CB3532B4FD7C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9AE71362-B340-47B3-934D-0E9FCBA55A92}
+	EndGlobalSection
+EndGlobal
