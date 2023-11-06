@@ -1,6 +1,6 @@
-﻿namespace Domains;
+﻿namespace CalorieTracker.Domains;
 
-public abstract class BaseEntity
+public abstract class BaseNamedEntity
 {
     public int Id { get; set; }
 
