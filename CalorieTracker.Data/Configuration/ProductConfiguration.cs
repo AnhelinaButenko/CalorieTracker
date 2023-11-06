@@ -10,7 +10,8 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
     {
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.Name).HasMaxLength(100);
+        builder.Property(x => x.Name)
+            .HasMaxLength(100);
 
         builder.Property(x => x.CaloriePer100g);
 
