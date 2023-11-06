@@ -10,7 +10,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalorieTracker.Data", "Calo
 		{A2445340-D204-4C0C-8D93-CB3532B4FD7C} = {A2445340-D204-4C0C-8D93-CB3532B4FD7C}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalorieTracker.Api", "CalorieTracker.Api\CalorieTracker.Api.csproj", "{C4E009AA-9218-4CC4-AD98-89A93F2C56ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalorieTracker.Api", "CalorieTracker.Api\CalorieTracker.Api.csproj", "{C4E009AA-9218-4CC4-AD98-89A93F2C56ED}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2951FD51-3B60-4F27-B430-292F4A689CDB} = {2951FD51-3B60-4F27-B430-292F4A689CDB}
+		{A2445340-D204-4C0C-8D93-CB3532B4FD7C} = {A2445340-D204-4C0C-8D93-CB3532B4FD7C}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

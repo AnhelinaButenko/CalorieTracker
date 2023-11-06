@@ -1,6 +1,8 @@
-﻿namespace CalorieTracker.Domains;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
 
-public class User : BaseEntity
+namespace CalorieTracker.Domains;
+
+public class User : BaseNamedEntity, IdentityUser
 {
     public double CurrentWeight { get; set; }
 
