@@ -10,6 +10,16 @@ public class DailyForDayConfiguration : IEntityTypeConfiguration<DailyFoodDairy>
     {
         builder.HasKey(x => x.Id);
 
-        builder.HasOne(x => x.User).WithOne(x => x.DailyFoodDairy).HasForeignKey<User>(x => x.Id);
+        builder.Property(x => x.TotalCalories);
+
+        builder.Property(x => x.TotalAmountProteins);
+
+        builder.Property(x => x.TotalAmountFats);
+
+        builder.Property(x => x.TotalAmountCarbohydrates);
+
+        builder.HasOne(x => x.User)
+            .WithOne(x => x.DailyFoodDairy)
+            .HasForeignKey<User>(x => x.Id);
     }
 }
