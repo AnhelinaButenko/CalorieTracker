@@ -3,11 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalorieTracker", "CalorieTracker\CalorieTracker.csproj", "{AF6D5CF3-2752-4999-93A1-11A98C99C409}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalorieTracker.Domains", "CalorieTracker.Domains\CalorieTracker.Domains.csproj", "{A2445340-D204-4C0C-8D93-CB3532B4FD7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{B4B1D0CD-D36D-4B99-BA50-DBEF8A9800B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalorieTracker.Data", "CalorieTracker.Data\CalorieTracker.Data.csproj", "{2951FD51-3B60-4F27-B430-292F4A689CDB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A2445340-D204-4C0C-8D93-CB3532B4FD7C} = {A2445340-D204-4C0C-8D93-CB3532B4FD7C}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domains", "Domains\Domains.csproj", "{A2445340-D204-4C0C-8D93-CB3532B4FD7C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalorieTracker.Api", "CalorieTracker.Api\CalorieTracker.Api.csproj", "{C4E009AA-9218-4CC4-AD98-89A93F2C56ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,18 +18,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AF6D5CF3-2752-4999-93A1-11A98C99C409}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AF6D5CF3-2752-4999-93A1-11A98C99C409}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AF6D5CF3-2752-4999-93A1-11A98C99C409}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AF6D5CF3-2752-4999-93A1-11A98C99C409}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B4B1D0CD-D36D-4B99-BA50-DBEF8A9800B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B4B1D0CD-D36D-4B99-BA50-DBEF8A9800B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B4B1D0CD-D36D-4B99-BA50-DBEF8A9800B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B4B1D0CD-D36D-4B99-BA50-DBEF8A9800B3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A2445340-D204-4C0C-8D93-CB3532B4FD7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A2445340-D204-4C0C-8D93-CB3532B4FD7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2445340-D204-4C0C-8D93-CB3532B4FD7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2445340-D204-4C0C-8D93-CB3532B4FD7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2951FD51-3B60-4F27-B430-292F4A689CDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2951FD51-3B60-4F27-B430-292F4A689CDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2951FD51-3B60-4F27-B430-292F4A689CDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2951FD51-3B60-4F27-B430-292F4A689CDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4E009AA-9218-4CC4-AD98-89A93F2C56ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4E009AA-9218-4CC4-AD98-89A93F2C56ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4E009AA-9218-4CC4-AD98-89A93F2C56ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4E009AA-9218-4CC4-AD98-89A93F2C56ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
