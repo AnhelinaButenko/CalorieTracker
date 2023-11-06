@@ -1,6 +1,6 @@
 ﻿namespace CalorieTracker.Domains
 {
-    public class Product : BaseEntity
+    public class Product : BaseNamedEntity
     {
         public int CaloriePer100g { get; set; }
 
