@@ -1,0 +1,12 @@
+{
+  "ConnectionStrings": {
+    "CalorieTrackerDb": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=CalorieTracker;Integrated Security=True;Connect Timeout=30; MultipleActiveResultSets=true"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*"
+}

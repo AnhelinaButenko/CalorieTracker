@@ -1,12 +1,11 @@
 ﻿using CalorieTracker.Domains;
-using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System.Data.Entity;
 
 namespace CalorieTracker.Data;
 
-public class CalorieTrackerDbContext : IdentityDbContext<User>
+public class CalorieTrackerDbContext : IdentityDbContext<User, Role, int>
 {
     private readonly IConfiguration _config;
 
@@ -27,5 +26,10 @@ public class CalorieTrackerDbContext : IdentityDbContext<User>
 
     public DbSet<DinnerProduct> DinnerProducts { get; set; }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        base.OnConfiguring(optionsBuilder);
 
+        optionsBuilder.UseSqlServer(_config["ConnectionStrings:CalorieTrackerDb"]);     
+    }
 }
