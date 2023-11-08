@@ -1,4 +1,7 @@
 
+using CalorieTracker.Api.Seeder;
+using CalorieTracker.Data;
+
 namespace CalorieTracker.Api;
 
 public class Program
@@ -13,6 +16,12 @@ public class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        builder.Services.AddDbContext<CalorieTrackerDbContext>();
+
+        builder.Services.AddScoped<IDataSeeder, DataSeeder>();
+
+        SeedData(builder.Services);
 
         var app = builder.Build();
 
@@ -32,5 +41,14 @@ public class Program
         app.MapControllers();
 
         app.Run();
+    }
+
+    private static void SeedData(IServiceCollection services)
+    {
+        using IServiceScope serviceScope = services.BuildServiceProvider().CreateScope();
+        IServiceProvider provider = serviceScope.ServiceProvider;
+
+        IDataSeeder seedService = provider.GetRequiredService<IDataSeeder>();
+        seedService.Seed().GetAwaiter().GetResult();
     }
 }
