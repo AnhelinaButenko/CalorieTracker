@@ -1,6 +1,7 @@
-
 using CalorieTracker.Api.Seeder;
 using CalorieTracker.Data;
+using CalorieTracker.Data.Repository;
+using System.Reflection;
 
 namespace CalorieTracker.Api;
 
@@ -23,6 +24,8 @@ public class Program
 
         SeedData(builder.Services);
 
+        builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -35,7 +38,6 @@ public class Program
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
-
 
         app.MapControllers();
 
