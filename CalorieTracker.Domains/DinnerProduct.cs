@@ -1,4 +1,6 @@
-﻿namespace CalorieTracker.Domains;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace CalorieTracker.Domains;
 
 public class DinnerProduct : ReportEntity
 {

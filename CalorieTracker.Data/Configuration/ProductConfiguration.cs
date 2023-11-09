@@ -1,6 +1,7 @@
 ﻿using CalorieTracker.Domains;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Reflection.Emit;
 
 namespace CalorieTracker.Data.Configuration;
 
@@ -20,5 +21,17 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.Property(x => x.FatPer100g);
 
         builder.Property(x => x.CarbohydratePer100g);
+
+        builder.HasOne(x => x.Breakfast)
+            .WithOne(x => x.Product)
+            .HasForeignKey<BreakfastProduct>(x => x.ProductId);
+
+        builder.HasOne(x => x.Lunch)
+            .WithOne(x => x.Product)
+            .HasForeignKey<LunchProduct>(x => x.ProductId);
+
+        builder.HasOne(x => x.Dinner)
+            .WithOne(x => x.Product)
+            .HasForeignKey<DinnerProduct>(x => x.ProductId);
     }
 }

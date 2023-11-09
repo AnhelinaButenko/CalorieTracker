@@ -19,13 +19,5 @@ public class LunchProductConfiguration : IEntityTypeConfiguration<LunchProduct>
         builder.Property(x => x.TotalAmountFats);
 
         builder.Property(x => x.TotalAmountCarbohydrates);
-
-        builder.HasOne(x => x.Product)
-            .WithMany()
-            .HasForeignKey(x => x.ProductId);
-
-        builder.HasOne(x => x.DailyFoodDairy)
-            .WithMany(x => x.LunchProducts)
-            .HasForeignKey(x => x.DailyFoodDairyId);
     }
 }

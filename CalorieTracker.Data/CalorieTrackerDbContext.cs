@@ -1,4 +1,5 @@
-﻿using CalorieTracker.Domains;
+﻿using CalorieTracker.Data.Configuration;
+using CalorieTracker.Domains;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

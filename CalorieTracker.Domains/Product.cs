@@ -9,5 +9,11 @@
         public double FatPer100g { get; set; }
 
         public double CarbohydratePer100g { get; set; }
+
+        public BreakfastProduct Breakfast { get; set; }
+
+        public LunchProduct Lunch { get; set; }
+
+        public DinnerProduct Dinner { get; set; }
     }
 }
