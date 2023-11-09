@@ -17,26 +17,6 @@ public class DataSeeder : IDataSeeder
         //await _dbContext.Database.EnsureDeletedAsync();
         bool isCreated = await _dbContext.Database.EnsureCreatedAsync();
 
-        User user1 = new User
-        {
-            Name = "Lina",
-            CurrentWeight = 59,
-            DesiredWeight = 57,
-            RecommendedCalory = 1500
-        };
-        await _dbContext.AddAsync(user1);
-        await _dbContext.SaveChangesAsync();
-
-        User user2 = new User
-        {
-            Name = "Andrew",
-            CurrentWeight = 78,
-            DesiredWeight = 82,
-            RecommendedCalory = 3000,
-        };
-        await _dbContext.AddAsync(user2);
-        await _dbContext.SaveChangesAsync();
-
         // not have id yet
         Product egg = new Product
         {
@@ -105,6 +85,48 @@ public class DataSeeder : IDataSeeder
         await _dbContext.AddAsync(cookie);
         await _dbContext.SaveChangesAsync();
 
+        DailyFoodDairy dailyFoodDairyUser1 = new DailyFoodDairy
+        {
+            TotalCalories = 1750,
+            TotalAmountCarbohydrates = 214.1,
+            TotalAmountFats = 34,
+            TotalAmountProteins = 107.4,
+        };
+        await _dbContext.AddAsync(dailyFoodDairyUser1);
+        await _dbContext.SaveChangesAsync();
+
+        DailyFoodDairy dailyFoodDairyUser2 = new DailyFoodDairy
+        {
+            TotalCalories = 1550,
+            TotalAmountCarbohydrates = 154.1,
+            TotalAmountFats = 27,
+            TotalAmountProteins = 86,     
+        };
+        await _dbContext.AddAsync(dailyFoodDairyUser2);
+        await _dbContext.SaveChangesAsync();
+
+        User user1 = new User
+        {
+            Name = "Lina",
+            CurrentWeight = 59,
+            DesiredWeight = 57,
+            RecommendedCalory = 1500,
+            DailyFoodDairyId = dailyFoodDairyUser1.Id
+        };
+        await _dbContext.AddAsync(user1);
+        await _dbContext.SaveChangesAsync();
+
+        User user2 = new User
+        {
+            Name = "Andrew",
+            CurrentWeight = 78,
+            DesiredWeight = 82,
+            RecommendedCalory = 3000,
+            DailyFoodDairyId = dailyFoodDairyUser2.Id
+        };
+        await _dbContext.AddAsync(user2);
+        await _dbContext.SaveChangesAsync();
+
         BreakfastProduct breakfastProduct1 = new BreakfastProduct
         {
             ProductId = egg.Id,
@@ -112,7 +134,8 @@ public class DataSeeder : IDataSeeder
             TotalCalories = 160,
             TotalAmountCarbohydrates = 32.3,
             TotalAmountFats = 30.2,
-            TotalAmountProteins = 45.5
+            TotalAmountProteins = 45.5,
+            DailyFoodDairyId = dailyFoodDairyUser2.Id
         };
         await _dbContext.AddAsync(breakfastProduct1);
         await _dbContext.SaveChangesAsync();
@@ -124,7 +147,8 @@ public class DataSeeder : IDataSeeder
             TotalCalories = 101.5,
             TotalAmountCarbohydrates = 56.1,
             TotalAmountFats = 3.3,
-            TotalAmountProteins = 1.3
+            TotalAmountProteins = 1.3,
+            DailyFoodDairyId = dailyFoodDairyUser1.Id
         };
         await _dbContext.AddAsync(breakfastProduct2);
         await _dbContext.SaveChangesAsync();
@@ -136,7 +160,8 @@ public class DataSeeder : IDataSeeder
             TotalCalories = 203,
             TotalAmountCarbohydrates = 112.3,
             TotalAmountFats = 6.7,
-            TotalAmountProteins = 2.5
+            TotalAmountProteins = 2.5,
+            DailyFoodDairyId = dailyFoodDairyUser1.Id
         };
         await _dbContext.AddAsync(lunchProduct1);
         await _dbContext.SaveChangesAsync();
@@ -148,7 +173,8 @@ public class DataSeeder : IDataSeeder
             TotalCalories = 203,
             TotalAmountCarbohydrates = 112.3,
             TotalAmountFats = 6.7,
-            TotalAmountProteins = 2.5
+            TotalAmountProteins = 2.5,
+            DailyFoodDairyId = dailyFoodDairyUser2.Id
         };
         await _dbContext.AddAsync(lunchProduct2);
         await _dbContext.SaveChangesAsync();
@@ -160,7 +186,8 @@ public class DataSeeder : IDataSeeder
             TotalCalories = 150,
             TotalAmountCarbohydrates = 214.1,
             TotalAmountFats = 5,
-            TotalAmountProteins = 3.4
+            TotalAmountProteins = 3.4,
+            DailyFoodDairyId = dailyFoodDairyUser2.Id
         };
         await _dbContext.AddAsync(dinnerProduct1);
         await _dbContext.SaveChangesAsync();
@@ -172,62 +199,15 @@ public class DataSeeder : IDataSeeder
             TotalCalories = 121,
             TotalAmountCarbohydrates = 117.6,
             TotalAmountFats = 0.2,
-            TotalAmountProteins = 0.4
+            TotalAmountProteins = 0.4,
+            DailyFoodDairyId = dailyFoodDairyUser1.Id
         };
         await _dbContext.AddAsync(dinnerProduct2);
-        await _dbContext.SaveChangesAsync();
-
-        DailyFoodDairy dailyFoodDairyUser1 = new DailyFoodDairy
-        {
-            UserId = user1.Id,
-            BreakfastProducts = new List<BreakfastProduct>
-            {
-                breakfastProduct1
-            },
-            LunchProducts = new List<LunchProduct>
-            {
-                lunchProduct1, lunchProduct2
-            },
-            DinnerProducts = new List<DinnerProduct>
-            {
-                dinnerProduct1, dinnerProduct2
-            },
-
-            TotalCalories = 1750,
-            TotalAmountCarbohydrates = 214.1,
-            TotalAmountFats = 34,
-            TotalAmountProteins = 107.4
-        };
-        await _dbContext.AddAsync(dailyFoodDairyUser1);
-        await _dbContext.SaveChangesAsync();
-
-        DailyFoodDairy dailyFoodDairyUser2 = new DailyFoodDairy
-        {
-            UserId = user2.Id,
-            BreakfastProducts = new List<BreakfastProduct>
-            {
-                breakfastProduct2
-            },
-            LunchProducts = new List<LunchProduct>
-            {
-                lunchProduct1, lunchProduct2
-            },
-            DinnerProducts = new List<DinnerProduct>
-            {
-                dinnerProduct1
-            },
-
-            TotalCalories = 1550,
-            TotalAmountCarbohydrates = 154.1,
-            TotalAmountFats = 27,
-            TotalAmountProteins = 86
-        };
-        await _dbContext.AddAsync(dailyFoodDairyUser2);
         await _dbContext.SaveChangesAsync();
 
         if (!isCreated)
         {
             return;
-        }
+        } 
     }
 }
