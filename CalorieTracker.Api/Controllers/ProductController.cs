@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CalorieTracker.Api.Models;
 using CalorieTracker.Data.Repository;
 using CalorieTracker.Domains;
 using Microsoft.AspNetCore.Authorization;
@@ -9,7 +10,7 @@ namespace CalorieTracker.Api.Controllers;
 
 [Route("api/[Controller]")]
 [ApiController]
-[Produces("application/json")]
+[Produces("application/json")]  
 public class ProductController : ControllerBase
 {
     private readonly IProductRepository _repository;
@@ -25,7 +26,7 @@ public class ProductController : ControllerBase
     [HttpGet]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    public async Task<ActionResult<IEnumerable<Product>>> Get()
+    public async Task<ActionResult> Get()
     {
         var product = await _repository.GetAll();
 
@@ -34,6 +35,7 @@ public class ProductController : ControllerBase
             return NotFound();
         }
 
-        return Ok(_mapper.Map<Product>(product));
+        //return Ok(_mapper.Map<IEnumerable<ProductDto>>(product));
+        return Ok(product);
     }
 }
