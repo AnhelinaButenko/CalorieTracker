@@ -5,6 +5,7 @@ using CalorieTracker.Domains;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace CalorieTracker.Api.Controllers;
 
@@ -28,14 +29,43 @@ public class ProductController : ControllerBase
     [ProducesResponseType(400)]
     public async Task<ActionResult> Get()
     {
-        var product = await _repository.GetAll();
+        List<Product> product = await _repository.GetAll();
 
-        if (product == null)
-        {
-            return NotFound();
-        }
+        return Ok(_mapper.Map<IEnumerable<ProductDto>>(product));
+    }
 
-        //return Ok(_mapper.Map<IEnumerable<ProductDto>>(product));
-        return Ok(product);
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult> GetId(int id)
+    {
+        Product product = await _repository.GetById(id);
+
+        return Ok(_mapper.Map<ProductDto>(product));
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> AddFood([FromBody] ProductDto productDto)
+    {
+        Product product = _mapper.Map<Product>(productDto);
+
+        await _repository.Add(product);
+
+        ProductDto productDTO = _mapper.Map<ProductDto>(product);
+
+        return Ok(_mapper.Map<ProductDto>(productDTO));
+    }
+
+    [HttpDelete("{id:int}")]
+    public async Task<ActionResult> DeleteFood([FromBody] ProductDto productDto)
+    {
+        Product product = _mapper.Map<Product>(productDto);
+
+        await _repository.Remove(product);
+
+        ProductDto productDTO = _mapper.Map<ProductDto>(product);
+
+        return Ok(_mapper.Map<ProductDto>(productDTO));
     }
 }
+
+
+
