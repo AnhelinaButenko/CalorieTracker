@@ -1,5 +1,4 @@
-﻿using CalorieTracker.Data.Configuration;
-using CalorieTracker.Domains;
+﻿using CalorieTracker.Domains;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -29,8 +28,8 @@ public class CalorieTrackerDbContext : IdentityDbContext<User, Role, int>
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        base.OnConfiguring(optionsBuilder);
+        optionsBuilder.UseSqlServer(_config["ConnectionStrings:CalorieTrackerDb"]);
 
-        optionsBuilder.UseSqlServer(_config["ConnectionStrings:CalorieTrackerDb"]);     
+        base.OnConfiguring(optionsBuilder);
     }
 }

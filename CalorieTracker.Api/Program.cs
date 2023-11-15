@@ -1,8 +1,10 @@
 using CalorieTracker.Api.Seeder;
 using CalorieTracker.Data;
 using CalorieTracker.Data.Repository;
+using CalorieTracker.Domains;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
 namespace CalorieTracker.Api;
@@ -21,14 +23,10 @@ public class Program
         builder.Services.AddSwaggerGen();
         builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
 
-        builder.Services.AddDbContext<CalorieTrackerDbContext>(options =>
-            options.UseSqlServer(
-                builder.Configuration.GetConnectionString("Database"),
-                sqlServerOptions =>
-                {
-                    sqlServerOptions.CommandTimeout(3600);
-                    sqlServerOptions.EnableRetryOnFailure(5, TimeSpan.FromSeconds(30), null);
-                }));
+        builder.Services.AddDbContext<CalorieTrackerDbContext>();
+
+        builder.Services.AddIdentity<User, Role>()
+            .AddEntityFrameworkStores<CalorieTrackerDbContext>();
 
         builder.Services.AddScoped<IDataSeeder, DataSeeder>();
 
@@ -38,7 +36,16 @@ public class Program
 
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("CorsPolicy", builder =>
+                builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+        });
+
         var app = builder.Build();
+
+
+        app.UseCors("CorsPolicy");
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
