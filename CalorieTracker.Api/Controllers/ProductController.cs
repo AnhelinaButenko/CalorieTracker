@@ -11,7 +11,7 @@ namespace CalorieTracker.Api.Controllers;
 
 [Route("api/[Controller]")]
 [ApiController]
-[Produces("application/json")]  
+[Produces("application/json")]
 public class ProductController : ControllerBase
 {
     private readonly IProductRepository _repository;
@@ -55,15 +55,29 @@ public class ProductController : ControllerBase
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<ActionResult> DeleteFood([FromBody] ProductDto productDto)
+    public async Task<ActionResult> DeleteFood(int id)
     {
-        Product product = _mapper.Map<Product>(productDto);
+        Product product = await _repository.GetById(id);
 
         await _repository.Remove(product);
 
-        ProductDto productDTO = _mapper.Map<ProductDto>(product);
+        return Ok(_mapper.Map<ProductDto>(product));
+    }
 
-        return Ok(_mapper.Map<ProductDto>(productDTO));
+    [HttpPut("{id:int}")]
+    public async Task<ActionResult> EditFood([FromBody] ProductDto productDto, int id)
+    {
+        Product product = await _repository.GetById(id);
+
+        product.Name = productDto.Name;
+        product.CaloriePer100g = productDto.CaloriePer100g;
+        product.ProteinPer100g = productDto.ProteinPer100g;
+        product.FatPer100g = productDto.FatPer100g;
+        product.CarbohydratePer100g = productDto.CarbohydratePer100g;
+
+        await _repository.Update(id, product);
+
+        return Ok(_mapper.Map<ProductDto>(product));
     }
 }
 
