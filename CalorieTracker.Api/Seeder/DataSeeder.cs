@@ -15,6 +15,7 @@ public class DataSeeder : IDataSeeder
     public async Task Seed()
     {
         //await _dbContext.Database.EnsureDeletedAsync();
+
         bool isCreated = await _dbContext.Database.EnsureCreatedAsync();
 
         // not have id yet
@@ -208,6 +209,6 @@ public class DataSeeder : IDataSeeder
         if (!isCreated)
         {
             return;
-        } 
+        }
     }
 }
