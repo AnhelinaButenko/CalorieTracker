@@ -6,9 +6,9 @@ using System.Reflection.Metadata;
 
 namespace CalorieTracker.Data.Configuration;
 
-public class DailyForDayConfiguration : IEntityTypeConfiguration<DailyFoodDairy>
+public class DailyForDayConfiguration : IEntityTypeConfiguration<DailyForDay>
 {
-    public void Configure(EntityTypeBuilder<DailyFoodDairy> builder)
+    public void Configure(EntityTypeBuilder<DailyForDay> builder)
     {
         builder.HasKey(x => x.Id);
 

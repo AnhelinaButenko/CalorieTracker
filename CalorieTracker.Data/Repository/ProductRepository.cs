@@ -13,8 +13,6 @@ public interface IProductRepository : IGenericRepository<Product>
     Task Remove(Product product);
 
     Task<List<Product>> GetAll();
-
-    Task<bool> ExistsAsync(int id);
 }
 
 public class ProductRepository : GenericRepository<Product>, IProductRepository

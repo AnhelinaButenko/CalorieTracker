@@ -12,5 +12,5 @@ public class DinnerProduct : ReportEntity
 
     public int DailyFoodDairyId { get; set; }
 
-    public DailyFoodDairy DailyFoodDairy { get; set; }
+    public DailyForDay DailyFoodDairy { get; set; }
 }

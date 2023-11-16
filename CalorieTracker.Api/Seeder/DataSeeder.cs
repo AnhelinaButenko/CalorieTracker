@@ -86,7 +86,7 @@ public class DataSeeder : IDataSeeder
         await _dbContext.AddAsync(cookie);
         await _dbContext.SaveChangesAsync();
 
-        DailyFoodDairy dailyFoodDairyUser1 = new DailyFoodDairy
+        DailyForDay dailyFoodDairyUser1 = new DailyForDay
         {
             TotalCalories = 1750,
             TotalAmountCarbohydrates = 214.1,
@@ -96,7 +96,7 @@ public class DataSeeder : IDataSeeder
         await _dbContext.AddAsync(dailyFoodDairyUser1);
         await _dbContext.SaveChangesAsync();
 
-        DailyFoodDairy dailyFoodDairyUser2 = new DailyFoodDairy
+        DailyForDay dailyFoodDairyUser2 = new DailyForDay
         {
             TotalCalories = 1550,
             TotalAmountCarbohydrates = 154.1,
@@ -111,7 +111,6 @@ public class DataSeeder : IDataSeeder
             Name = "Lina",
             CurrentWeight = 59,
             DesiredWeight = 57,
-            RecommendedCalory = 1500,
             DailyFoodDairyId = dailyFoodDairyUser1.Id
         };
         await _dbContext.AddAsync(user1);
@@ -122,7 +121,6 @@ public class DataSeeder : IDataSeeder
             Name = "Andrew",
             CurrentWeight = 78,
             DesiredWeight = 82,
-            RecommendedCalory = 3000,
             DailyFoodDairyId = dailyFoodDairyUser2.Id
         };
         await _dbContext.AddAsync(user2);
