@@ -34,6 +34,8 @@ public class Program
 
         builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
+        builder.Services.AddScoped<IUserRepository, UserRepository>();
+
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         builder.Services.AddCors(options =>
