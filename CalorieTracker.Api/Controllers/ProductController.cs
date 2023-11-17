@@ -3,6 +3,7 @@ using CalorieTracker.Api.Models;
 using CalorieTracker.Data.Repository;
 using CalorieTracker.Domains;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CalorieTracker.Api.Controllers;
 
@@ -24,11 +25,18 @@ public class ProductController : ControllerBase
     [HttpGet]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    public async Task<ActionResult> Get()
+    public async Task<ActionResult> Get([FromQuery] string serchStr)
     {
-        List<Product> product = await _repository.GetAll();
+        List<Product> products = await _repository.GetAll();
 
-        return Ok(_mapper.Map<IEnumerable<ProductDto>>(product));
+        if (!string.IsNullOrEmpty(serchStr))
+        {
+            var filteredResult = products.Where(x => x.Name.Contains(serchStr));
+
+            return Ok(_mapper.Map<IEnumerable<ProductDto>>(filteredResult));
+        }
+
+        return Ok(_mapper.Map<IEnumerable<ProductDto>>(products));
     }
 
     [HttpGet("{id:int}")]

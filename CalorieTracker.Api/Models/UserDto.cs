@@ -1,13 +1,12 @@
-﻿namespace CalorieTracker.Api.Models
+﻿namespace CalorieTracker.Api.Models;
+
+public class UserDto
 {
-    public class UserDto
-    {
-        public int Id { get; set; }
+    public int Id { get; set; }
 
-        public string Name { get; set; }
+    public string Name { get; set; }
 
-        public double CurrentWeight { get; set; }
+    public double CurrentWeight { get; set; }
 
-        public double DesiredWeight { get; set; }
-    }
+    public double DesiredWeight { get; set; }
 }
