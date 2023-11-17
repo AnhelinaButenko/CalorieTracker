@@ -25,9 +25,10 @@ public class ProductController : ControllerBase
     [HttpGet]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    public async Task<ActionResult> Get([FromQuery] string serchStr)
+    public async Task<ActionResult> Get([FromQuery] string? serchStr)
     {
         List<Product> products = await _repository.GetAll();
+        //products.OrderByDescending(x => x.CaloriePer100g);
 
         if (!string.IsNullOrEmpty(serchStr))
         {
@@ -36,7 +37,8 @@ public class ProductController : ControllerBase
             return Ok(_mapper.Map<IEnumerable<ProductDto>>(filteredResult));
         }
 
-        return Ok(_mapper.Map<IEnumerable<ProductDto>>(products));
+        return Ok(_mapper.Map<IEnumerable<ProductDto>>(products)
+            .OrderByDescending(x => x.CaloriePer100g));
     }
 
     [HttpGet("{id:int}")]
@@ -47,7 +49,6 @@ public class ProductController : ControllerBase
         return Ok(_mapper.Map<ProductDto>(product));
     }
 
-    //
     [HttpPost]
     public async Task<ActionResult> AddFood([FromBody] ProductDto productDto)
     {
