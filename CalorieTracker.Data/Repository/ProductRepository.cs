@@ -1,4 +1,5 @@
 ﻿using CalorieTracker.Domains;
+using Microsoft.EntityFrameworkCore;
 
 namespace CalorieTracker.Data.Repository;
 
@@ -17,8 +18,9 @@ public interface IProductRepository : IGenericRepository<Product>
 
 public class ProductRepository : GenericRepository<Product>, IProductRepository
 {
-    public ProductRepository(CalorieTrackerDbContext dbContext) 
+    public ProductRepository(CalorieTrackerDbContext dbContext)
         : base(dbContext)
     {
+     
     }
 }

@@ -3,7 +3,10 @@ using CalorieTracker.Api.Models;
 using CalorieTracker.Data.Repository;
 using CalorieTracker.Domains;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using System.Collections.Generic;
+using System.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CalorieTracker.Api.Controllers;
 
@@ -23,18 +26,52 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet]
+    [Route("cleanup")]
+    public async Task<ActionResult> CleanUp()
+    {
+        List<Product> products = await _repository.GetAll();
+
+        products = products
+            .GroupBy(x => x.Name.ToLower())
+            .SelectMany(products => products).ToList();
+
+        List<Product> productsUnique = products
+            .GroupBy(x => x.Name.ToLower())
+            .Select(x => x.First())
+            .Distinct().ToList();
+
+        List<int> productsId = products.Select(x => x.Id).ToList();
+
+        List<int> productsUniqueId = productsUnique.Select(x => x.Id).ToList();
+
+        List<int> nonUniqueIds = productsId.Except(productsUniqueId).ToList();
+
+        foreach (var product in products)
+        {
+            foreach (var id in nonUniqueIds)
+            {
+                if (product.Id == id)
+                {
+                    await _repository.Remove(product);
+                }              
+            }
+        }
+        return Ok(_mapper.Map<IEnumerable<ProductDto>>(products));
+    }
+
+    [HttpGet]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     public async Task<ActionResult> Get([FromQuery] string? serchStr)
     {
         List<Product> products = await _repository.GetAll();
-        //products.OrderByDescending(x => x.CaloriePer100g);
 
         if (!string.IsNullOrEmpty(serchStr))
         {
             var filteredResult = products.Where(x => x.Name.Contains(serchStr));
 
-            return Ok(_mapper.Map<IEnumerable<ProductDto>>(filteredResult));
+            return Ok(_mapper.Map<IEnumerable<ProductDto>>(filteredResult)
+                .OrderByDescending(x => x.CaloriePer100g));
         }
 
         return Ok(_mapper.Map<IEnumerable<ProductDto>>(products)
