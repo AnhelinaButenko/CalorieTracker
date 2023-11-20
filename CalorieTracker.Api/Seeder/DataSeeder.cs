@@ -86,6 +86,24 @@ public class DataSeeder : IDataSeeder
         await _dbContext.AddAsync(cookie);
         await _dbContext.SaveChangesAsync();
 
+        Manufacturer nestle = new Manufacturer
+        {
+            Name = "Nestle",
+            ProductId = cookie.Id
+        };
+
+        Manufacturer nestle1 = new Manufacturer
+        {
+            Name = "Nestle",
+            ProductId = juice.Id
+        };
+
+        Manufacturer mcDonalds = new Manufacturer
+        {
+            Name = "McDonald`s",
+            ProductId = sandwich.Id
+        };
+
         DailyForDay dailyFoodDairyUser1 = new DailyForDay
         {
             TotalCalories = 1750,
