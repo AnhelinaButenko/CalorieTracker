@@ -8,5 +8,7 @@ public class MappingProfile
     public MappingProfile() 
     {
         CreateMap<Domains.Product, Models.ProductDto>().ReverseMap();
+
+        CreateMap<Domains.User, Models.UserDto>().ReverseMap();
     }
 }

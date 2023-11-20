@@ -1,4 +1,5 @@
 ﻿using CalorieTracker.Domains;
+using Microsoft.EntityFrameworkCore;
 
 namespace CalorieTracker.Data.Repository;
 
@@ -13,14 +14,13 @@ public interface IProductRepository : IGenericRepository<Product>
     Task Remove(Product product);
 
     Task<List<Product>> GetAll();
-
-    Task<bool> ExistsAsync(int id);
 }
 
 public class ProductRepository : GenericRepository<Product>, IProductRepository
 {
-    public ProductRepository(CalorieTrackerDbContext dbContext) 
+    public ProductRepository(CalorieTrackerDbContext dbContext)
         : base(dbContext)
     {
+     
     }
 }

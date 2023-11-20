@@ -30,9 +30,11 @@ public class Program
 
         builder.Services.AddScoped<IDataSeeder, DataSeeder>();
 
-        //SeedData(builder.Services);
+       // SeedData(builder.Services);
 
         builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
+        builder.Services.AddScoped<IUserRepository, UserRepository>();
 
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

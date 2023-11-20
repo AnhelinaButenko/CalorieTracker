@@ -12,9 +12,7 @@ public class User : IdentityUser<int>, IBaseNamedEntity
 
     public double DesiredWeight { get; set; }
 
-    public double RecommendedCalory { get; set; }
-
     public int DailyFoodDairyId { get; set; }
 
-    public DailyFoodDairy DailyFoodDairy { get; set; }
+    public DailyForDay DailyFoodDairy { get; set; }
 }

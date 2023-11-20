@@ -18,7 +18,7 @@ public class CalorieTrackerDbContext : IdentityDbContext<User, Role, int>
 
     public DbSet<Product> Products { get; set; }
 
-    public DbSet<DailyFoodDairy> DailyFoodDairies { get; set; }
+    public DbSet<DailyForDay> DailyFoodDairies { get; set; }
 
     public DbSet<BreakfastProduct> BreakfastProducts { get; set; }
 

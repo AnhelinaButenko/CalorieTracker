@@ -15,8 +15,6 @@ public interface IGenericRepository<T>
     Task Remove (T entity);
 
     Task<List<T>> GetAll ();
-
-    Task<bool> ExistsAsync(int id);
 }
 
 public abstract class GenericRepository<T> : IGenericRepository<T>
@@ -64,11 +62,6 @@ public abstract class GenericRepository<T> : IGenericRepository<T>
         _dbContext.Set<T>().Update(entity);
         await _dbContext.SaveChangesAsync();
         return entity;
-    }
-
-    public async Task<bool> ExistsAsync(int id)
-    {
-        return await _dbContext.Set<T>().AnyAsync(c => c.Id == id);
     }
 }
 

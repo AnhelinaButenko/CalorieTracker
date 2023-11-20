@@ -17,8 +17,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property(x => x.DesiredWeight);
 
-        builder.Property(x => x.RecommendedCalory);
-
         builder.Property(x => x.DailyFoodDairy);
     }
 }
