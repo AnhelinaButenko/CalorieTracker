@@ -30,11 +30,21 @@ public class Program
 
         builder.Services.AddScoped<IDataSeeder, DataSeeder>();
 
-       // SeedData(builder.Services);
+        SeedData(builder.Services);
 
         builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
         builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+        builder.Services.AddScoped<IManufacturerRepository, ManufacturerRepository>();
+
+        builder.Services.AddScoped<IDailyForDayRepository, DailyForDayRepository>();
+
+        builder.Services.AddScoped<IBreakfastProductRepository, BreakfastProductRepository>();
+
+        builder.Services.AddScoped<ILunchProductRepository, LunchProductRepository>();
+
+        builder.Services.AddScoped<IDinnerProductRepository, DinnerProductRepository>();
 
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

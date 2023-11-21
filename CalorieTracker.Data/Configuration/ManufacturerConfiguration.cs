@@ -12,5 +12,9 @@ public class ManufacturerConfiguration : IEntityTypeConfiguration<Manufacturer>
 
         builder.Property(x => x.Name)
             .HasMaxLength(100);
+
+        builder.HasMany(x => x.Products)
+       .WithOne(x => x.Manufacturer)
+       .HasForeignKey(x => x.ManufacturerId);
     }
 }
