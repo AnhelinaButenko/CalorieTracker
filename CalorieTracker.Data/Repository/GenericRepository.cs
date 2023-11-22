@@ -41,7 +41,7 @@ public abstract class GenericRepository<T> : IGenericRepository<T>
 
     public virtual async Task<T> GetById(int id)
     {
-        return await _dbContext.Set<T>().Where(x => x.Id == id).FirstOrDefaultAsync();
+        return await _dbContext.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public virtual async Task Remove(T entity)

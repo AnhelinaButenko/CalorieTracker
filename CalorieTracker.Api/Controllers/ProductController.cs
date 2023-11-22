@@ -2,6 +2,7 @@
 using CalorieTracker.Api.Models;
 using CalorieTracker.Data.Repository;
 using CalorieTracker.Domains;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using System.Collections.Generic;
@@ -16,12 +17,15 @@ namespace CalorieTracker.Api.Controllers;
 public class ProductController : ControllerBase
 {
     private readonly IProductRepository _repository;
+    private readonly IManufacturerRepository _manufacturerRepository;
     private readonly IMapper _mapper;
 
     public ProductController(IProductRepository repository,
+        IManufacturerRepository manufacturerRepository,
         IMapper mapper)
     {
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+       _manufacturerRepository = manufacturerRepository ?? throw new ArgumentNullException(nameof(manufacturerRepository));
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
@@ -96,6 +100,47 @@ public class ProductController : ControllerBase
         ProductDto productDTO = _mapper.Map<ProductDto>(product);
 
         return Ok(_mapper.Map<ProductDto>(productDTO));
+    }
+
+    [HttpPut("{productId}/{manufacturerId}/setManufacturer")]
+    public async Task<ActionResult> SetProductManufacturer(int productId, int manufacturerId)
+    {
+        Product product = await _repository.GetById(productId);
+
+        if (product == null)
+        {
+            return NotFound();
+        }
+
+        Manufacturer manufacturer = await _manufacturerRepository.GetById(manufacturerId);
+
+        if (manufacturer == null)
+        {
+            return NotFound();
+        }
+
+        product.ManufacturerId = manufacturerId;
+
+        await _repository.Update(product.Id, product);
+
+        return Ok(_mapper.Map<ProductDto>(product));
+    }
+
+    [HttpPut("{productId}/removeManufacturer")]
+    public async Task<ActionResult> RemoveProductManufacturer(int productId)
+    {
+        Product product = await _repository.GetById(productId);
+
+        if (product == null)
+        {
+            return NotFound();
+        }
+
+        product.ManufacturerId = null;
+
+        await _repository.Update(product.Id, product);
+
+        return Ok(_mapper.Map<ProductDto>(product));
     }
 
     [HttpDelete("{id:int}")]
