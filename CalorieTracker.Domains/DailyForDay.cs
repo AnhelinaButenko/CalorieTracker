@@ -8,5 +8,7 @@ public class DailyForDay : ReportEntity
 
     public List<DinnerProduct> DinnerProducts { get; set; } = new List<DinnerProduct>();
 
+    public  DateTime Date { get; set; }
+
     public User User { get; set; }
 }

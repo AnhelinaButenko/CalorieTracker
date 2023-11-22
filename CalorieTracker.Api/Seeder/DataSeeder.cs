@@ -125,6 +125,7 @@ public class DataSeeder : IDataSeeder
             TotalAmountCarbohydrates = 214.1,
             TotalAmountFats = 34,
             TotalAmountProteins = 107.4,
+            Date = DateTime.UtcNow
         };
         await _dbContext.AddAsync(dailyFoodDairyUser1);
         await _dbContext.SaveChangesAsync();
@@ -134,7 +135,8 @@ public class DataSeeder : IDataSeeder
             TotalCalories = 1550,
             TotalAmountCarbohydrates = 154.1,
             TotalAmountFats = 27,
-            TotalAmountProteins = 86,     
+            TotalAmountProteins = 86,
+            Date = DateTime.UtcNow
         };
         await _dbContext.AddAsync(dailyFoodDairyUser2);
         await _dbContext.SaveChangesAsync();
