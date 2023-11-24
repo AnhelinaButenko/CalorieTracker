@@ -33,5 +33,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.HasOne(x => x.Dinner)
             .WithOne(x => x.Product)
             .HasForeignKey<DinnerProduct>(x => x.ProductId);
+
+        builder.HasIndex(x => x.Name).IsUnique();
     }
 }

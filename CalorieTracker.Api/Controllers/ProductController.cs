@@ -126,6 +126,38 @@ public class ProductController : ControllerBase
         return Ok(_mapper.Map<ProductDto>(product));
     }
 
+    [HttpPut("{manufacturerName}/{productId}/setManufacturerByName")]
+    public async Task<ActionResult> SetProductManufacturerByName(string manufacturerName, int productId)
+    {
+        Product product = await _repository.GetById(productId);
+
+        if (product == null)
+        {
+            return NotFound();
+        }
+
+        Manufacturer manufacturer = await _manufacturerRepository.GetByName(manufacturerName);
+
+        if (manufacturer == null)
+        {
+            Manufacturer newManufacturer = new()
+            {
+                Name = manufacturerName
+            };
+
+            await _manufacturerRepository.Add(newManufacturer);
+
+            manufacturer = newManufacturer;
+        }
+
+        product.ManufacturerId = manufacturer.Id;
+
+        await _repository.Update(product.Id, product);
+
+        return Ok(_mapper.Map<ProductDto>(product));
+    }
+
+
     [HttpPut("{productId}/removeManufacturer")]
     public async Task<ActionResult> RemoveProductManufacturer(int productId)
     {

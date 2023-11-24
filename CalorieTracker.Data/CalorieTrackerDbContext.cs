@@ -26,6 +26,8 @@ public class CalorieTrackerDbContext : IdentityDbContext<User, Role, int>
 
     public DbSet<DinnerProduct> DinnerProducts { get; set; }
 
+    public DbSet<Manufacturer> Manufacturer { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlServer(_config["ConnectionStrings:CalorieTrackerDb"]);
