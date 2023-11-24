@@ -1,0 +1,32 @@
+{
+    {
+      "ProductName": "Tommato",
+      "CaloryInfo": {
+        "CaloriePer100g": 18,
+        "ProteinPer100g": 0.5,
+        "FatPer100g": 1.1,
+        "CarbohydratePer100g": 34.2 
+      },
+      "ManufacturerName": "Torchin"
+    },
+  {
+    "ProductName": "Juice",
+    "CaloryInfo": {
+      "CaloriePer100g": 39,
+      "ProteinPer100g": 0.9,
+      "FatPer100g": 0.2,
+      "CarbohydratePer100g": 9.2
+    },
+    "ManufacturerName": "Sandora"
+  },
+  {
+    "ProductName": "Porridge",
+    "CaloryInfo": {
+      "CaloriePer100g": 137,
+      "ProteinPer100g": 4.5,
+      "FatPer100g": 1.6,
+      "CarbohydratePer100g": 27.4
+    },
+    "ManufacturerName": "Nestle"
+  }
+}
