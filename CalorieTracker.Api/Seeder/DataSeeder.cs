@@ -15,8 +15,6 @@ public class DataSeeder : IDataSeeder
 
     public async Task Seed()
     {
-        //bool isCreated = await _dbContext.Database.EnsureDeletedAsync();
-
         bool isCreated = await _dbContext.Database.EnsureCreatedAsync();
 
         if (!isCreated)

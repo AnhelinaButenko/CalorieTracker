@@ -17,7 +17,17 @@
 			"FatPer100g": 0.2,
 			"CarbohydratePer100g": 9.2
 		},
-		"ManufacturerName": "Sandora"
+		"ManufacturerName": null
+	},
+	{
+		"ProductName": "Lemon",
+		"CaloryInfo": {
+			"CaloriePer100g": 39,
+			"ProteinPer100g": 0.9,
+			"FatPer100g": 0.2,
+			"CarbohydratePer100g": 9.2
+		},
+		"ManufacturerName": "Metro"
 	},
 	{
 		"ProductName": "Porridge",
