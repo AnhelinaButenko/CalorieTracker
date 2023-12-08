@@ -1,4 +1,5 @@
 using CalorieTracker.Api.Seeder;
+using CalorieTracker.Api.Services;
 using CalorieTracker.Data;
 using CalorieTracker.Data.Repository;
 using CalorieTracker.Domains;
@@ -28,6 +29,8 @@ public class Program
         builder.Services.AddScoped<IDataSeeder, DataSeeder>();
 
         //SeedData(builder.Services);
+
+        builder.Services.AddTransient<IFileService, FileService>();
 
         builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
