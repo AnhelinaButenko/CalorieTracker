@@ -3,9 +3,6 @@ using CalorieTracker.Data;
 using CalorieTracker.Data.Repository;
 using CalorieTracker.Domains;
 using Microsoft.AspNetCore.StaticFiles;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 
 namespace CalorieTracker.Api;
 

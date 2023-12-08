@@ -14,13 +14,22 @@ public interface IProductRepository : IGenericRepository<Product>
     Task Remove(Product product);
 
     Task<List<Product>> GetAll();
+
+    Task<Product> GetByName(string name);
 }
 
 public class ProductRepository : GenericRepository<Product>, IProductRepository
 {
+    protected readonly CalorieTrackerDbContext _dbContext;
+
     public ProductRepository(CalorieTrackerDbContext dbContext)
         : base(dbContext)
     {
-     
+        _dbContext = dbContext;
+    }
+
+    public virtual async Task<Product> GetByName(string name)
+    {
+        return await _dbContext.Products.Where(x => x.Name == name).FirstOrDefaultAsync();
     }
 }
