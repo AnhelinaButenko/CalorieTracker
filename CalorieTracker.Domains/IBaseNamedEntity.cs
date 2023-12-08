@@ -7,5 +7,5 @@ public interface IBaseNamedEntity : IBaseEntity
 
 public class BaseNamedEntity : BaseEntity, IBaseNamedEntity
 {
-    public string Name { get; set; }
+    public string? Name { get; set; }
 }

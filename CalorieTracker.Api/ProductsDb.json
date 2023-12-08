@@ -1,15 +1,5 @@
 [
 	{
-		"ProductName": "Tommato",
-		"CaloryInfo": {
-			"CaloriePer100g": 18,
-			"ProteinPer100g": 0.5,
-			"FatPer100g": 1.1,
-			"CarbohydratePer100g": 34.2
-		},
-		"ManufacturerName": "Torchin"
-	},
-	{
 		"ProductName": "Juice",
 		"CaloryInfo": {
 			"CaloriePer100g": 39,

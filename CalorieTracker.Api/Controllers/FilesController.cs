@@ -58,48 +58,44 @@ public class FilesController : ControllerBase
 
             List<ImportProductDto> result = JsonConvert.DeserializeObject<List<ImportProductDto>>(fileContent);
 
-            //для каждого продукта из файла +
-            //если продукт с таким именем существует +
-            //значит обновить его информацию о БЖУ и производителe +
-            //иначе создать продукт с информацией о БЖУ и указанным производителем +
-            //если производитель не существует, создать его в базе +
-            //если информация о производителе продукта не указана (manufacturerName: null)
-            //то для продукта информацию о производителе не менять
-
             foreach (ImportProductDto product in result)
             {
                 Product productByName = await _productRepository.GetByName(product.ProductName);
-                Manufacturer manufacturerByName = await _manufacturerRepository.GetByName(product.ManufacturerName);
 
-                if (manufacturerByName == null)
+                Manufacturer? manufacturerByName = null;
+
+                if (!string.IsNullOrWhiteSpace(product.ManufacturerName))
                 {
-                    manufacturerByName = new()
-                    {
-                        Name = product.ManufacturerName,     
-                    };
+                    manufacturerByName = await _manufacturerRepository.GetByName(product.ManufacturerName);
 
-                    await _manufacturerRepository.Add(manufacturerByName);
+                    if (manufacturerByName == null)
+                    {
+                        manufacturerByName = new()
+                        {
+                            Name = product.ManufacturerName,
+                        };
+
+                        await _manufacturerRepository.Add(manufacturerByName);
+                    }
                 }
 
-                if (productByName.Name != null)
+                if (productByName != null)
                 {
-                    //update
                     productByName.Name = product.ProductName;
                     productByName.CaloriePer100g = product.CaloryInfo.CaloriePer100g;
                     productByName.ProteinPer100g = product.CaloryInfo.ProteinPer100g;
                     productByName.FatPer100g = product.CaloryInfo.FatPer100g;
                     productByName.CarbohydratePer100g = product.CaloryInfo.CarbohydratePer100g;
 
-                    if (manufacturerByName.Name != null)
+                    if (product.ManufacturerName != null)
                     {
-                        productByName.ManufacturerId = manufacturerByName.Id;
+                        productByName.Name = product.ManufacturerName;
                     }
 
                     await _productRepository.Update(productByName.Id, productByName);
                 }
                 else
                 {
-                    //create
                     Product newProduct = new()
                     {
                         Name = product.ProductName,
@@ -107,19 +103,21 @@ public class FilesController : ControllerBase
                         ProteinPer100g = product.CaloryInfo.ProteinPer100g,
                         FatPer100g = product.CaloryInfo.FatPer100g,
                         CarbohydratePer100g = product.CaloryInfo.CarbohydratePer100g,
-                        ManufacturerId = manufacturerByName.Id,
                     };
+
+                    if (product.ManufacturerName != null)
+                    {
+                        newProduct.ManufacturerId = manufacturerByName?.Id;
+                    }
 
                     await _productRepository.Add(newProduct);
                 }
             }
         }
-        _dbContext.SaveChanges();
 
         return Ok();
     }
 }
-
 
 public class ImportProductDto
 {
@@ -127,7 +125,7 @@ public class ImportProductDto
 
     public CaloryInfo CaloryInfo { get; set; }
 
-    public string ManufacturerName { get; set; }
+    public string? ManufacturerName { get; set; }
 }
 
 public class CaloryInfo
