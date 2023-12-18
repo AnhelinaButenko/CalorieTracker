@@ -59,6 +59,18 @@ public class ManufacturerController : ControllerBase
         return Ok(_mapper.Map<Manufacturer>(manufacturerDto));
     }
 
+    [HttpPut("{id:int}")]
+    public async Task<ActionResult> EditManufacturer([FromBody] ManufacturerDto manufacturerDto, int id)
+    {
+        Manufacturer manufacturer = await _repository.GetById(id);
+
+        manufacturer.Name = manufacturerDto.Name;
+
+        await _repository.Update(id, manufacturer);
+
+        return Ok(_mapper.Map<ManufacturerDto>(manufacturer));
+    }
+
     [HttpPut("{productId}/{manufacturerId}/setManufacturer")]
     public async Task<ActionResult> SetProductManufacturer(int productId, int manufacturerId)
     {
