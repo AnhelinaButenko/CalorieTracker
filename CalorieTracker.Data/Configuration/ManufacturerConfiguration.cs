@@ -15,6 +15,6 @@ public class ManufacturerConfiguration : IEntityTypeConfiguration<Manufacturer>
 
         builder.HasMany(x => x.Products)
        .WithOne(x => x.Manufacturer)
-       .HasForeignKey(x => x.ManufacturerId);
+       .HasForeignKey(x => x.ManufacturerId).OnDelete(DeleteBehavior.SetNull);
     }
 }

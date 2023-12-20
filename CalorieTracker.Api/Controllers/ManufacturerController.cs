@@ -12,14 +12,16 @@ namespace CalorieTracker.Api.Controllers;
 public class ManufacturerController : ControllerBase
 {
     private readonly IManufacturerRepository _repository;
+    private readonly IProductRepository _productRepository;
     private readonly IMapper _mapper;
 
     public ManufacturerController(
         IManufacturerRepository repository,
-        IMapper mapper)
+        IMapper mapper, IProductRepository productRepository)
     {      
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
     }
 
     [HttpGet]
@@ -54,9 +56,24 @@ public class ManufacturerController : ControllerBase
     {
         Manufacturer manufacturer = _mapper.Map<Manufacturer>(manufacturerDto);
 
+        if (manufacturerDto.ProductsId != null)
+        {
+            foreach (var productId in manufacturerDto.ProductsId)
+            {
+                Product product = await _productRepository.GetById(productId);
+
+                if (product == null)
+                {
+                    return BadRequest("Invalid product ID.");
+                }
+
+                manufacturer.Products.Add(product);
+            }
+        }
+
         await _repository.Add(manufacturer);
 
-        return Ok(_mapper.Map<Manufacturer>(manufacturerDto));
+        return Ok(_mapper.Map<ManufacturerDto>(manufacturer));
     }
 
     [HttpPut("{id:int}")]
@@ -66,24 +83,22 @@ public class ManufacturerController : ControllerBase
 
         manufacturer.Name = manufacturerDto.Name;
 
-        await _repository.Update(id, manufacturer);
-
-        return Ok(_mapper.Map<ManufacturerDto>(manufacturer));
-    }
-
-    [HttpPut("{productId}/{manufacturerId}/setManufacturer")]
-    public async Task<ActionResult> SetProductManufacturer(int productId, int manufacturerId)
-    {
-        Manufacturer manufacturer = await _repository.GetById(manufacturerId);
-
-        if (manufacturer == null)
+        if (manufacturerDto.ProductsId != null)
         {
-            return NotFound();
+            foreach (var productId in manufacturerDto.ProductsId)
+            {               
+                Product product = await _productRepository.GetById(productId);
+
+                if (product == null)
+                {
+                    return BadRequest("Invalid product ID.");
+                }
+
+                manufacturer.Products.Add(product);
+            }
         }
 
-        manufacturer.Id = manufacturerId;
-
-        await _repository.Update(manufacturer.Id, manufacturer);
+        await _repository.Update(id, manufacturer);
 
         return Ok(_mapper.Map<ManufacturerDto>(manufacturer));
     }
