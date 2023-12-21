@@ -30,6 +30,6 @@ public class ProductRepository : GenericRepository<Product>, IProductRepository
 
     public virtual async Task<Product> GetByName(string name)
     {
-        return await _dbContext.Products.Where(x => x.Name == name).FirstOrDefaultAsync();
+        return await _dbContext.Products.FirstOrDefaultAsync(x => x.Name == name);
     }
 }
