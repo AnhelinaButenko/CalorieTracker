@@ -29,6 +29,14 @@ public class ManufacturerRepository : GenericRepository<Manufacturer>, IManufact
 
     public virtual async Task<Manufacturer> GetByName(string name)
     {
-        return await _dbContext.Manufacturer.Where(x => x.Name == name).FirstOrDefaultAsync();
+        return await _dbContext.Manufacturer
+            .FirstOrDefaultAsync(x => x.Name == name);
+    }
+
+    public override async Task<Manufacturer> GetById(int id)
+    {
+        return await _dbContext.Manufacturer
+            .Include(p => p.Products)
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 }

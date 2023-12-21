@@ -3,6 +3,7 @@ using CalorieTracker.Api.Models;
 using CalorieTracker.Data.Repository;
 using CalorieTracker.Domains;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace CalorieTracker.Api.Controllers;
 
@@ -48,9 +49,18 @@ public class ManufacturerController : ControllerBase
     {
         Manufacturer manufacturer = await _repository.GetById(id);
 
-        return Ok(_mapper.Map<ManufacturerDto>(manufacturer));
-    }
+        List<int> productsIds = manufacturer.Products.Select(p => p.Id).ToList();
 
+        ManufacturerDto manufacturerDto = new()
+        {
+            Id = manufacturer.Id,
+            Name = manufacturer.Name,
+            ProductsId = productsIds
+        };
+
+        return Ok(manufacturerDto);
+    }
+ 
     [HttpPost]
     public async Task<ActionResult> AddManufacturer([FromBody] ManufacturerDto manufacturerDto)
     {
@@ -83,10 +93,25 @@ public class ManufacturerController : ControllerBase
 
         manufacturer.Name = manufacturerDto.Name;
 
+        //List<Product> productsId = manufacturer.Products.Where(p => manufacturerDto.ProductsId.Contains(p.Id)).ToList();
+
+        //foreach (var productId in productsId)
+        //{
+        //    manufacturer.Products.Add(productId);
+        //}
+
+
+        //var productsToRemove = manufacturer.Products.Where(p => !manufacturerDto.ProductsId.Contains(p.Id)).ToList();
+
+        //foreach (var productToRemove in productsToRemove)
+        //{
+        //    manufacturer.Products.Remove(productToRemove);
+        //}
+
         if (manufacturerDto.ProductsId != null)
         {
             foreach (var productId in manufacturerDto.ProductsId)
-            {               
+            {
                 Product product = await _productRepository.GetById(productId);
 
                 if (product == null)
