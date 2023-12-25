@@ -6,6 +6,8 @@ public class ProductDto
 
     public int? ManufacturerId { get; set; }
 
+    public string? ManufacturerName { get; set; }
+
     public string Name { get; set; }
 
     public double CaloriePer100g { get; set; }

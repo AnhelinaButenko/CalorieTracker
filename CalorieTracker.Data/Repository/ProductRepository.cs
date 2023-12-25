@@ -32,4 +32,9 @@ public class ProductRepository : GenericRepository<Product>, IProductRepository
     {
         return await _dbContext.Products.FirstOrDefaultAsync(x => x.Name == name);
     }
+
+    public virtual async Task<List<Product>> GetAll()
+    {
+        return await _dbContext.Products.Include(p => p.Manufacturer).AsNoTracking().ToListAsync();
+    }
 }
