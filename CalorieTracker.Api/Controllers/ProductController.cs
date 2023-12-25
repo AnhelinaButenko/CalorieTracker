@@ -20,7 +20,7 @@ public class ProductController : ControllerBase
         IMapper mapper)
     {
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
-       _manufacturerRepository = manufacturerRepository ?? throw new ArgumentNullException(nameof(manufacturerRepository));
+        _manufacturerRepository = manufacturerRepository ?? throw new ArgumentNullException(nameof(manufacturerRepository));
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
@@ -52,9 +52,10 @@ public class ProductController : ControllerBase
                 if (product.Id == id)
                 {
                     await _repository.Remove(product);
-                }              
+                }
             }
         }
+
         return Ok(_mapper.Map<IEnumerable<ProductDto>>(products));
     }
 
@@ -73,8 +74,25 @@ public class ProductController : ControllerBase
                 .OrderByDescending(x => x.CaloriePer100g));
         }
 
-        return Ok(_mapper.Map<IEnumerable<ProductDto>>(products)
-            .OrderByDescending(x => x.CaloriePer100g));
+        List<ProductDto> productDtos = new List<ProductDto>();
+
+        foreach (var product in products)
+        {
+            ProductDto productDto = new()
+            {
+                Id = product.Id,
+                Name = product.Name,
+                ManufacturerName = product.Manufacturer.Name,
+                CarbohydratePer100g = product.CarbohydratePer100g,
+                FatPer100g = product.FatPer100g,
+                ProteinPer100g = product.ProteinPer100g,
+                CaloriePer100g = product.CaloriePer100g,
+                ManufacturerId = product.ManufacturerId,
+            };
+            productDtos.Add(productDto);
+        }
+
+        return Ok(productDtos.OrderByDescending(x => x.CaloriePer100g));
     }
 
     [HttpGet("{id:int}")]
