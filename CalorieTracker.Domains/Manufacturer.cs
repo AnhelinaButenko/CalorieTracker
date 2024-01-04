@@ -3,5 +3,5 @@
 namespace CalorieTracker.Domains;
 public class Manufacturer : BaseNamedEntity
 {
-    public List<Product> Products { get; set; } = new List<Product>();
+    public List<Product>? Products { get; set; } = new List<Product>();
 }

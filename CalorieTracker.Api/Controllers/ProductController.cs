@@ -62,38 +62,84 @@ public class ProductController : ControllerBase
     [HttpGet]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    public async Task<ActionResult> Get([FromQuery] string? serchStr)
+    public async Task<ActionResult<IEnumerable<ProductDto>>> Get([FromQuery] string? searchStr,
+        [FromQuery] string filter = "all")
     {
         List<Product> products = await _repository.GetAll();
 
-        if (!string.IsNullOrEmpty(serchStr))
+        IEnumerable<ProductDto> productDtos = products.Select(product => new ProductDto
         {
-            var filteredResult = products.Where(x => x.Name.Contains(serchStr));
+            Id = product.Id,
+            Name = product.Name,
+            ManufacturerName = product.Manufacturer?.Name,
+            CarbohydratePer100g = product.CarbohydratePer100g,
+            FatPer100g = product.FatPer100g,
+            ProteinPer100g = product.ProteinPer100g,
+            CaloriePer100g = product.CaloriePer100g,
+            ManufacturerId = product.Manufacturer?.Id
+        }).ToList();
 
-            return Ok(_mapper.Map<IEnumerable<ProductDto>>(filteredResult)
-                .OrderByDescending(x => x.CaloriePer100g));
+        if (filter == "withManufacturer")
+        {
+            productDtos = productDtos.Where(p => p.ManufacturerId.HasValue).ToList();
+        }
+        else if (filter == "withoutManufacturer")
+        {
+            productDtos = productDtos.Where(p => !p.ManufacturerId.HasValue).ToList();
         }
 
-        List<ProductDto> productDtos = new List<ProductDto>();
-
-        foreach (var product in products)
+        if (!string.IsNullOrEmpty(searchStr))
         {
-            ProductDto productDto = new()
-            {
-                Id = product.Id,
-                Name = product.Name,
-                ManufacturerName = product.Manufacturer.Name,
-                CarbohydratePer100g = product.CarbohydratePer100g,
-                FatPer100g = product.FatPer100g,
-                ProteinPer100g = product.ProteinPer100g,
-                CaloriePer100g = product.CaloriePer100g,
-                ManufacturerId = product.ManufacturerId,
-            };
-            productDtos.Add(productDto);
+            productDtos = productDtos.Where(p => p.Name.Contains(searchStr, StringComparison.OrdinalIgnoreCase)).ToList();
         }
 
         return Ok(productDtos.OrderByDescending(x => x.CaloriePer100g));
     }
+
+    //public async Task<ActionResult> Get([FromQuery] string? searchStr,
+    //    [FromQuery] string filter = "all")
+    //{
+    //    List<Product> products = await _repository.GetAll();
+    //    List<ProductDto> productDtos = new List<ProductDto>();
+
+    //    foreach (var product in products)
+    //    {
+    //        ProductDto productDto = new ProductDto
+    //        {
+    //            Id = product.Id,
+    //            Name = product.Name,
+    //            ManufacturerName = product.Manufacturer?.Name,
+    //            CarbohydratePer100g = product.CarbohydratePer100g,
+    //            FatPer100g = product.FatPer100g,
+    //            ProteinPer100g = product.ProteinPer100g,
+    //            CaloriePer100g = product.CaloriePer100g,
+    //            ManufacturerId = product.Manufacturer?.Id
+    //        };
+
+    //        //productDtos.Add(productDto);
+
+    //        if (filter == "withManufacturer" && product.ManufacturerId.HasValue)
+    //        {
+    //            productDtos.Add(productDto);
+
+    //        }
+    //        else if (filter == "withoutManufacturer" && !product.ManufacturerId.HasValue)
+    //        {
+    //            productDtos.Add(productDto);
+    //        }
+    //        else if (filter == "all")
+    //        {
+    //            productDtos.Add(productDto);
+    //        }
+    //    }
+
+    //    if (!string.IsNullOrEmpty(searchStr))
+    //    {
+    //        productDtos = productDtos.Where(p => p.Name.Contains(searchStr, StringComparison.OrdinalIgnoreCase)).ToList();
+    //    }
+
+    //    return Ok(productDtos.OrderByDescending(x => x.CaloriePer100g));
+    //}
 
     [HttpGet("{id:int}")]
     public async Task<ActionResult> GetId(int id)
