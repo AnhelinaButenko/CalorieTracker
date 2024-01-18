@@ -3,7 +3,9 @@ using CalorieTracker.Api.Models;
 using CalorieTracker.Data.Repository;
 using CalorieTracker.Domains;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace CalorieTracker.Api.Controllers;
 
@@ -28,21 +30,67 @@ public class ManufacturerController : ControllerBase
     [HttpGet]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    public async Task<ActionResult> Get([FromQuery] string? serchStr)
+    public async Task<ActionResult<IEnumerable<ManufacturerDto>>> Get([FromQuery] string? searchStr, [FromQuery] string filter = "all")
     {
-        List<Manufacturer> manufacturers = await _repository.GetAll();
+        List<Manufacturer> manufacturersList = await _repository.GetAll();
 
-        if (!string.IsNullOrEmpty(serchStr))
+        IQueryable<Manufacturer> manufacturersQuery = manufacturersList.AsQueryable();
+        IEnumerable<Manufacturer> manufacturers;
+
+        if (filter == "withProducts")
         {
-            var filteredResult = manufacturers.Where(x => x.Name.Contains(serchStr));
-
-            return Ok(_mapper.Map<IEnumerable<ManufacturerDto>>(filteredResult)
-                .OrderByDescending(x => x.Name));
+            manufacturers = manufacturersQuery.Include(m => m.Products).Where(m => m.Products.Any()).ToList();
+        }
+        else if (filter == "withoutProducts")
+        {
+            manufacturers = manufacturersQuery.Include(m => m.Products).Where(m => m.Products == null || !m.Products.Any()).ToList();
+        }
+        else
+        {
+            manufacturers = manufacturersQuery.ToList();
         }
 
-        return Ok(_mapper.Map<IEnumerable<ManufacturerDto>>(manufacturers)
-            .OrderByDescending(x => x.Name));
+        if (!string.IsNullOrEmpty(searchStr))
+        {
+            manufacturers = manufacturers.Where(m => m.Name.Contains(searchStr, StringComparison.OrdinalIgnoreCase));
+        }
+
+        List<ManufacturerDto> manufacturerDtos = manufacturers
+                 .Select(manufacturer => new ManufacturerDto
+                 {
+                     Id = manufacturer.Id,
+                     Name = manufacturer.Name,
+                     Products = manufacturer.Products?.Select(p => new ProductDto
+                     {
+                         Id = p.Id,
+                         Name = p.Name,
+                         CaloriePer100g = p.CaloriePer100g,
+                         ProteinPer100g = p.ProteinPer100g,
+                         FatPer100g = p.FatPer100g,
+                         CarbohydratePer100g = p.CarbohydratePer100g
+                     }).ToList() ?? new List<ProductDto>()
+                 })
+                 .OrderByDescending(x => x.Name)
+                 .ToList();
+
+        return Ok(manufacturerDtos);
     }
+
+    //public async Task<ActionResult> Get([FromQuery] string? serchStr)
+    //{
+    //    List<Manufacturer> manufacturers = await _repository.GetAll();
+
+    //    if (!string.IsNullOrEmpty(serchStr))
+    //    {
+    //        var filteredResult = manufacturers.Where(x => x.Name.Contains(serchStr));
+
+    //        return Ok(_mapper.Map<IEnumerable<ManufacturerDto>>(filteredResult)
+    //            .OrderByDescending(x => x.Name));
+    //    }
+
+    //    return Ok(_mapper.Map<IEnumerable<ManufacturerDto>>(manufacturers)
+    //        .OrderByDescending(x => x.Name));
+    //}
 
     [HttpGet("{id:int}")]
     public async Task<ActionResult> GetId(int id)
