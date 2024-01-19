@@ -39,4 +39,9 @@ public class ManufacturerRepository : GenericRepository<Manufacturer>, IManufact
             .Include(p => p.Products)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
+
+    public override async Task<List<Manufacturer>> GetAll()
+    {
+        return await _dbContext.Manufacturer.Include(p => p.Products).AsNoTracking().ToListAsync();
+    }
 }
