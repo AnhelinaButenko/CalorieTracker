@@ -39,6 +39,8 @@ public class ManufacturerController : ControllerBase
 
         if (filter == "withProducts")
         {
+            //выбираем manufacturers, включая связанные с ними продукты и фильтруем результат так,
+            //чтобы включать только тех производителей, у которых есть хотя бы один продукт
             manufacturers = manufacturersQuery.Include(m => m.Products).Where(m => m.Products.Any()).ToList();
         }
         else if (filter == "withoutProducts")
@@ -55,6 +57,12 @@ public class ManufacturerController : ControllerBase
             manufacturers = manufacturers.Where(m => m.Name.Contains(searchStr, StringComparison.OrdinalIgnoreCase));
         }
 
+        //создаем список объектов ManufacturerDto на основе данных из списка производителей.
+        //Для каждого производителя формируем соответствующий ManufacturerDto, включая их `Id`, `Name`
+        //и`Products`.Если у производителя есть продукты, они также преобразуются в объекты ProductDto.
+        //Если у производителя нет продуктов тогда используем оператор объединения с `null `??`, чтобы вернуть пустой список
+        //Тогда, гарантируется, что в Products у ManufacturerDto всегда есть список ProductDto, даже если он пустой.
+        //В конце список сортируется по убыванию по имени производителя и преобразуется в итоговый список `manufacturerDtos`
         List<ManufacturerDto> manufacturerDtos = manufacturers
                  .Select(manufacturer => new ManufacturerDto
                  {
