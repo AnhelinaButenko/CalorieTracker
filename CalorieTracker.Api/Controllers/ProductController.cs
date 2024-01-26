@@ -65,35 +65,9 @@ public class ProductController : ControllerBase
     public async Task<ActionResult<IEnumerable<ProductDto>>> Get([FromQuery] string? searchStr,
         [FromQuery] string filter = "all")
     {
-        List<Product> products = await _repository.GetAll();
+        List<Product> filteredProducts = await _repository.GetAllFiltered(searchStr, filter);
 
-        IEnumerable<ProductDto> productDtos = products.Select(product => new ProductDto
-        {
-            Id = product.Id,
-            Name = product.Name,
-            ManufacturerName = product.Manufacturer?.Name,
-            CarbohydratePer100g = product.CarbohydratePer100g,
-            FatPer100g = product.FatPer100g,
-            ProteinPer100g = product.ProteinPer100g,
-            CaloriePer100g = product.CaloriePer100g,
-            ManufacturerId = product.Manufacturer?.Id
-        }).ToList();
-
-        if (filter == "withManufacturer")
-        {
-            productDtos = productDtos.Where(p => p.ManufacturerId.HasValue).ToList();
-        }
-        else if (filter == "withoutManufacturer")
-        {
-            productDtos = productDtos.Where(p => !p.ManufacturerId.HasValue).ToList();
-        }
-
-        if (!string.IsNullOrEmpty(searchStr))
-        {
-            productDtos = productDtos.Where(p => p.Name.Contains(searchStr, StringComparison.OrdinalIgnoreCase)).ToList();
-        }
-
-        return Ok(productDtos.OrderByDescending(x => x.CaloriePer100g));
+        return Ok(_mapper.Map<IEnumerable<ProductDto>>(filteredProducts));
     }
 
     //public async Task<ActionResult> Get([FromQuery] string? searchStr,

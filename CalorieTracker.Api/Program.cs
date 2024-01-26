@@ -21,7 +21,7 @@ public class Program
         builder.Services.AddSwaggerGen();
         builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
 
-        builder.Services.AddDbContext<CalorieTrackerDbContext>();
+        builder.Services.AddDbContext<CalorieTrackerDbContext>(o => o.EnableSensitiveDataLogging());
 
         builder.Services.AddIdentity<User, Role>()
             .AddEntityFrameworkStores<CalorieTrackerDbContext>();
