@@ -22,7 +22,7 @@ public class Program
 
         builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
 
-        builder.Services.AddDbContext<CalorieTrackerDbContext>();
+        builder.Services.AddDbContext<CalorieTrackerDbContext>(o => o.EnableSensitiveDataLogging());
 
         builder.Services.AddIdentity<User, Role>()
             .AddEntityFrameworkStores<CalorieTrackerDbContext>(); // настраивает Identity Framework с пользовательским классом User,

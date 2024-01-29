@@ -32,10 +32,14 @@ public class ManufacturerController : ControllerBase
     [ProducesResponseType(400)]
     public async Task<ActionResult<IEnumerable<ManufacturerDto>>> Get([FromQuery] string? searchStr, [FromQuery] string filter = "all")
     {
-        List<Manufacturer> manufacturersList = await _repository.GetAll();
+        List<Manufacturer> filteredProducts = await _repository.GetAllFiltered(searchStr, filter);
 
-        IQueryable<Manufacturer> manufacturersQuery = manufacturersList.AsQueryable();
-        IEnumerable<Manufacturer> manufacturers;
+        return Ok(_mapper.Map<IEnumerable<ManufacturerDto>>(filteredProducts));
+
+        /* List<Manufacturer> manufacturersList = await _repository.GetAll();
+
+         IQueryable<Manufacturer> manufacturersQuery = manufacturersList.AsQueryable();
+         IEnumerable<Manufacturer> manufacturers;
 
         if (filter == "withProducts")
         {
@@ -52,10 +56,10 @@ public class ManufacturerController : ControllerBase
             manufacturers = manufacturersQuery.ToList();
         }
 
-        if (!string.IsNullOrEmpty(searchStr))
-        {
-            manufacturers = manufacturers.Where(m => m.Name.Contains(searchStr, StringComparison.OrdinalIgnoreCase));
-        }
+         if (!string.IsNullOrEmpty(searchStr))
+         {
+             manufacturers = manufacturers.Where(m => m.Name.Contains(searchStr, StringComparison.OrdinalIgnoreCase));
+         }
 
         //создаем список объектов ManufacturerDto на основе данных из списка производителей.
         //Для каждого производителя формируем соответствующий ManufacturerDto, включая их `Id`, `Name`
@@ -81,7 +85,7 @@ public class ManufacturerController : ControllerBase
                  .OrderByDescending(x => x.Name)
                  .ToList();
 
-        return Ok(manufacturerDtos);
+         return Ok(manufacturerDtos);*/
     }
 
     //public async Task<ActionResult> Get([FromQuery] string? serchStr)
