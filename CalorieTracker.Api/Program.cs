@@ -18,21 +18,29 @@ public class Program
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        builder.Services.AddSwaggerGen(); //настраивают Swagger/ OpenAPI дл€ документировани€ API
+
         builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
 
         builder.Services.AddDbContext<CalorieTrackerDbContext>(o => o.EnableSensitiveDataLogging());
 
         builder.Services.AddIdentity<User, Role>()
-            .AddEntityFrameworkStores<CalorieTrackerDbContext>();
+            .AddEntityFrameworkStores<CalorieTrackerDbContext>(); // настраивает Identity Framework с пользовательским классом User,
+                                                                  // классом ролей Role и использованием CalorieTrackerDbContext дл€ хранени€ данных
 
-        builder.Services.AddScoped<IDataSeeder, DataSeeder>();
+        builder.Services.AddScoped<IDataSeeder, DataSeeder>(); // добавл€ет DataSeeder как Scoped сервис дл€ заполнени€ начальных данных
+                                                               // —ервис создаетс€ один раз на каждый HTTP-запрос, и весь запрос использует один и тот же экземпл€р сервиса.
+                                                               // Ёто полезно дл€ сервисов с состо€нием, которые должны сохран€ть данные в пределах одного запроса
+
 
         //SeedData(builder.Services);
 
-        builder.Services.AddTransient<IFileService, FileService>();
+        builder.Services.AddTransient<IFileService, FileService>(); // добавл€ет FileService как transient сервис дл€ обработки файлов
+                                                                    // ƒл€ каждого запроса создаетс€ новый экземпл€р сервиса.
+                                                                    // Ёто подходит, если сервис не хранит состо€ние между вызовами и можно
+                                                                    // безопасно создавать новый экземпл€р дл€ каждого запроса.
 
-        builder.Services.AddScoped<IProductRepository, ProductRepository>();
+        builder.Services.AddScoped<IProductRepository, ProductRepository>(); // добавл€ет ProductRepository как Scoped сервис дл€ работы с продуктами в базе данных
 
         builder.Services.AddScoped<IUserRepository, UserRepository>();
 
@@ -45,6 +53,8 @@ public class Program
         builder.Services.AddScoped<ILunchProductRepository, LunchProductRepository>();
 
         builder.Services.AddScoped<IDinnerProductRepository, DinnerProductRepository>();
+
+        builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

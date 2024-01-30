@@ -30,6 +30,8 @@ public class CalorieTrackerDbContext : IdentityDbContext<User, Role, int>
 
     public DbSet<FileModel> Files { get; set; }
 
+    public DbSet<Category> Category { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlServer(_config["ConnectionStrings:CalorieTrackerDb"]);

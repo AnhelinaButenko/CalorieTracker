@@ -19,4 +19,8 @@ public class Product : BaseNamedEntity
     public int? ManufacturerId { get; set; }
 
     public Manufacturer Manufacturer { get; set; }
+
+    public int? CategoryId { get; set; }
+
+    public Category Category { get; set; }
 }
