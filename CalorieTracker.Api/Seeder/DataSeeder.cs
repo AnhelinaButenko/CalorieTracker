@@ -45,6 +45,49 @@ public class DataSeeder : IDataSeeder
         await _dbContext.AddAsync(mcDonalds);
         await _dbContext.SaveChangesAsync();
 
+        Category vegetables = new Category
+        {
+            Name = "Vegetables"
+        };
+        await _dbContext.AddAsync(vegetables);
+        await _dbContext.SaveChangesAsync();
+
+        Category drinks = new Category
+        {
+            Name = "Drinks"
+        };
+        await _dbContext.AddAsync(drinks);
+        await _dbContext.SaveChangesAsync();
+
+        Category bakery = new Category
+        {
+            Name = "Bakery"
+        };
+        await _dbContext.AddAsync(bakery);
+        await _dbContext.SaveChangesAsync();
+
+
+        Category groceries = new Category
+        {
+            Name = "Groceries"
+        };
+        await _dbContext.AddAsync(groceries);
+        await _dbContext.SaveChangesAsync();
+
+        Category milkProducts = new Category
+        {
+            Name = "Milk"
+        };
+        await _dbContext.AddAsync(milkProducts);
+        await _dbContext.SaveChangesAsync();
+
+        Category fruits = new Category
+        {
+            Name = "Fruits"
+        };
+        await _dbContext.AddAsync(fruits);
+        await _dbContext.SaveChangesAsync();
+
         // not have id yet
         Product egg = new Product
         {
@@ -52,7 +95,8 @@ public class DataSeeder : IDataSeeder
             CaloriePer100g = 153,
             ProteinPer100g = 12.7,
             FatPer100g = 11.1,
-            CarbohydratePer100g = 0.6         
+            CarbohydratePer100g = 0.6,
+            CategoryId = milkProducts.Id
         };
         // got the Id
         await _dbContext.AddAsync(egg);
@@ -65,7 +109,8 @@ public class DataSeeder : IDataSeeder
             ProteinPer100g = 4.5,
             FatPer100g = 1.6,
             CarbohydratePer100g = 27.4,
-            ManufacturerId = nestle1.Id
+            ManufacturerId = nestle1.Id,
+            CategoryId = groceries.Id
         };
         await _dbContext.AddAsync(porridge);
         await _dbContext.SaveChangesAsync();
@@ -76,7 +121,8 @@ public class DataSeeder : IDataSeeder
             CaloriePer100g = 18,
             ProteinPer100g = 0.5,
             FatPer100g = 1.1,
-            CarbohydratePer100g = 34.2
+            CarbohydratePer100g = 34.2,
+            CategoryId = vegetables.Id
         };
         await _dbContext.AddAsync(tommato);
         await _dbContext.SaveChangesAsync();
@@ -88,8 +134,9 @@ public class DataSeeder : IDataSeeder
             ProteinPer100g = 41.5,
             FatPer100g = 21.1,
             CarbohydratePer100g = 34.2,
-            ManufacturerId = mcDonalds.Id
-            
+            ManufacturerId = mcDonalds.Id,
+            CategoryId = bakery.Id
+
         };
         await _dbContext.AddAsync(sandwich);
         await _dbContext.SaveChangesAsync();
@@ -100,7 +147,8 @@ public class DataSeeder : IDataSeeder
             CaloriePer100g = 39,
             ProteinPer100g = 0.9,
             FatPer100g = 0.2,
-            CarbohydratePer100g = 9.2
+            CarbohydratePer100g = 9.2,
+            CategoryId = drinks.Id
         };
         await _dbContext.AddAsync(juice);
         await _dbContext.SaveChangesAsync();
@@ -112,10 +160,12 @@ public class DataSeeder : IDataSeeder
             ProteinPer100g = 1.4,
             FatPer100g = 3.2,
             CarbohydratePer100g = 119.1,
-            ManufacturerId = nestle.Id
+            ManufacturerId = nestle.Id,
+            CategoryId = bakery.Id
         };
         await _dbContext.AddAsync(cookie);
         await _dbContext.SaveChangesAsync();
+
 
         DailyForDay dailyFoodDairyUser1 = new DailyForDay
         {

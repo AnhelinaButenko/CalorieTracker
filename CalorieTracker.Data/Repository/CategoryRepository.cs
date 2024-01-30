@@ -5,17 +5,13 @@ namespace CalorieTracker.Data.Repository;
 
 public interface ICategoryRepository : IGenericRepository<Category>
 {
-    Task Add(Category category);
-
     Task<Category> GetById(int id);
-
-    Task<Category> Update(int id, Category category);
-
-    Task Remove(Category category);
 
     Task<List<Category>> GetAll();
 
     Task<Category> GetByName(string name);
+
+    Task<List<Category>> GetAllFiltered(string? searchStr, string filter = "all");
 }
 
 public class CategoryRepository : GenericRepository<Category>, ICategoryRepository
@@ -44,5 +40,24 @@ public class CategoryRepository : GenericRepository<Category>, ICategoryReposito
     public override async Task<List<Category>> GetAll()
     {
         return await _dbContext.Category.Include(p => p.Products).AsNoTracking().ToListAsync();
+    }
+
+    public virtual async Task<List<Category>> GetAllFiltered(string? searchStr, string filter)
+    {
+        IQueryable<Category> query = _dbContext.Category.AsQueryable();
+
+        query = filter switch
+        {
+            "withProducts" => query.Include(m => m.Products).Where(m => m.Products.Any()),
+            "withoutProducts" => query.Include(m => m.Products).Where(m => m.Products == null || !m.Products.Any()),
+            _ => query.Include(x => x.Products),
+        };
+
+        if (!string.IsNullOrEmpty(searchStr))
+        {
+            query = query.Where(m => m.Name.ToLower().Contains(searchStr.ToLower()));
+        }
+
+        return await query.ToListAsync();
     }
 }
