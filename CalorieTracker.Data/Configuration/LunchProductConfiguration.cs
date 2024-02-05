@@ -10,14 +10,6 @@ public class LunchProductConfiguration : IEntityTypeConfiguration<LunchProduct>
     {
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.QuantityProduct);
-
-        builder.Property(x => x.TotalCalories);
-
-        builder.Property(x => x.TotalAmountProteins);
-
-        builder.Property(x => x.TotalAmountFats);
-
-        builder.Property(x => x.TotalAmountCarbohydrates);
+        builder.Property(x => x.ProductWeightGr);
     }
 }

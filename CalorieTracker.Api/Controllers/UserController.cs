@@ -66,7 +66,7 @@ public class UserController : ControllerBase
     {
         User user = await _repository.GetById(id);
 
-        user.Name = userDto.Name;
+        user.UserName = userDto.Name;
         user.CurrentWeight = userDto.CurrentWeight;
         user.DesiredWeight = userDto.DesiredWeight;
 

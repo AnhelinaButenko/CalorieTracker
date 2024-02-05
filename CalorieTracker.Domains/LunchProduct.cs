@@ -2,9 +2,9 @@
 
 namespace CalorieTracker.Domains;
 
-public class LunchProduct : ReportEntity
+public class LunchProduct : BaseNamedEntity
 {
-    public int QuantityProduct { get; set; }
+    public int ProductWeightGr { get; set; }
 
     public int ProductId { get; set; }
 

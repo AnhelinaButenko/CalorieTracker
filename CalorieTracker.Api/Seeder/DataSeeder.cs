@@ -1,5 +1,6 @@
 ﻿using CalorieTracker.Data;
 using CalorieTracker.Domains;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace CalorieTracker.Api.Seeder;
@@ -7,10 +8,12 @@ namespace CalorieTracker.Api.Seeder;
 public class DataSeeder : IDataSeeder
 {
     private readonly CalorieTrackerDbContext _dbContext;
+    private readonly UserManager<User> _userManager;
 
-    public DataSeeder(CalorieTrackerDbContext dbContext)
+    public DataSeeder(CalorieTrackerDbContext dbContext, UserManager<User> userManager)
     {
         _dbContext = dbContext;
+        _userManager = userManager;
     }
 
     public async Task Seed()
@@ -19,7 +22,6 @@ public class DataSeeder : IDataSeeder
 
         if (!isCreated)
         {
-            await _dbContext.Database.EnsureDeletedAsync();
             await _dbContext.Database.EnsureCreatedAsync();
             return;
         }
@@ -31,18 +33,25 @@ public class DataSeeder : IDataSeeder
         await _dbContext.AddAsync(nestle);
         await _dbContext.SaveChangesAsync();
 
-        Manufacturer nestle1 = new Manufacturer
-        {
-            Name = "Nestle"
-        };
-        await _dbContext.AddAsync(nestle1);
-        await _dbContext.SaveChangesAsync();
-
         Manufacturer mcDonalds = new Manufacturer
         {
             Name = "McDonald`s"
         };
         await _dbContext.AddAsync(mcDonalds);
+        await _dbContext.SaveChangesAsync();
+
+        Manufacturer sandora = new Manufacturer
+        {
+            Name = "Sandora"
+        };
+        await _dbContext.AddAsync(sandora);
+        await _dbContext.SaveChangesAsync();
+
+        Manufacturer silpo = new Manufacturer
+        {
+            Name = "Silpo"
+        };
+        await _dbContext.AddAsync(silpo);
         await _dbContext.SaveChangesAsync();
 
         Category vegetables = new Category
@@ -88,7 +97,6 @@ public class DataSeeder : IDataSeeder
         await _dbContext.AddAsync(fruits);
         await _dbContext.SaveChangesAsync();
 
-        // not have id yet
         Product egg = new Product
         {
             Name = "egg",
@@ -98,8 +106,18 @@ public class DataSeeder : IDataSeeder
             CarbohydratePer100g = 0.6,
             CategoryId = milkProducts.Id
         };
-        // got the Id
         await _dbContext.AddAsync(egg);
+        await _dbContext.SaveChangesAsync();
+
+        Product candy = new Product
+        {
+            Name = "Candy",
+            CaloriePer100g = 77,
+            ProteinPer100g = 0.5,
+            FatPer100g = 2.6,
+            CarbohydratePer100g = 67,
+        };
+        await _dbContext.AddAsync(candy);
         await _dbContext.SaveChangesAsync();
 
         Product porridge = new Product
@@ -109,7 +127,7 @@ public class DataSeeder : IDataSeeder
             ProteinPer100g = 4.5,
             FatPer100g = 1.6,
             CarbohydratePer100g = 27.4,
-            ManufacturerId = nestle1.Id,
+            ManufacturerId = silpo.Id,
             CategoryId = groceries.Id
         };
         await _dbContext.AddAsync(porridge);
@@ -122,6 +140,7 @@ public class DataSeeder : IDataSeeder
             ProteinPer100g = 0.5,
             FatPer100g = 1.1,
             CarbohydratePer100g = 34.2,
+            ManufacturerId = silpo.Id,
             CategoryId = vegetables.Id
         };
         await _dbContext.AddAsync(tommato);
@@ -136,7 +155,6 @@ public class DataSeeder : IDataSeeder
             CarbohydratePer100g = 34.2,
             ManufacturerId = mcDonalds.Id,
             CategoryId = bakery.Id
-
         };
         await _dbContext.AddAsync(sandwich);
         await _dbContext.SaveChangesAsync();
@@ -148,6 +166,7 @@ public class DataSeeder : IDataSeeder
             ProteinPer100g = 0.9,
             FatPer100g = 0.2,
             CarbohydratePer100g = 9.2,
+            ManufacturerId = sandora.Id,
             CategoryId = drinks.Id
         };
         await _dbContext.AddAsync(juice);
@@ -166,57 +185,42 @@ public class DataSeeder : IDataSeeder
         await _dbContext.AddAsync(cookie);
         await _dbContext.SaveChangesAsync();
 
-
         DailyForDay dailyFoodDairyUser1 = new DailyForDay
         {
-            TotalCalories = 1750,
-            TotalAmountCarbohydrates = 214.1,
-            TotalAmountFats = 34,
-            TotalAmountProteins = 107.4,
-            Date = DateTime.UtcNow
+            Date = DateTime.UtcNow,
+
         };
         await _dbContext.AddAsync(dailyFoodDairyUser1);
         await _dbContext.SaveChangesAsync();
 
         DailyForDay dailyFoodDairyUser2 = new DailyForDay
         {
-            TotalCalories = 1550,
-            TotalAmountCarbohydrates = 154.1,
-            TotalAmountFats = 27,
-            TotalAmountProteins = 86,
-            Date = DateTime.UtcNow
+            Date = DateTime.UtcNow,
         };
         await _dbContext.AddAsync(dailyFoodDairyUser2);
         await _dbContext.SaveChangesAsync();
 
-        User user1 = new User
+        IdentityResult user1 = await _userManager.CreateAsync(new User
         {
-            Name = "Lina",
+            UserName = "Lina",
+            Email = "Lina@gmail.com",
             CurrentWeight = 59,
             DesiredWeight = 57,
             DailyFoodDairyId = dailyFoodDairyUser1.Id
-        };
-        await _dbContext.AddAsync(user1);
-        await _dbContext.SaveChangesAsync();
-
-        User user2 = new User
+        });
+       
+        IdentityResult user2 = await _userManager.CreateAsync(new User
         {
-            Name = "Andrew",
+            UserName = "Andrew",
+            Email = "Andrew@gmail.com",
             CurrentWeight = 78,
             DesiredWeight = 82,
             DailyFoodDairyId = dailyFoodDairyUser2.Id
-        };
-        await _dbContext.AddAsync(user2);
-        await _dbContext.SaveChangesAsync();
-
+        });
+       
         BreakfastProduct breakfastProduct1 = new BreakfastProduct
         {
             ProductId = egg.Id,
-            QuantityProduct = 3,
-            TotalCalories = 160,
-            TotalAmountCarbohydrates = 32.3,
-            TotalAmountFats = 30.2,
-            TotalAmountProteins = 45.5,
             DailyFoodDairyId = dailyFoodDairyUser2.Id
         };
         await _dbContext.AddAsync(breakfastProduct1);
@@ -225,11 +229,6 @@ public class DataSeeder : IDataSeeder
         BreakfastProduct breakfastProduct2 = new BreakfastProduct
         {
             ProductId = porridge.Id,
-            QuantityProduct = 1,
-            TotalCalories = 101.5,
-            TotalAmountCarbohydrates = 56.1,
-            TotalAmountFats = 3.3,
-            TotalAmountProteins = 1.3,
             DailyFoodDairyId = dailyFoodDairyUser1.Id
         };
         await _dbContext.AddAsync(breakfastProduct2);
@@ -238,11 +237,6 @@ public class DataSeeder : IDataSeeder
         LunchProduct lunchProduct1 = new LunchProduct
         {
             ProductId = sandwich.Id,
-            QuantityProduct = 2,
-            TotalCalories = 203,
-            TotalAmountCarbohydrates = 112.3,
-            TotalAmountFats = 6.7,
-            TotalAmountProteins = 2.5,
             DailyFoodDairyId = dailyFoodDairyUser1.Id
         };
         await _dbContext.AddAsync(lunchProduct1);
@@ -251,11 +245,6 @@ public class DataSeeder : IDataSeeder
         LunchProduct lunchProduct2 = new LunchProduct
         {
             ProductId = tommato.Id,
-            QuantityProduct = 2,
-            TotalCalories = 203,
-            TotalAmountCarbohydrates = 112.3,
-            TotalAmountFats = 6.7,
-            TotalAmountProteins = 2.5,
             DailyFoodDairyId = dailyFoodDairyUser2.Id
         };
         await _dbContext.AddAsync(lunchProduct2);
@@ -264,11 +253,6 @@ public class DataSeeder : IDataSeeder
         DinnerProduct dinnerProduct1 = new DinnerProduct
         {
             ProductId = cookie.Id,
-            QuantityProduct = 3,
-            TotalCalories = 150,
-            TotalAmountCarbohydrates = 214.1,
-            TotalAmountFats = 5,
-            TotalAmountProteins = 3.4,
             DailyFoodDairyId = dailyFoodDairyUser2.Id
         };
         await _dbContext.AddAsync(dinnerProduct1);
@@ -277,11 +261,6 @@ public class DataSeeder : IDataSeeder
         DinnerProduct dinnerProduct2 = new DinnerProduct
         {
             ProductId = juice.Id,
-            QuantityProduct = 1,
-            TotalCalories = 121,
-            TotalAmountCarbohydrates = 117.6,
-            TotalAmountFats = 0.2,
-            TotalAmountProteins = 0.4,
             DailyFoodDairyId = dailyFoodDairyUser1.Id
         };
         await _dbContext.AddAsync(dinnerProduct2);
