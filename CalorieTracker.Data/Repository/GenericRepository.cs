@@ -6,7 +6,7 @@ namespace CalorieTracker.Data.Repository;
 public interface IGenericRepository<T> 
     where T : class
 {
-    Task Add (T entity);
+    Task<T> Add (T entity);
 
     Task<T> GetById(int id);
 
@@ -27,11 +27,13 @@ public abstract class GenericRepository<T> : IGenericRepository<T>
         _dbContext = dbContext;
     }
 
-    public virtual async Task Add(T entity)
+    public virtual async Task<T> Add(T entity)
     {
        _dbContext.Set<T>().Add(entity);
 
-        await _dbContext.SaveChangesAsync();
+       await _dbContext.SaveChangesAsync();
+
+       return entity;
     }
 
     public virtual async Task<List<T>> GetAll()

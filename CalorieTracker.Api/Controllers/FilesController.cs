@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace CalorieTracker.Api.Controllers;
 
-[Route("api/files")]
+[Route("api/[Controller]")]
 [ApiController]
 public class FilesController : ControllerBase
 {

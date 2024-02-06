@@ -33,8 +33,6 @@ public class Program
                                                                // Ёто полезно дл€ сервисов с состо€нием, которые должны сохран€ть данные в пределах одного запроса
 
 
-        //SeedData(builder.Services);
-
         builder.Services.AddTransient<IFileService, FileService>(); // добавл€ет FileService как transient сервис дл€ обработки файлов
                                                                     // ƒл€ каждого запроса создаетс€ новый экземпл€р сервиса.
                                                                     // Ёто подходит, если сервис не хранит состо€ние между вызовами и можно
@@ -66,7 +64,6 @@ public class Program
 
         var app = builder.Build();
 
-
         app.UseCors("CorsPolicy");
 
         // Configure the HTTP request pipeline.
@@ -84,14 +81,5 @@ public class Program
         app.MapControllers();
 
         app.Run();
-    }
-
-    private static void SeedData(IServiceCollection services)
-    {
-        using IServiceScope serviceScope = services.BuildServiceProvider().CreateScope();
-        IServiceProvider provider = serviceScope.ServiceProvider;
-
-        IDataSeeder seedService = provider.GetRequiredService<IDataSeeder>();
-        seedService.Seed().GetAwaiter().GetResult();
     }
 }

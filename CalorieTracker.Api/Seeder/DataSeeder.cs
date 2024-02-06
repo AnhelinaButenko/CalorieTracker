@@ -1,4 +1,5 @@
 ﻿using CalorieTracker.Data;
+using CalorieTracker.Data.Repository;
 using CalorieTracker.Domains;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -9,105 +10,109 @@ public class DataSeeder : IDataSeeder
 {
     private readonly CalorieTrackerDbContext _dbContext;
     private readonly UserManager<User> _userManager;
+    private readonly IManufacturerRepository _manufacturerRepository;
+    private readonly IProductRepository _productRepository;
+    private readonly ICategoryRepository _categoryRepository;
+    private readonly ILunchProductRepository _lunchProductRepository;
+    private readonly IDinnerProductRepository _dinnerProductRepository;
+    private readonly IDailyForDayRepository _dailyForDayRepository;
+    private readonly IBreakfastProductRepository _breakfastProductRepository;
 
-    public DataSeeder(CalorieTrackerDbContext dbContext, UserManager<User> userManager)
+    public DataSeeder(CalorieTrackerDbContext dbContext, UserManager<User> userManager,
+         IManufacturerRepository manufacturerRepository, IProductRepository productRepository, 
+         ICategoryRepository categoryRepository, ILunchProductRepository lunchProductRepository,
+         IDinnerProductRepository dinnerProductRepository, IDailyForDayRepository dailyForDayRepository, 
+         IBreakfastProductRepository breakfastProductRepository)
     {
         _dbContext = dbContext;
         _userManager = userManager;
+        _manufacturerRepository = manufacturerRepository;
+        _productRepository = productRepository;
+        _categoryRepository = categoryRepository;
+        _lunchProductRepository = lunchProductRepository;
+        _dinnerProductRepository = dinnerProductRepository;
+        _dailyForDayRepository = dailyForDayRepository;
+        _breakfastProductRepository = breakfastProductRepository;
     }
 
-    public async Task Seed()
+    public async Task Seed(bool recreateDb = false)
     {
-        bool isCreated = await _dbContext.Database.EnsureCreatedAsync();
-
-        if (!isCreated)
+        if (recreateDb == true)
         {
+            await _dbContext.Database.EnsureDeletedAsync();
             await _dbContext.Database.EnsureCreatedAsync();
-            return;
         }
 
         Manufacturer nestle = new Manufacturer
         {
             Name = "Nestle"
         };
-        await _dbContext.AddAsync(nestle);
-        await _dbContext.SaveChangesAsync();
+        nestle = await _manufacturerRepository.Add(nestle);
 
         Manufacturer mcDonalds = new Manufacturer
         {
             Name = "McDonald`s"
         };
-        await _dbContext.AddAsync(mcDonalds);
-        await _dbContext.SaveChangesAsync();
+        mcDonalds = await _manufacturerRepository.Add(mcDonalds);
 
         Manufacturer sandora = new Manufacturer
         {
             Name = "Sandora"
         };
-        await _dbContext.AddAsync(sandora);
-        await _dbContext.SaveChangesAsync();
+        sandora = await _manufacturerRepository.Add(sandora);
 
         Manufacturer silpo = new Manufacturer
         {
             Name = "Silpo"
         };
-        await _dbContext.AddAsync(silpo);
-        await _dbContext.SaveChangesAsync();
+        silpo = await _manufacturerRepository.Add(silpo);
 
         Category vegetables = new Category
         {
             Name = "Vegetables"
         };
-        await _dbContext.AddAsync(vegetables);
-        await _dbContext.SaveChangesAsync();
+        vegetables = await _categoryRepository.Add(vegetables);
 
         Category drinks = new Category
         {
             Name = "Drinks"
         };
-        await _dbContext.AddAsync(drinks);
-        await _dbContext.SaveChangesAsync();
+        drinks = await _categoryRepository.Add(drinks);
 
         Category bakery = new Category
         {
             Name = "Bakery"
         };
-        await _dbContext.AddAsync(bakery);
-        await _dbContext.SaveChangesAsync();
-
+        bakery = await _categoryRepository.Add(bakery);
 
         Category groceries = new Category
         {
             Name = "Groceries"
         };
-        await _dbContext.AddAsync(groceries);
-        await _dbContext.SaveChangesAsync();
+        groceries = await _categoryRepository.Add(groceries);
 
         Category milkProducts = new Category
         {
             Name = "Milk"
         };
-        await _dbContext.AddAsync(milkProducts);
-        await _dbContext.SaveChangesAsync();
+        milkProducts = await _categoryRepository.Add(milkProducts);
 
         Category fruits = new Category
         {
             Name = "Fruits"
         };
-        await _dbContext.AddAsync(fruits);
-        await _dbContext.SaveChangesAsync();
+        fruits = await _categoryRepository.Add(fruits);
 
         Product egg = new Product
         {
-            Name = "egg",
+            Name = "Egg",
             CaloriePer100g = 153,
             ProteinPer100g = 12.7,
             FatPer100g = 11.1,
             CarbohydratePer100g = 0.6,
             CategoryId = milkProducts.Id
         };
-        await _dbContext.AddAsync(egg);
-        await _dbContext.SaveChangesAsync();
+        egg = await _productRepository.Add(egg);
 
         Product candy = new Product
         {
@@ -117,8 +122,7 @@ public class DataSeeder : IDataSeeder
             FatPer100g = 2.6,
             CarbohydratePer100g = 67,
         };
-        await _dbContext.AddAsync(candy);
-        await _dbContext.SaveChangesAsync();
+        candy = await _productRepository.Add(candy);
 
         Product porridge = new Product
         {
@@ -130,8 +134,7 @@ public class DataSeeder : IDataSeeder
             ManufacturerId = silpo.Id,
             CategoryId = groceries.Id
         };
-        await _dbContext.AddAsync(porridge);
-        await _dbContext.SaveChangesAsync();
+        porridge = await _productRepository.Add(porridge);
 
         Product tommato = new Product
         {
@@ -143,8 +146,7 @@ public class DataSeeder : IDataSeeder
             ManufacturerId = silpo.Id,
             CategoryId = vegetables.Id
         };
-        await _dbContext.AddAsync(tommato);
-        await _dbContext.SaveChangesAsync();
+        tommato = await _productRepository.Add(tommato);
 
         Product sandwich = new Product
         {
@@ -156,8 +158,7 @@ public class DataSeeder : IDataSeeder
             ManufacturerId = mcDonalds.Id,
             CategoryId = bakery.Id
         };
-        await _dbContext.AddAsync(sandwich);
-        await _dbContext.SaveChangesAsync();
+        sandwich = await _productRepository.Add(sandwich);
 
         Product juice = new Product
         {
@@ -169,8 +170,7 @@ public class DataSeeder : IDataSeeder
             ManufacturerId = sandora.Id,
             CategoryId = drinks.Id
         };
-        await _dbContext.AddAsync(juice);
-        await _dbContext.SaveChangesAsync();
+        juice = await _productRepository.Add(juice);
 
         Product cookie = new Product
         {
@@ -182,23 +182,19 @@ public class DataSeeder : IDataSeeder
             ManufacturerId = nestle.Id,
             CategoryId = bakery.Id
         };
-        await _dbContext.AddAsync(cookie);
-        await _dbContext.SaveChangesAsync();
+        cookie = await _productRepository.Add(cookie);
 
         DailyForDay dailyFoodDairyUser1 = new DailyForDay
         {
-            Date = DateTime.UtcNow,
-
+            Date = DateTime.UtcNow
         };
-        await _dbContext.AddAsync(dailyFoodDairyUser1);
-        await _dbContext.SaveChangesAsync();
+        dailyFoodDairyUser1 = await _dailyForDayRepository.Add(dailyFoodDairyUser1);
 
         DailyForDay dailyFoodDairyUser2 = new DailyForDay
         {
-            Date = DateTime.UtcNow,
+            Date = DateTime.UtcNow
         };
-        await _dbContext.AddAsync(dailyFoodDairyUser2);
-        await _dbContext.SaveChangesAsync();
+        dailyFoodDairyUser2 = await _dailyForDayRepository.Add(dailyFoodDairyUser2);
 
         IdentityResult user1 = await _userManager.CreateAsync(new User
         {
@@ -208,7 +204,7 @@ public class DataSeeder : IDataSeeder
             DesiredWeight = 57,
             DailyFoodDairyId = dailyFoodDairyUser1.Id
         });
-       
+
         IdentityResult user2 = await _userManager.CreateAsync(new User
         {
             UserName = "Andrew",
@@ -217,53 +213,47 @@ public class DataSeeder : IDataSeeder
             DesiredWeight = 82,
             DailyFoodDairyId = dailyFoodDairyUser2.Id
         });
-       
+
         BreakfastProduct breakfastProduct1 = new BreakfastProduct
         {
             ProductId = egg.Id,
             DailyFoodDairyId = dailyFoodDairyUser2.Id
         };
-        await _dbContext.AddAsync(breakfastProduct1);
-        await _dbContext.SaveChangesAsync();
+        breakfastProduct1 = await _breakfastProductRepository.Add(breakfastProduct1);
 
         BreakfastProduct breakfastProduct2 = new BreakfastProduct
         {
             ProductId = porridge.Id,
             DailyFoodDairyId = dailyFoodDairyUser1.Id
         };
-        await _dbContext.AddAsync(breakfastProduct2);
-        await _dbContext.SaveChangesAsync();
+        breakfastProduct2 = await _breakfastProductRepository.Add(breakfastProduct2);
 
         LunchProduct lunchProduct1 = new LunchProduct
         {
             ProductId = sandwich.Id,
             DailyFoodDairyId = dailyFoodDairyUser1.Id
         };
-        await _dbContext.AddAsync(lunchProduct1);
-        await _dbContext.SaveChangesAsync();
+        lunchProduct1 = await _lunchProductRepository.Add(lunchProduct1);
 
         LunchProduct lunchProduct2 = new LunchProduct
         {
             ProductId = tommato.Id,
             DailyFoodDairyId = dailyFoodDairyUser2.Id
         };
-        await _dbContext.AddAsync(lunchProduct2);
-        await _dbContext.SaveChangesAsync();
+        lunchProduct2 = await _lunchProductRepository.Add(lunchProduct2);
 
         DinnerProduct dinnerProduct1 = new DinnerProduct
         {
             ProductId = cookie.Id,
             DailyFoodDairyId = dailyFoodDairyUser2.Id
         };
-        await _dbContext.AddAsync(dinnerProduct1);
-        await _dbContext.SaveChangesAsync();
+        dinnerProduct1 = await _dinnerProductRepository.Add(dinnerProduct1);
 
         DinnerProduct dinnerProduct2 = new DinnerProduct
         {
             ProductId = juice.Id,
             DailyFoodDairyId = dailyFoodDairyUser1.Id
         };
-        await _dbContext.AddAsync(dinnerProduct2);
-        await _dbContext.SaveChangesAsync();
+        dinnerProduct2 = await _dinnerProductRepository.Add(dinnerProduct2);
     }
 }
