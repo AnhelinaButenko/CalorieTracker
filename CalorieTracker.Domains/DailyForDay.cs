@@ -1,6 +1,6 @@
 ﻿namespace CalorieTracker.Domains;
 
-public class DailyForDay : ReportEntity
+public class DailyForDay : BaseNamedEntity
 {
     public List<BreakfastProduct> BreakfastProducts { get; set; } = new List<BreakfastProduct>();
 

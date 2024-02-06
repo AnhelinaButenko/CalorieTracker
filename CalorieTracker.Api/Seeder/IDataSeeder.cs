@@ -2,5 +2,5 @@
 
 public interface IDataSeeder
 {
-    Task Seed();
+    Task Seed(bool recreateDb = false);
 }

@@ -10,8 +10,11 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     {
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.Name)
+        builder.Property(x => x.UserName)
             .HasMaxLength(100);
+
+        builder.Property(x => x.Email)
+            .HasMaxLength(150);
 
         builder.Property(x => x.CurrentWeight);
 
