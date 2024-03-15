@@ -198,17 +198,17 @@ public class DataSeeder : IDataSeeder
 
         IdentityResult user1 = await _userManager.CreateAsync(new User
         {
-            UserName = "Lina",
-            Email = "Lina@gmail.com",
-            CurrentWeight = 59,
-            DesiredWeight = 57,
+            UserName = "Stephanie",
+            Email = "stephanie@gmail.com",
+            CurrentWeight = 70,
+            DesiredWeight = 60,
             DailyFoodDairyId = dailyFoodDairyUser1.Id
         });
 
         IdentityResult user2 = await _userManager.CreateAsync(new User
         {
-            UserName = "Andrew",
-            Email = "Andrew@gmail.com",
+            UserName = "Ivan",
+            Email = "ivan@gmail.com",
             CurrentWeight = 78,
             DesiredWeight = 82,
             DailyFoodDairyId = dailyFoodDairyUser2.Id
