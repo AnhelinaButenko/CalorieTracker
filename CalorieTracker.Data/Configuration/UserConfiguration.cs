@@ -20,6 +20,14 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property(x => x.DesiredWeight);
 
+        builder.Property(x => x.Height);
+
+        builder.Property(x => x.Age);
+
+        builder.Property(x => x.Gender);
+
+        builder.Property(x => x.ActivityLevel);
+
         builder.Property(x => x.DailyFoodDairy);
     }
 }

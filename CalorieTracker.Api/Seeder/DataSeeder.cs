@@ -202,6 +202,10 @@ public class DataSeeder : IDataSeeder
             Email = "stephanie@gmail.com",
             CurrentWeight = 70,
             DesiredWeight = 60,
+            Height = 170,
+            Age = 30,
+            Gender = Gender.Female,
+            ActivityLevel = ActivityLevel.Moderate,
             DailyFoodDairyId = dailyFoodDairyUser1.Id
         });
 
@@ -209,8 +213,12 @@ public class DataSeeder : IDataSeeder
         {
             UserName = "Ivan",
             Email = "ivan@gmail.com",
-            CurrentWeight = 78,
-            DesiredWeight = 82,
+            CurrentWeight = 77,
+            DesiredWeight = 83,
+            Height = 180,
+            Age = 25,
+            Gender = Gender.Male,
+            ActivityLevel = ActivityLevel.High,
             DailyFoodDairyId = dailyFoodDairyUser2.Id
         });
 

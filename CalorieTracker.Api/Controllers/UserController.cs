@@ -66,8 +66,14 @@ public class UserController : ControllerBase
     {
         User user = await _repository.GetById(id);
 
+        user.UserName = userDto.UserName;
+        user.Email = userDto.Email;
         user.CurrentWeight = userDto.CurrentWeight;
         user.DesiredWeight = userDto.DesiredWeight;
+        user.Height = userDto.Height;
+        user.Age = userDto.Age;
+        user.Gender = userDto.Gender;
+        user.ActivityLevel = userDto.ActivityLevel;
 
         await _repository.Update(id, user);
 
