@@ -1,6 +1,7 @@
 ﻿using CalorieTracker.Data;
 using CalorieTracker.Data.Repository;
 using CalorieTracker.Domains;
+using CalorieTracker.Domains.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
