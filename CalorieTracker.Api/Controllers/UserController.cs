@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using CalorieTracker.Api.Models;
-using CalorieTracker.Data.Repository;
-using CalorieTracker.Domains;
+using CalorieTracker.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CalorieTracker.Api.Controllers;
@@ -11,13 +10,13 @@ namespace CalorieTracker.Api.Controllers;
 [Produces("application/json")]
 public class UserController : ControllerBase
 {
-    private readonly IUserRepository _repository;
+    private readonly IUserService _userService;
     private readonly IMapper _mapper;
 
-    public UserController(IUserRepository repository,
+    public UserController(IUserService userService,
         IMapper mapper)
     {
-        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+        _userService = userService ?? throw new ArgumentNullException(nameof(userService));
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
@@ -26,15 +25,15 @@ public class UserController : ControllerBase
     [ProducesResponseType(400)]
     public async Task<ActionResult> Get()
     {
-        List<User> user = await _repository.GetAll();
+        var users = await _userService.GetAllUsers();
 
-        return Ok(_mapper.Map<IEnumerable<UserDto>>(user));
+        return Ok(_mapper.Map<IEnumerable<UserDto>>(users));
     }
 
     [HttpGet("{id:int}")]
     public async Task<ActionResult> GetId(int id)
     {
-        User user = await _repository.GetById(id);
+        var user = await _userService.GetUserById(id);
 
         return Ok(_mapper.Map<UserDto>(user));
     }
@@ -42,21 +41,15 @@ public class UserController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> AddUser([FromBody] UserDto userDto)
     {
-        User user = _mapper.Map<User>(userDto);
+        var user = await _userService.AddUser(userDto);
 
-        await _repository.Add(user);
-
-        UserDto userDTO = _mapper.Map<UserDto>(user);
-
-        return Ok(_mapper.Map<ProductDto>(userDTO));
+        return Ok(_mapper.Map<UserDto>(user));
     }
 
     [HttpDelete("{id:int}")]
     public async Task<ActionResult> DeleteUser(int id)
     {
-        User user = await _repository.GetById(id);
-
-        await _repository.Remove(user);
+        var user = await _userService.DeleteUser(id);
 
         return Ok(_mapper.Map<UserDto>(user));
     }
@@ -64,19 +57,9 @@ public class UserController : ControllerBase
     [HttpPut("{id:int}")]
     public async Task<ActionResult> EditUser([FromBody] UserDto userDto, int id)
     {
-        User user = await _repository.GetById(id);
-
-        user.UserName = userDto.UserName;
-        user.Email = userDto.Email;
-        user.CurrentWeight = userDto.CurrentWeight;
-        user.DesiredWeight = userDto.DesiredWeight;
-        user.Height = userDto.Height;
-        user.Age = userDto.Age;
-        user.Gender = userDto.Gender;
-        user.ActivityLevel = userDto.ActivityLevel;
-
-        await _repository.Update(id, user);
+        var user = await _userService.EditUser(userDto, id);
 
         return Ok(_mapper.Map<UserDto>(user));
     }
 }
+
