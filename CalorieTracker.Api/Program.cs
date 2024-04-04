@@ -61,7 +61,7 @@ public class Program
 
         builder.Services.AddScoped<IManufacturerService, ManufacturerService>();
 
-        //builder.Services.AddScoped<ICategoryService, CategoryService>();
+        builder.Services.AddScoped<ICategoryService, CategoryService>();
 
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

@@ -26,9 +26,9 @@ public class ProductController : ControllerBase
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts()
+    public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts([FromQuery] string? searchStr, [FromQuery] string filter = "all")
     {
-        var products = await _productService.GetAllProducts();
+        var products = await _productService.GetAllFilteredProducts(searchStr, filter);
         return Ok(_mapper.Map<IEnumerable<ProductDto>>(products));
     }
 

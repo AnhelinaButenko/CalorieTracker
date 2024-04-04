@@ -7,7 +7,7 @@ namespace CalorieTracker.Service;
 
 public interface IProductService
 {
-    Task<IEnumerable<Product>> GetAllProducts();
+    Task<IEnumerable<ProductDto>> GetAllFilteredProducts(string? searchStr, string filter = "all");
     Task<Product> GetProductById(int id);
     Task<Product> AddProduct(ProductDto productDto);
     Task<Product> DeleteProduct(int id);
@@ -17,21 +17,18 @@ public interface IProductService
 public class ProductService : IProductService
 {
     private readonly IProductRepository _repository;
-    private readonly IManufacturerRepository _manufacturerRepository;
     private readonly IMapper _mapper;
 
-
-
-    public ProductService(IProductRepository repository, IManufacturerRepository manufacturerRepository, IMapper mapper)
+    public ProductService(IProductRepository repository, IMapper mapper)
     {
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
-        _manufacturerRepository = manufacturerRepository ?? throw new ArgumentNullException(nameof(manufacturerRepository));
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
-    public async Task<IEnumerable<Product>> GetAllProducts()
+    public async Task<IEnumerable<ProductDto>> GetAllFilteredProducts(string? searchStr, string filter = "all")
     {
-        return await _repository.GetAll();
+        var products = await _repository.GetAllFiltered(searchStr, filter);
+        return _mapper.Map<IEnumerable<ProductDto>>(products);
     }
 
     public async Task<Product> AddProduct(ProductDto productDto)
