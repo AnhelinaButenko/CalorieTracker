@@ -29,9 +29,7 @@ public class UserDto
     [Range(1, 150)]
     public int Age { get; set; }
 
-    [Range(1, 150)]
     public Gender Gender { get; set; }
 
-    [Range(1, 150)]
     public ActivityLevel ActivityLevel { get; set; }
 }

@@ -57,6 +57,12 @@ public class Program
 
         builder.Services.AddScoped<IUserService, UserService>();
 
+        builder.Services.AddScoped<IProductService, ProductService>();
+
+        builder.Services.AddScoped<IManufacturerService, ManufacturerService>();
+
+        //builder.Services.AddScoped<ICategoryService, CategoryService>();
+
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         builder.Services.AddCors(options =>

@@ -2,6 +2,7 @@
 using CalorieTracker.Api.Models;
 using CalorieTracker.Data.Repository;
 using CalorieTracker.Domains;
+using CalorieTracker.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CalorieTracker.Api.Controllers;
@@ -11,141 +12,37 @@ namespace CalorieTracker.Api.Controllers;
 [Produces("application/json")]
 public class ProductController : ControllerBase
 {
-    private readonly IProductRepository _repository;
-    private readonly IManufacturerRepository _manufacturerRepository;
+    private readonly IProductService _productService;
+    private readonly IManufacturerService _manufacturerService;
     private readonly IMapper _mapper;
 
-    public ProductController(IProductRepository repository,
-        IManufacturerRepository manufacturerRepository,
-        IMapper mapper)
+    public ProductController(IProductService productService, IManufacturerService manufacturerService, IMapper mapper)
     {
-        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
-        _manufacturerRepository = manufacturerRepository ?? throw new ArgumentNullException(nameof(manufacturerRepository));
+        _productService = productService ?? throw new ArgumentNullException(nameof(productService));
+        _manufacturerService = manufacturerService ?? throw new ArgumentNullException(nameof(manufacturerService));
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
-    [HttpGet]
-    [Route("cleanup")]
-    public async Task<ActionResult> CleanUp()
-    {
-        List<Product> products = await _repository.GetAll();
-
-        products = products
-            .GroupBy(x => x.Name.ToLower())
-            .SelectMany(products => products).ToList();
-
-        List<Product> productsUnique = products
-            .GroupBy(x => x.Name.ToLower())
-            .Select(x => x.First())
-            .Distinct().ToList();
-
-        List<int> productsId = products.Select(x => x.Id).ToList();
-
-        List<int> productsUniqueId = productsUnique.Select(x => x.Id).ToList();
-
-        List<int> nonUniqueIds = productsId.Except(productsUniqueId).ToList();
-
-        foreach (var product in products)
-        {
-            foreach (var id in nonUniqueIds)
-            {
-                if (product.Id == id)
-                {
-                    await _repository.Remove(product);
-                }
-            }
-        }
-
-        return Ok(_mapper.Map<IEnumerable<ProductDto>>(products));
-    }
-
-    [HttpGet]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    public async Task<ActionResult<IEnumerable<ProductDto>>> Get([FromQuery] string? searchStr,
-        [FromQuery] string filter = "all")
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts()
     {
-        List<Product> filteredProducts = await _repository.GetAllFiltered(searchStr, filter);
-
-        return Ok(_mapper.Map<IEnumerable<ProductDto>>(filteredProducts));
-    }
-
-    //public async Task<ActionResult> Get([FromQuery] string? searchStr,
-    //    [FromQuery] string filter = "all")
-    //{
-    //    List<Product> products = await _repository.GetAll();
-    //    List<ProductDto> productDtos = new List<ProductDto>();
-
-    //    foreach (var product in products)
-    //    {
-    //        ProductDto productDto = new ProductDto
-    //        {
-    //            Id = product.Id,
-    //            Name = product.Name,
-    //            ManufacturerName = product.Manufacturer?.Name,
-    //            CarbohydratePer100g = product.CarbohydratePer100g,
-    //            FatPer100g = product.FatPer100g,
-    //            ProteinPer100g = product.ProteinPer100g,
-    //            CaloriePer100g = product.CaloriePer100g,
-    //            ManufacturerId = product.Manufacturer?.Id
-    //        };
-
-    //        //productDtos.Add(productDto);
-
-    //        if (filter == "withManufacturer" && product.ManufacturerId.HasValue)
-    //        {
-    //            productDtos.Add(productDto);
-
-    //        }
-    //        else if (filter == "withoutManufacturer" && !product.ManufacturerId.HasValue)
-    //        {
-    //            productDtos.Add(productDto);
-    //        }
-    //        else if (filter == "all")
-    //        {
-    //            productDtos.Add(productDto);
-    //        }
-    //    }
-
-    //    if (!string.IsNullOrEmpty(searchStr))
-    //    {
-    //        productDtos = productDtos.Where(p => p.Name.Contains(searchStr, StringComparison.OrdinalIgnoreCase)).ToList();
-    //    }
-
-    //    return Ok(productDtos.OrderByDescending(x => x.CaloriePer100g));
-    //}
-
-    [HttpGet("{id:int}")]
-    public async Task<ActionResult> GetId(int id)
-    {
-        Product product = await _repository.GetById(id);
-
-        return Ok(_mapper.Map<ProductDto>(product));
-    }
-
-    [HttpPost]
-    public async Task<ActionResult> AddFood([FromBody] ProductDto productDto)
-    {
-        Product product = _mapper.Map<Product>(productDto);
-
-        await _repository.Add(product);
-
-        ProductDto productDTO = _mapper.Map<ProductDto>(product);
-
-        return Ok(_mapper.Map<ProductDto>(productDTO));
+        var products = await _productService.GetAllProducts();
+        return Ok(_mapper.Map<IEnumerable<ProductDto>>(products));
     }
 
     [HttpPut("{productId}/{manufacturerId}/setManufacturer")]
     public async Task<ActionResult> SetProductManufacturer(int productId, int manufacturerId)
     {
-        Product product = await _repository.GetById(productId);
+        Product product = await _productService.GetProductById(productId);
 
         if (product == null)
         {
             return NotFound();
         }
 
-        Manufacturer manufacturer = await _manufacturerRepository.GetById(manufacturerId);
+        ManufacturerDto manufacturer = await _manufacturerService.GetManufacturerById(manufacturerId);
 
         if (manufacturer == null)
         {
@@ -154,7 +51,7 @@ public class ProductController : ControllerBase
 
         product.ManufacturerId = manufacturerId;
 
-        await _repository.Update(product.Id, product);
+        await _productService.EditProduct(_mapper.Map<ProductDto>(product), productId);
 
         return Ok(_mapper.Map<ProductDto>(product));
     }
@@ -162,39 +59,43 @@ public class ProductController : ControllerBase
     [HttpPut("{manufacturerName}/{productId}/setManufacturerByName")]
     public async Task<ActionResult> SetProductManufacturerByName(string manufacturerName, int productId)
     {
-        Product product = await _repository.GetById(productId);
+        Product product = await _productService.GetProductById(productId);
 
         if (product == null)
         {
             return NotFound();
         }
 
-        Manufacturer manufacturer = await _manufacturerRepository.GetByName(manufacturerName);
+        ManufacturerDto manufacturer = await _manufacturerService.GetManufacturerByName(manufacturerName);
 
         if (manufacturer == null)
         {
-            Manufacturer newManufacturer = new()
+            ManufacturerDto newManufacturerDto = new ManufacturerDto
             {
                 Name = manufacturerName
             };
 
-            await _manufacturerRepository.Add(newManufacturer);
+            await _manufacturerService.AddManufacturer(newManufacturerDto);
 
-            manufacturer = newManufacturer;
+            manufacturer = await _manufacturerService.GetManufacturerByName(manufacturerName);
+
+            if (manufacturer == null)
+            {
+                return NotFound();
+            }
         }
 
         product.ManufacturerId = manufacturer.Id;
 
-        await _repository.Update(product.Id, product);
+        await _productService.EditProduct(_mapper.Map<ProductDto>(product), productId);
 
         return Ok(_mapper.Map<ProductDto>(product));
     }
 
-
     [HttpPut("{productId}/removeManufacturer")]
     public async Task<ActionResult> RemoveProductManufacturer(int productId)
     {
-        Product product = await _repository.GetById(productId);
+        Product product = await _productService.GetProductById(productId);
 
         if (product == null)
         {
@@ -203,7 +104,7 @@ public class ProductController : ControllerBase
 
         product.ManufacturerId = null;
 
-        await _repository.Update(product.Id, product);
+        await _productService.EditProduct(_mapper.Map<ProductDto>(product), productId);
 
         return Ok(_mapper.Map<ProductDto>(product));
     }
@@ -211,9 +112,9 @@ public class ProductController : ControllerBase
     [HttpDelete("{id:int}")]
     public async Task<ActionResult> DeleteFood(int id)
     {
-        Product product = await _repository.GetById(id);
+        Product product = await _productService.GetProductById(id);
 
-        await _repository.Remove(product);
+        await _productService.DeleteProduct(id);
 
         return Ok(_mapper.Map<ProductDto>(product));
     }
@@ -221,7 +122,7 @@ public class ProductController : ControllerBase
     [HttpPut("{id:int}")]
     public async Task<ActionResult> EditFood([FromBody] ProductDto productDto, int id)
     {
-        Product product = await _repository.GetById(id);
+        Product product = await _productService.GetProductById(id);
 
         product.Name = productDto.Name;
         product.CaloriePer100g = productDto.CaloriePer100g;
@@ -229,7 +130,7 @@ public class ProductController : ControllerBase
         product.FatPer100g = productDto.FatPer100g;
         product.CarbohydratePer100g = productDto.CarbohydratePer100g;
 
-        await _repository.Update(id, product);
+        await _productService.EditProduct(productDto, id);
 
         return Ok(_mapper.Map<ProductDto>(product));
     }
