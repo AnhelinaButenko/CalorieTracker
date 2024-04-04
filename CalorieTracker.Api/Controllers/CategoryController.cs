@@ -13,12 +13,10 @@ namespace CalorieTracker.Api.Controllers;
 public class CategoryController : ControllerBase
 {
     private readonly ICategoryService _categoryService;
-    private readonly IMapper _mapper;
 
     public CategoryController(ICategoryService categoryService, IMapper mapper)
     {
         _categoryService = categoryService ?? throw new ArgumentNullException(nameof(categoryService)); 
-        _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
     [HttpGet]
