@@ -1,5 +1,4 @@
 using CalorieTracker.Api.Seeder;
-using CalorieTracker.Api.Services;
 using CalorieTracker.Data;
 using CalorieTracker.Data.Repository;
 using CalorieTracker.Domains;

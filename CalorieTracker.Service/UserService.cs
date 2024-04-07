@@ -2,7 +2,7 @@
 using CalorieTracker.Api.Models;
 using CalorieTracker.Data.Repository;
 using CalorieTracker.Domains;
-using CalorieTracker.Domains.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace CalorieTracker.Service;
 
@@ -38,6 +38,8 @@ public class UserService : IUserService
 
     public async Task<User> AddUser(UserDto userDto)
     {
+        ValidateUserDto(userDto);
+
         var user = _mapper.Map<User>(userDto);
         return await _repository.Add(user);
     }
@@ -51,6 +53,8 @@ public class UserService : IUserService
 
     public async Task<User> EditUser(UserDto userDto, int id)
     {
+        ValidateUserDto(userDto);
+
         var user = await _repository.GetById(id);
         if (user == null) return null;
 
@@ -65,5 +69,20 @@ public class UserService : IUserService
 
         await _repository.Update(id, user);
         return user;
+    }
+
+    private void ValidateUserDto(UserDto userDto)
+    {
+        var validationContext = new ValidationContext(userDto, null, null);
+
+        var validationResults = new List<ValidationResult>();
+
+        bool isValid = Validator.TryValidateObject(userDto, validationContext, validationResults, true);
+
+        if (!isValid)
+        {
+            var errorMessage = string.Join(",", validationResults.Select(r => r.ErrorMessage));
+            throw new ArgumentException(errorMessage);
+        }
     }
 }

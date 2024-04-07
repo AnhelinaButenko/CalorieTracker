@@ -4,7 +4,7 @@ using CalorieTracker.Domains;
 using Microsoft.EntityFrameworkCore;
 using CalorieTracker.Api.Models;
 
-namespace CalorieTracker.Api.Services;
+namespace CalorieTracker.Service;
 
 public class FileService : IFileService
 {
@@ -12,13 +12,13 @@ public class FileService : IFileService
     private readonly IManufacturerRepository _manufacturerRepository;
 
     public FileService(IProductRepository productRepository,
-        IManufacturerRepository manufacturerRepository) 
+        IManufacturerRepository manufacturerRepository)
     {
         _productRepository = productRepository
             ?? throw new ArgumentNullException(nameof(productRepository));
         _manufacturerRepository = manufacturerRepository
             ?? throw new ArgumentNullException(nameof(manufacturerRepository));
-    }    
+    }
 
     public async Task WorkWithFileAsync(List<ImportProductDto> products)
     {
