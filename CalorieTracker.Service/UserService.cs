@@ -1,0 +1,88 @@
+﻿using AutoMapper;
+using CalorieTracker.Api.Models;
+using CalorieTracker.Data.Repository;
+using CalorieTracker.Domains;
+using System.ComponentModel.DataAnnotations;
+
+namespace CalorieTracker.Service;
+
+public interface IUserService
+{
+    Task<IEnumerable<User>> GetAllUsers();
+    Task<User> GetUserById(int id);
+    Task<User> AddUser(UserDto userDto);
+    Task<User> DeleteUser(int id);
+    Task<User> EditUser(UserDto userDto, int id);
+}
+
+public class UserService : IUserService
+{
+    private readonly IUserRepository _repository;
+    private readonly IMapper _mapper;
+
+    public UserService(IUserRepository repository, IMapper mapper)
+    {
+        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+        _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+    }
+
+    public async Task<IEnumerable<User>> GetAllUsers()
+    {
+        return await _repository.GetAll();
+    }
+
+    public async Task<User> GetUserById(int id)
+    {
+        return await _repository.GetById(id);
+    }
+
+    public async Task<User> AddUser(UserDto userDto)
+    {
+        ValidateUserDto(userDto);
+
+        var user = _mapper.Map<User>(userDto);
+        return await _repository.Add(user);
+    }
+
+    public async Task<User> DeleteUser(int id)
+    {
+        var user = await _repository.GetById(id);
+        await _repository.Remove(user);
+        return user;
+    }
+
+    public async Task<User> EditUser(UserDto userDto, int id)
+    {
+        ValidateUserDto(userDto);
+
+        var user = await _repository.GetById(id);
+        if (user == null) return null;
+
+        user.UserName = userDto.UserName;
+        user.Email = userDto.Email;
+        user.CurrentWeight = userDto.CurrentWeight;
+        user.DesiredWeight = userDto.DesiredWeight;
+        user.Height = userDto.Height;
+        user.Age = userDto.Age;
+        user.Gender = userDto.Gender;
+        user.ActivityLevel = userDto.ActivityLevel;
+
+        await _repository.Update(id, user);
+        return user;
+    }
+
+    private void ValidateUserDto(UserDto userDto)
+    {
+        var validationContext = new ValidationContext(userDto, null, null);
+
+        var validationResults = new List<ValidationResult>();
+
+        bool isValid = Validator.TryValidateObject(userDto, validationContext, validationResults, true);
+
+        if (!isValid)
+        {
+            var errorMessage = string.Join(",", validationResults.Select(r => r.ErrorMessage));
+            throw new ArgumentException(errorMessage);
+        }
+    }
+}

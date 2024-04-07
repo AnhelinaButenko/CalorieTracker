@@ -1,6 +1,6 @@
 ﻿using CalorieTracker.Api.Models;
 
-namespace CalorieTracker.Api.Services;
+namespace CalorieTracker.Service;
 
 public interface IFileService
 {

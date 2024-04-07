@@ -1,8 +1,8 @@
 using CalorieTracker.Api.Seeder;
-using CalorieTracker.Api.Services;
 using CalorieTracker.Data;
 using CalorieTracker.Data.Repository;
 using CalorieTracker.Domains;
+using CalorieTracker.Service;
 using Microsoft.AspNetCore.StaticFiles;
 
 namespace CalorieTracker.Api;
@@ -53,6 +53,14 @@ public class Program
         builder.Services.AddScoped<IDinnerProductRepository, DinnerProductRepository>();
 
         builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+        builder.Services.AddScoped<IUserService, UserService>();
+
+        builder.Services.AddScoped<IProductService, ProductService>();
+
+        builder.Services.AddScoped<IManufacturerService, ManufacturerService>();
+
+        builder.Services.AddScoped<ICategoryService, CategoryService>();
 
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
