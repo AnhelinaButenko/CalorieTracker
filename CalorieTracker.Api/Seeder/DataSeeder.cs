@@ -207,7 +207,11 @@ public class DataSeeder : IDataSeeder
             Age = 30,
             Gender = Gender.Female,
             ActivityLevel = ActivityLevel.Moderate,
-            DailyFoodDairyId = dailyFoodDairyUser1.Id
+            DailyFoodDairyId = dailyFoodDairyUser1.Id,
+            RecommendedCalories = 2100,
+            RecommendedCarbs = 60,
+            RecommendedFat = 90,
+            RecommendedProtein = 60,
         });
 
         IdentityResult user2 = await _userManager.CreateAsync(new User
@@ -220,7 +224,11 @@ public class DataSeeder : IDataSeeder
             Age = 25,
             Gender = Gender.Male,
             ActivityLevel = ActivityLevel.High,
-            DailyFoodDairyId = dailyFoodDairyUser2.Id
+            DailyFoodDairyId = dailyFoodDairyUser2.Id,
+            RecommendedCalories = 2700,
+            RecommendedCarbs = 100,
+            RecommendedFat = 96,
+            RecommendedProtein = 82,
         });
 
         BreakfastProduct breakfastProduct1 = new BreakfastProduct

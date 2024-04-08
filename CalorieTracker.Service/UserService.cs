@@ -67,6 +67,11 @@ public class UserService : IUserService
         user.Gender = userDto.Gender;
         user.ActivityLevel = userDto.ActivityLevel;
 
+        user.RecommendedCalories = userDto.RecommendedCalories;
+        user.RecommendedProtein = userDto.RecommendedProtein;
+        user.RecommendedFat = userDto.RecommendedFat;
+        user.RecommendedCarbs = userDto.RecommendedCarbs;
+
         await _repository.Update(id, user);
         return user;
     }

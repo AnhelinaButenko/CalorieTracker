@@ -32,4 +32,12 @@ public class UserDto
     public Gender Gender { get; set; }
 
     public ActivityLevel ActivityLevel { get; set; }
+
+    public double? RecommendedCalories { get; set; }
+
+    public double? RecommendedProtein { get; set; }
+
+    public double? RecommendedFat { get; set; }
+
+    public double? RecommendedCarbs { get; set; }
 }

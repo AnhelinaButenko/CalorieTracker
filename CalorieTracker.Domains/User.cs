@@ -20,4 +20,12 @@ public class User : IdentityUser<int>, IBaseEntity
     public int DailyFoodDairyId { get; set; }
 
     public DailyForDay DailyFoodDairy { get; set; }
+
+    public double? RecommendedCalories { get; set; }
+
+    public double? RecommendedProtein { get; set; }
+
+    public double? RecommendedFat { get; set; }
+
+    public double? RecommendedCarbs { get; set; }
 }
