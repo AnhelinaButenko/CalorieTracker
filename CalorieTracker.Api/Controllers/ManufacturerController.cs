@@ -5,6 +5,7 @@ using CalorieTracker.Domains;
 using CalorieTracker.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 

@@ -62,6 +62,8 @@ public class Program
 
         builder.Services.AddScoped<ICategoryService, CategoryService>();
 
+        builder.Services.AddScoped<IDailyForDayService, DailyForDayService>();
+
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         builder.Services.AddCors(options =>
