@@ -194,26 +194,26 @@ public class DailyForDayService : IDailyForDayService
         //}
     }
 
-// get DayilyForday by id - > await _repository.GetById(id);
+//// get DayilyForday by id - > await _repository.GetById(id);
 
-//1.  var dailyforDay = await _repository.GetDailyForDayForUser(int userID, DateTime date) -> DbContext.DailyFoodDairies
-// .Where(x => userId , date)
-// .Include(x =>)
-// .ThenIclude( =>)
+////1.  var dailyforDay = await _repository.GetDailyForDayForUser(int userID, DateTime date) -> DbContext.DailyFoodDairies
+//// .Where(x => userId , date)
+//// .Include(x =>)
+//// .ThenIclude( =>)
 
-//calculation logic
+////calculation logic
 
-//2.  dailyforDay.BreakfastProducts[0].Product.CaloriePer100g
-// dailyforDay.BreakfastProducts[0].ProductWeightGr
+////2.  dailyforDay.BreakfastProducts[0].Product.CaloriePer100g
+//// dailyforDay.BreakfastProducts[0].ProductWeightGr
 
-//3. var result = new DailyForDayUserDto();
-// result.UserId = userId;
-// .... calculation
-// result.CaloriesConsumed = <value>;
-// ...
-// result.
+////3. var result = new DailyForDayUserDto();
+//// result.UserId = userId;
+//// .... calculation
+//// result.CaloriesConsumed = <value>;
+//// ...
+//// result.
 
-// return result; //
+//// return result; //
 
 //return new DailyForDayUserDto()
 //{
