@@ -13,4 +13,6 @@ public class LunchProduct : BaseNamedEntity
     public int DailyFoodDairyId { get; set; }
 
     public DailyForDay DailyFoodDairy { get; set; }
+
+    public int GramsConsumed { get; set; }
 }

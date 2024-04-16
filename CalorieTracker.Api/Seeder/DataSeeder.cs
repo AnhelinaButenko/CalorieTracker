@@ -4,6 +4,7 @@ using CalorieTracker.Domains;
 using CalorieTracker.Domains.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.ConstrainedExecution;
 
 namespace CalorieTracker.Api.Seeder;
 
@@ -185,19 +186,7 @@ public class DataSeeder : IDataSeeder
         };
         cookie = await _productRepository.Add(cookie);
 
-        DailyForDay dailyFoodDairyUser1 = new DailyForDay
-        {
-            Date = DateTime.UtcNow
-        };
-        dailyFoodDairyUser1 = await _dailyForDayRepository.Add(dailyFoodDairyUser1);
-
-        DailyForDay dailyFoodDairyUser2 = new DailyForDay
-        {
-            Date = DateTime.UtcNow
-        };
-        dailyFoodDairyUser2 = await _dailyForDayRepository.Add(dailyFoodDairyUser2);
-
-        IdentityResult user1 = await _userManager.CreateAsync(new User
+        User user1 = new User
         {
             UserName = "Stephanie",
             Email = "stephanie@gmail.com",
@@ -207,14 +196,14 @@ public class DataSeeder : IDataSeeder
             Age = 30,
             Gender = Gender.Female,
             ActivityLevel = ActivityLevel.Moderate,
-            DailyFoodDairyId = dailyFoodDairyUser1.Id,
             RecommendedCalories = 2100,
             RecommendedCarbs = 60,
             RecommendedFat = 90,
             RecommendedProtein = 60,
-        });
+        };
+        IdentityResult user1Result = await _userManager.CreateAsync(user1);
 
-        IdentityResult user2 = await _userManager.CreateAsync(new User
+        User user2 = new User
         {
             UserName = "Ivan",
             Email = "ivan@gmail.com",
@@ -224,12 +213,26 @@ public class DataSeeder : IDataSeeder
             Age = 25,
             Gender = Gender.Male,
             ActivityLevel = ActivityLevel.High,
-            DailyFoodDairyId = dailyFoodDairyUser2.Id,
             RecommendedCalories = 2700,
             RecommendedCarbs = 100,
             RecommendedFat = 96,
             RecommendedProtein = 82,
-        });
+        };
+        IdentityResult user2Result = await _userManager.CreateAsync(user2);
+
+        DailyForDay dailyFoodDairyUser1 = new DailyForDay
+        {
+            UserId = user1?.Id,
+            Date = new DateTime(2024, 04, 13)
+        };
+        dailyFoodDairyUser1 = await _dailyForDayRepository.Add(dailyFoodDairyUser1);
+
+        DailyForDay dailyFoodDairyUser2 = new DailyForDay
+        {
+            UserId = user2.Id,
+            Date = new DateTime(2024, 04, 13),
+        };
+        dailyFoodDairyUser2 = await _dailyForDayRepository.Add(dailyFoodDairyUser2);
 
         BreakfastProduct breakfastProduct1 = new BreakfastProduct
         {

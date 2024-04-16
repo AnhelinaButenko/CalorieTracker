@@ -1,11 +1,8 @@
-﻿using AutoMapper;
-using CalorieTracker.Api.Models;
+﻿using CalorieTracker.Api.Models;
 using CalorieTracker.Service;
-using CalorieTracker.Service.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CalorieTracker.Api.Controllers;
-
 
 [Route("api/[Controller]")]
 [ApiController]
@@ -27,5 +24,4 @@ public class DailyForDayController : ControllerBase
        var result = await _dailyForDayService.GetDailyForDayDtoForCertainUser(userId, date);
        return Ok(result);
     }
-
 }

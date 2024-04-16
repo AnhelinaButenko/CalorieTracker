@@ -28,6 +28,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property(x => x.ActivityLevel);
 
-        builder.Property(x => x.DailyFoodDairy);
+        //builder.Property(x => x.DailyFoodDairyId);
+
+        builder.HasMany(x => x.DailyFoodDiaries)
+            .WithOne(x => x.User)
+            .HasForeignKey(x => x.UserId);
     }
 }
