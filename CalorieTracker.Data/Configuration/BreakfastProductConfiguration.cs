@@ -10,6 +10,6 @@ public class BreakfastProductConfiguration  : IEntityTypeConfiguration<Breakfast
     {
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.ProductWeightGr);
+        builder.Property(x => x.GramsConsumed);
     }
 }

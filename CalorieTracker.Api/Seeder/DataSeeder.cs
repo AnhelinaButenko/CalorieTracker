@@ -230,13 +230,14 @@ public class DataSeeder : IDataSeeder
         DailyForDay dailyFoodDairyUser2 = new DailyForDay
         {
             UserId = user2.Id,
-            Date = new DateTime(2024, 04, 13),
+            Date = new DateTime(2024, 04, 13)
         };
         dailyFoodDairyUser2 = await _dailyForDayRepository.Add(dailyFoodDairyUser2);
 
         BreakfastProduct breakfastProduct1 = new BreakfastProduct
         {
             ProductId = egg.Id,
+            GramsConsumed = 93,
             DailyFoodDairyId = dailyFoodDairyUser2.Id
         };
         breakfastProduct1 = await _breakfastProductRepository.Add(breakfastProduct1);
@@ -244,6 +245,7 @@ public class DataSeeder : IDataSeeder
         BreakfastProduct breakfastProduct2 = new BreakfastProduct
         {
             ProductId = porridge.Id,
+            GramsConsumed = 92,
             DailyFoodDairyId = dailyFoodDairyUser1.Id
         };
         breakfastProduct2 = await _breakfastProductRepository.Add(breakfastProduct2);
@@ -251,6 +253,7 @@ public class DataSeeder : IDataSeeder
         LunchProduct lunchProduct1 = new LunchProduct
         {
             ProductId = sandwich.Id,
+            GramsConsumed = 110,
             DailyFoodDairyId = dailyFoodDairyUser1.Id
         };
         lunchProduct1 = await _lunchProductRepository.Add(lunchProduct1);
@@ -258,6 +261,7 @@ public class DataSeeder : IDataSeeder
         LunchProduct lunchProduct2 = new LunchProduct
         {
             ProductId = tommato.Id,
+            GramsConsumed = 224,
             DailyFoodDairyId = dailyFoodDairyUser2.Id
         };
         lunchProduct2 = await _lunchProductRepository.Add(lunchProduct2);
@@ -265,6 +269,7 @@ public class DataSeeder : IDataSeeder
         DinnerProduct dinnerProduct1 = new DinnerProduct
         {
             ProductId = cookie.Id,
+            GramsConsumed = 60,
             DailyFoodDairyId = dailyFoodDairyUser2.Id
         };
         dinnerProduct1 = await _dinnerProductRepository.Add(dinnerProduct1);
@@ -272,6 +277,7 @@ public class DataSeeder : IDataSeeder
         DinnerProduct dinnerProduct2 = new DinnerProduct
         {
             ProductId = juice.Id,
+            GramsConsumed = 300,
             DailyFoodDairyId = dailyFoodDairyUser1.Id
         };
         dinnerProduct2 = await _dinnerProductRepository.Add(dinnerProduct2);

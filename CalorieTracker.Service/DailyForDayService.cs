@@ -43,42 +43,39 @@ public class DailyForDayService : IDailyForDayService
             throw new ArgumentException($"DailyForDay not found for user Id {userId} and date {date}");
         }
 
-    var mealTypes = new Dictionary<string, Func<IEnumerable<ProductConsumption>>>
-    {
-        { "Breakfast", () => dailyForDay.BreakfastProducts.Select(bp => new ProductConsumption
-            {
-                ProductId = bp.ProductId,
-                ProductName = bp.Product.Name,
-                CaloriesConsumed = (int)((bp.Product.CaloriePer100g * bp.GramsConsumed) / 100.0),
-                GramsConsumed = bp.GramsConsumed,
-                ProteinsConsumed = (bp.Product.ProteinPer100g * bp.GramsConsumed) / 100.0,
-                FatsConsumed = (bp.Product.FatPer100g * bp.GramsConsumed) / 100.0,
-                CarbohydratesConsumed = (bp.Product.CarbohydratePer100g * bp.GramsConsumed) / 100.0
-            })
-        },
-        { "Lunch", () => dailyForDay.LunchProducts.Select(lp => new ProductConsumption
-            {
-                ProductId = lp.ProductId,
-                ProductName = lp.Product.Name,
-                CaloriesConsumed = (int)((lp.Product.CaloriePer100g * lp.GramsConsumed) / 100.0),
-                GramsConsumed = lp.GramsConsumed,
-                ProteinsConsumed = (lp.Product.ProteinPer100g * lp.GramsConsumed) / 100.0,
-                FatsConsumed = (lp.Product.FatPer100g * lp.GramsConsumed) / 100.0,
-                CarbohydratesConsumed = (lp.Product.CarbohydratePer100g * lp.GramsConsumed) / 100.0
-            })
-        },
-        { "Dinner", () => dailyForDay.DinnerProducts.Select(dp => new ProductConsumption
-            {
-                ProductId = dp.ProductId,
-                ProductName = dp.Product.Name,
-                CaloriesConsumed = (int)((dp.Product.CaloriePer100g * dp.GramsConsumed) / 100.0),
-                GramsConsumed = dp.GramsConsumed,
-                ProteinsConsumed = (dp.Product.ProteinPer100g * dp.GramsConsumed) / 100.0,
-                FatsConsumed = (dp.Product.FatPer100g * dp.GramsConsumed) / 100.0,
-                CarbohydratesConsumed = (dp.Product.CarbohydratePer100g * dp.GramsConsumed) / 100.0
-            })
-        }
-    };
+        var mealTypes = new Dictionary<string, Func<IEnumerable<ProductConsumption>>>
+{
+    { "Breakfast", () => dailyForDay.BreakfastProducts.Select(bp => new ProductConsumption
+        {
+            ProductId = bp.ProductId,
+            ProductName = bp.Product.Name,
+            CaloriesConsumed = (int)((bp.Product.CaloriePer100g * bp.GramsConsumed) / 100.0),
+            GramsConsumed = bp.GramsConsumed,
+            ProteinsConsumed = (bp.Product.ProteinPer100g * bp.GramsConsumed) / 100.0,
+            FatsConsumed = (bp.Product.FatPer100g * bp.GramsConsumed) / 100.0,
+            CarbohydratesConsumed = (bp.Product.CarbohydratePer100g * bp.GramsConsumed) / 100.0
+        }).ToList() }, 
+    { "Lunch", () => dailyForDay.LunchProducts.Select(lp => new ProductConsumption
+        {
+            ProductId = lp.ProductId,
+            ProductName = lp.Product.Name,
+            CaloriesConsumed = (int)((lp.Product.CaloriePer100g * lp.GramsConsumed) / 100.0),
+            GramsConsumed = lp.GramsConsumed,
+            ProteinsConsumed = (lp.Product.ProteinPer100g * lp.GramsConsumed) / 100.0,
+            FatsConsumed = (lp.Product.FatPer100g * lp.GramsConsumed) / 100.0,
+            CarbohydratesConsumed = (lp.Product.CarbohydratePer100g * lp.GramsConsumed) / 100.0
+        }).ToList() }, 
+    { "Dinner", () => dailyForDay.DinnerProducts.Select(dp => new ProductConsumption
+        {
+            ProductId = dp.ProductId,
+            ProductName = dp.Product.Name,
+            CaloriesConsumed = (int)((dp.Product.CaloriePer100g * dp.GramsConsumed) / 100.0),
+            GramsConsumed = dp.GramsConsumed,
+            ProteinsConsumed = (dp.Product.ProteinPer100g * dp.GramsConsumed) / 100.0,
+            FatsConsumed = (dp.Product.FatPer100g * dp.GramsConsumed) / 100.0,
+            CarbohydratesConsumed = (dp.Product.CarbohydratePer100g * dp.GramsConsumed) / 100.0
+        }).ToList() } 
+};
 
         var result = new DailyForDayUserDto
         {

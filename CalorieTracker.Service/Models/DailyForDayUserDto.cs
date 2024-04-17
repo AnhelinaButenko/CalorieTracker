@@ -22,16 +22,6 @@ public class DailyMeal
     public string MealName { get; set; }
 
     public List<ProductConsumption> ProductConsumptions { get; set; }
-
-    public int CaloriesConsumed { get; set; }
-
-    public int GramsConsumed { get; set; }
-
-    public double ProteinsConsumed { get; set; }
-
-    public double FatsConsumed { get; set; }
-
-    public double CarbohydratesConsumed { get; set; }
 }
 
 public class ProductConsumption
