@@ -2,15 +2,7 @@
 
 namespace CalorieTracker.Domains;
 
-public class DinnerProduct : BaseNamedEntity
+public class DinnerProduct : MealProduct
 {
-    public int ProductId { get; set; }
 
-    public Product Product { get; set; }
-
-    public int DailyFoodDairyId { get; set; }
-
-    public DailyForDay DailyFoodDairy { get; set; }
-
-    public int GramsConsumed { get; set; }
 }

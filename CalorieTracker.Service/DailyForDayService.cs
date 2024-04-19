@@ -64,59 +64,7 @@ public class DailyForDayService : IDailyForDayService
         return dailyForDayUserDto;
     }
 
-    private async Task<List<ProductConsumption>> GetProductConsumptions(IEnumerable<BreakfastProduct> mealProducts)
-    {
-        var productConsumptions = new List<ProductConsumption>();
-
-        foreach (var mealProduct in mealProducts)
-        {
-            var product = mealProduct.Product;
-            double calories = (product.CaloriePer100g * mealProduct.GramsConsumed) / 100;
-            double proteins = (product.ProteinPer100g * mealProduct.GramsConsumed) / 100;
-            double fats = (product.FatPer100g * mealProduct.GramsConsumed) / 100;
-            double carbohydrates = (product.CarbohydratePer100g * mealProduct.GramsConsumed) / 100;
-
-            productConsumptions.Add(new ProductConsumption
-            {
-                ProductId = mealProduct.ProductId,
-                ProductName = mealProduct.Product.Name,
-                CaloriesConsumed = (int)calories,
-                GramsConsumed = mealProduct.GramsConsumed,
-                ProteinsConsumed = proteins,
-                FatsConsumed = fats,
-                CarbohydratesConsumed = carbohydrates
-            });
-        }
-        return productConsumptions;
-    }
-
-    private async Task<List<ProductConsumption>> GetProductConsumptions(IEnumerable<LunchProduct> mealProducts)
-    {
-        var productConsumptions = new List<ProductConsumption>();
-
-        foreach (var mealProduct in mealProducts)
-        {
-            var product = mealProduct.Product;
-            double calories = (product.CaloriePer100g * mealProduct.GramsConsumed) / 100;
-            double proteins = (product.ProteinPer100g * mealProduct.GramsConsumed) / 100;
-            double fats = (product.FatPer100g * mealProduct.GramsConsumed) / 100;
-            double carbohydrates = (product.CarbohydratePer100g * mealProduct.GramsConsumed) / 100;
-
-            productConsumptions.Add(new ProductConsumption
-            {
-                ProductId = mealProduct.ProductId,
-                ProductName = mealProduct.Product.Name,
-                CaloriesConsumed = (int)calories,
-                GramsConsumed = mealProduct.GramsConsumed,
-                ProteinsConsumed = proteins,
-                FatsConsumed = fats,
-                CarbohydratesConsumed = carbohydrates
-            });
-        }
-        return productConsumptions;
-    }
-
-    private async Task<List<ProductConsumption>> GetProductConsumptions(IEnumerable<DinnerProduct> mealProducts)
+    private async Task<List<ProductConsumption>> GetProductConsumptions(IEnumerable<MealProduct> mealProducts)
     {
         var productConsumptions = new List<ProductConsumption>();
 
@@ -142,24 +90,3 @@ public class DailyForDayService : IDailyForDayService
         return productConsumptions;
     }
 }
-
-//// get DayilyForday by id - > await _repository.GetById(id);
-
-////1.  var dailyforDay = await _repository.GetDailyForDayForUser(int userID, DateTime date) -> DbContext.DailyFoodDairies
-//// .Where(x => userId , date)
-//// .Include(x =>)
-//// .ThenIclude( =>)
-
-////calculation logic
-
-////2.  dailyforDay.BreakfastProducts[0].Product.CaloriePer100g
-//// dailyforDay.BreakfastProducts[0].ProductWeightGr
-
-////3. var result = new DailyForDayUserDto();
-//// result.UserId = userId;
-//// .... calculation
-//// result.CaloriesConsumed = <value>;
-//// ...
-//// result.
-
-//// return result; //
