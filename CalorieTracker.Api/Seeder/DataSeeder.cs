@@ -242,21 +242,37 @@ public class DataSeeder : IDataSeeder
         };
         breakfastProduct1 = await _breakfastProductRepository.Add(breakfastProduct1);
 
+        BreakfastProduct breakfastProduct3 = new BreakfastProduct
+        {
+            ProductId = candy.Id,
+            GramsConsumed = 93,
+            DailyFoodDairyId = dailyFoodDairyUser1.Id
+        };
+        breakfastProduct3 = await _breakfastProductRepository.Add(breakfastProduct3);
+
         BreakfastProduct breakfastProduct2 = new BreakfastProduct
         {
             ProductId = porridge.Id,
-            GramsConsumed = 92,
+            GramsConsumed = 202,
             DailyFoodDairyId = dailyFoodDairyUser1.Id
         };
         breakfastProduct2 = await _breakfastProductRepository.Add(breakfastProduct2);
 
         LunchProduct lunchProduct1 = new LunchProduct
         {
-            ProductId = sandwich.Id,
+            ProductId = egg.Id,
             GramsConsumed = 110,
             DailyFoodDairyId = dailyFoodDairyUser1.Id
         };
         lunchProduct1 = await _lunchProductRepository.Add(lunchProduct1);
+
+        LunchProduct lunchProduct3 = new LunchProduct
+        {
+            ProductId = sandwich.Id,
+            GramsConsumed = 300,
+            DailyFoodDairyId = dailyFoodDairyUser1.Id
+        };
+        lunchProduct3 = await _lunchProductRepository.Add(lunchProduct3);
 
         LunchProduct lunchProduct2 = new LunchProduct
         {
@@ -281,5 +297,13 @@ public class DataSeeder : IDataSeeder
             DailyFoodDairyId = dailyFoodDairyUser1.Id
         };
         dinnerProduct2 = await _dinnerProductRepository.Add(dinnerProduct2);
+
+        DinnerProduct dinnerProduct3 = new DinnerProduct
+        {
+            ProductId = cookie.Id,
+            GramsConsumed = 300,
+            DailyFoodDairyId = dailyFoodDairyUser1.Id
+        };
+        dinnerProduct3 = await _dinnerProductRepository.Add(dinnerProduct3);
     }
 }
