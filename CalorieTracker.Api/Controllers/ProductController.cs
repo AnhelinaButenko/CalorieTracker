@@ -32,6 +32,15 @@ public class ProductController : ControllerBase
         return Ok(_mapper.Map<IEnumerable<ProductDto>>(products));
     }
 
+    [HttpGet("{id:int}")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    public async Task<ActionResult<ProductDto>> GetProductById([FromRoute] int id)
+    {
+        var result = await _productService.GetProductById(id);
+        return Ok(result);
+    }
+
     [HttpPut("{productId}/{manufacturerId}/setManufacturer")]
     public async Task<ActionResult> SetProductManufacturer(int productId, int manufacturerId)
     {
