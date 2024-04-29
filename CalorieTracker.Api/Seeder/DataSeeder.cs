@@ -4,6 +4,7 @@ using CalorieTracker.Domains;
 using CalorieTracker.Domains.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.ConstrainedExecution;
 
 namespace CalorieTracker.Api.Seeder;
 
@@ -185,19 +186,7 @@ public class DataSeeder : IDataSeeder
         };
         cookie = await _productRepository.Add(cookie);
 
-        DailyForDay dailyFoodDairyUser1 = new DailyForDay
-        {
-            Date = DateTime.UtcNow
-        };
-        dailyFoodDairyUser1 = await _dailyForDayRepository.Add(dailyFoodDairyUser1);
-
-        DailyForDay dailyFoodDairyUser2 = new DailyForDay
-        {
-            Date = DateTime.UtcNow
-        };
-        dailyFoodDairyUser2 = await _dailyForDayRepository.Add(dailyFoodDairyUser2);
-
-        IdentityResult user1 = await _userManager.CreateAsync(new User
+        User user1 = new User
         {
             UserName = "Stephanie",
             Email = "stephanie@gmail.com",
@@ -207,14 +196,14 @@ public class DataSeeder : IDataSeeder
             Age = 30,
             Gender = Gender.Female,
             ActivityLevel = ActivityLevel.Moderate,
-            DailyFoodDairyId = dailyFoodDairyUser1.Id,
             RecommendedCalories = 2100,
             RecommendedCarbs = 60,
             RecommendedFat = 90,
             RecommendedProtein = 60,
-        });
+        };
+        IdentityResult user1Result = await _userManager.CreateAsync(user1);
 
-        IdentityResult user2 = await _userManager.CreateAsync(new User
+        User user2 = new User
         {
             UserName = "Ivan",
             Email = "ivan@gmail.com",
@@ -224,37 +213,71 @@ public class DataSeeder : IDataSeeder
             Age = 25,
             Gender = Gender.Male,
             ActivityLevel = ActivityLevel.High,
-            DailyFoodDairyId = dailyFoodDairyUser2.Id,
             RecommendedCalories = 2700,
             RecommendedCarbs = 100,
             RecommendedFat = 96,
             RecommendedProtein = 82,
-        });
+        };
+        IdentityResult user2Result = await _userManager.CreateAsync(user2);
+
+        DailyForDay dailyFoodDairyUser1 = new DailyForDay
+        {
+            UserId = user1?.Id,
+            Date = new DateTime(2024, 04, 13)
+        };
+        dailyFoodDairyUser1 = await _dailyForDayRepository.Add(dailyFoodDairyUser1);
+
+        DailyForDay dailyFoodDairyUser2 = new DailyForDay
+        {
+            UserId = user2.Id,
+            Date = new DateTime(2024, 04, 13)
+        };
+        dailyFoodDairyUser2 = await _dailyForDayRepository.Add(dailyFoodDairyUser2);
 
         BreakfastProduct breakfastProduct1 = new BreakfastProduct
         {
             ProductId = egg.Id,
+            GramsConsumed = 93,
             DailyFoodDairyId = dailyFoodDairyUser2.Id
         };
         breakfastProduct1 = await _breakfastProductRepository.Add(breakfastProduct1);
 
+        BreakfastProduct breakfastProduct3 = new BreakfastProduct
+        {
+            ProductId = candy.Id,
+            GramsConsumed = 93,
+            DailyFoodDairyId = dailyFoodDairyUser1.Id
+        };
+        breakfastProduct3 = await _breakfastProductRepository.Add(breakfastProduct3);
+
         BreakfastProduct breakfastProduct2 = new BreakfastProduct
         {
             ProductId = porridge.Id,
+            GramsConsumed = 202,
             DailyFoodDairyId = dailyFoodDairyUser1.Id
         };
         breakfastProduct2 = await _breakfastProductRepository.Add(breakfastProduct2);
 
         LunchProduct lunchProduct1 = new LunchProduct
         {
-            ProductId = sandwich.Id,
+            ProductId = egg.Id,
+            GramsConsumed = 110,
             DailyFoodDairyId = dailyFoodDairyUser1.Id
         };
         lunchProduct1 = await _lunchProductRepository.Add(lunchProduct1);
 
+        LunchProduct lunchProduct3 = new LunchProduct
+        {
+            ProductId = sandwich.Id,
+            GramsConsumed = 300,
+            DailyFoodDairyId = dailyFoodDairyUser1.Id
+        };
+        lunchProduct3 = await _lunchProductRepository.Add(lunchProduct3);
+
         LunchProduct lunchProduct2 = new LunchProduct
         {
             ProductId = tommato.Id,
+            GramsConsumed = 224,
             DailyFoodDairyId = dailyFoodDairyUser2.Id
         };
         lunchProduct2 = await _lunchProductRepository.Add(lunchProduct2);
@@ -262,6 +285,7 @@ public class DataSeeder : IDataSeeder
         DinnerProduct dinnerProduct1 = new DinnerProduct
         {
             ProductId = cookie.Id,
+            GramsConsumed = 60,
             DailyFoodDairyId = dailyFoodDairyUser2.Id
         };
         dinnerProduct1 = await _dinnerProductRepository.Add(dinnerProduct1);
@@ -269,8 +293,17 @@ public class DataSeeder : IDataSeeder
         DinnerProduct dinnerProduct2 = new DinnerProduct
         {
             ProductId = juice.Id,
+            GramsConsumed = 300,
             DailyFoodDairyId = dailyFoodDairyUser1.Id
         };
         dinnerProduct2 = await _dinnerProductRepository.Add(dinnerProduct2);
+
+        DinnerProduct dinnerProduct3 = new DinnerProduct
+        {
+            ProductId = cookie.Id,
+            GramsConsumed = 300,
+            DailyFoodDairyId = dailyFoodDairyUser1.Id
+        };
+        dinnerProduct3 = await _dinnerProductRepository.Add(dinnerProduct3);
     }
 }

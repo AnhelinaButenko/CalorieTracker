@@ -13,25 +13,19 @@ public class DailyForDayConfiguration : IEntityTypeConfiguration<DailyForDay>
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.BreakfastProducts);
-
         builder.Property(x => x.LunchProducts);
-
         builder.Property(x => x.DinnerProducts);
 
-        builder.HasOne(x => x.User)
-        .WithOne(x => x.DailyFoodDairy)
-        .HasForeignKey<User>(x => x.DailyFoodDairyId);
-
         builder.HasMany(x => x.BreakfastProducts)
-       .WithOne(x => x.DailyFoodDairy)
-       .HasForeignKey(x => x.DailyFoodDairyId);
+            .WithOne(x => x.DailyFoodDairy)
+            .HasForeignKey(x => x.DailyFoodDairyId);
 
         builder.HasMany(x => x.LunchProducts)
-        .WithOne(x => x.DailyFoodDairy)
-        .HasForeignKey(x => x.DailyFoodDairyId);
+            .WithOne(x => x.DailyFoodDairy)
+            .HasForeignKey(x => x.DailyFoodDairyId);
 
         builder.HasMany(x => x.DinnerProducts)
-        .WithOne(x => x.DailyFoodDairy)
-        .HasForeignKey(x => x.DailyFoodDairyId);
+            .WithOne(x => x.DailyFoodDairy)
+            .HasForeignKey(x => x.DailyFoodDairyId);
     }
 }

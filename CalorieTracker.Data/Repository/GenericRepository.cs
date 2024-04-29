@@ -20,49 +20,49 @@ public interface IGenericRepository<T>
 public abstract class GenericRepository<T> : IGenericRepository<T>
     where T : class, IBaseEntity
 {
-    protected readonly CalorieTrackerDbContext _dbContext;
+    protected readonly CalorieTrackerDbContext DbContext;
 
     public GenericRepository(CalorieTrackerDbContext dbContext)
     {
-        _dbContext = dbContext;
+        DbContext = dbContext;
     }
 
     public virtual async Task<T> Add(T entity)
     {
-       _dbContext.Set<T>().Add(entity);
+       DbContext.Set<T>().Add(entity);
 
-       await _dbContext.SaveChangesAsync();
+       await DbContext.SaveChangesAsync();
 
        return entity;
     }
 
     public virtual async Task<List<T>> GetAll()
     {
-        return await _dbContext.Set<T>().AsNoTracking().ToListAsync();
+        return await DbContext.Set<T>().AsNoTracking().ToListAsync();
     }
 
     public virtual async Task<T> GetById(int id)
     {
-        return await _dbContext.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
+        return await DbContext.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public virtual async Task Remove(T entity)
     {
-        _dbContext.Set<T>().Remove(entity);
-        await _dbContext.SaveChangesAsync();
+        DbContext.Set<T>().Remove(entity);
+        await DbContext.SaveChangesAsync();
     }
 
     public virtual async Task<T> Update(int id, T entity)
     {
-        T entityForUpdate = await _dbContext.Set<T>().SingleAsync(x => x.Id == id);
+        T entityForUpdate = await DbContext.Set<T>().SingleAsync(x => x.Id == id);
 
         if (entityForUpdate == null) 
         {
             return entity;
         }
 
-        _dbContext.Set<T>().Update(entity);
-        await _dbContext.SaveChangesAsync();
+        DbContext.Set<T>().Update(entity);
+        await DbContext.SaveChangesAsync();
         return entity;
     }
 }

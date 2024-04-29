@@ -17,9 +17,11 @@ public class User : IdentityUser<int>, IBaseEntity
 
     public ActivityLevel ActivityLevel { get; set; }
 
-    public int DailyFoodDairyId { get; set; }
+    //public int DailyFoodDairyId { get; set; }
 
-    public DailyForDay DailyFoodDairy { get; set; }
+    //public DailyForDay DailyFoodDairy { get; set; }
+
+    public List<DailyForDay> DailyFoodDiaries { get; set; } = new List<DailyForDay>();
 
     public double? RecommendedCalories { get; set; }
 
