@@ -15,26 +15,21 @@ public class DataSeeder : IDataSeeder
     private readonly IManufacturerRepository _manufacturerRepository;
     private readonly IProductRepository _productRepository;
     private readonly ICategoryRepository _categoryRepository;
-    private readonly ILunchProductRepository _lunchProductRepository;
-    private readonly IDinnerProductRepository _dinnerProductRepository;
+    private readonly IMealProductRepository _mealProductRepository;
     private readonly IDailyForDayRepository _dailyForDayRepository;
-    private readonly IBreakfastProductRepository _breakfastProductRepository;
 
     public DataSeeder(CalorieTrackerDbContext dbContext, UserManager<User> userManager,
          IManufacturerRepository manufacturerRepository, IProductRepository productRepository, 
-         ICategoryRepository categoryRepository, ILunchProductRepository lunchProductRepository,
-         IDinnerProductRepository dinnerProductRepository, IDailyForDayRepository dailyForDayRepository, 
-         IBreakfastProductRepository breakfastProductRepository)
+         ICategoryRepository categoryRepository, IMealProductRepository mealProductRepository,
+         IDailyForDayRepository dailyForDayRepository)
     {
         _dbContext = dbContext;
         _userManager = userManager;
         _manufacturerRepository = manufacturerRepository;
         _productRepository = productRepository;
         _categoryRepository = categoryRepository;
-        _lunchProductRepository = lunchProductRepository;
-        _dinnerProductRepository = dinnerProductRepository;
         _dailyForDayRepository = dailyForDayRepository;
-        _breakfastProductRepository = breakfastProductRepository;
+        _mealProductRepository = mealProductRepository;
     }
 
     public async Task Seed(bool recreateDb = false)
@@ -234,76 +229,76 @@ public class DataSeeder : IDataSeeder
         };
         dailyFoodDairyUser2 = await _dailyForDayRepository.Add(dailyFoodDairyUser2);
 
-        BreakfastProduct breakfastProduct1 = new BreakfastProduct
-        {
-            ProductId = egg.Id,
-            GramsConsumed = 93,
-            DailyFoodDairyId = dailyFoodDairyUser2.Id
-        };
-        breakfastProduct1 = await _breakfastProductRepository.Add(breakfastProduct1);
+        //BreakfastProduct breakfastProduct1 = new BreakfastProduct
+        //{
+        //    ProductId = egg.Id,
+        //    GramsConsumed = 93,
+        //    DailyFoodDairyId = dailyFoodDairyUser2.Id
+        //};
+        //breakfastProduct1 = await _breakfastProductRepository.Add(breakfastProduct1);
 
-        BreakfastProduct breakfastProduct3 = new BreakfastProduct
-        {
-            ProductId = candy.Id,
-            GramsConsumed = 93,
-            DailyFoodDairyId = dailyFoodDairyUser1.Id
-        };
-        breakfastProduct3 = await _breakfastProductRepository.Add(breakfastProduct3);
+        //BreakfastProduct breakfastProduct3 = new BreakfastProduct
+        //{
+        //    ProductId = candy.Id,
+        //    GramsConsumed = 93,
+        //    DailyFoodDairyId = dailyFoodDairyUser1.Id
+        //};
+        //breakfastProduct3 = await _breakfastProductRepository.Add(breakfastProduct3);
 
-        BreakfastProduct breakfastProduct2 = new BreakfastProduct
-        {
-            ProductId = porridge.Id,
-            GramsConsumed = 202,
-            DailyFoodDairyId = dailyFoodDairyUser1.Id
-        };
-        breakfastProduct2 = await _breakfastProductRepository.Add(breakfastProduct2);
+        //BreakfastProduct breakfastProduct2 = new BreakfastProduct
+        //{
+        //    ProductId = porridge.Id,
+        //    GramsConsumed = 202,
+        //    DailyFoodDairyId = dailyFoodDairyUser1.Id
+        //};
+        //breakfastProduct2 = await _breakfastProductRepository.Add(breakfastProduct2);
 
-        LunchProduct lunchProduct1 = new LunchProduct
-        {
-            ProductId = egg.Id,
-            GramsConsumed = 110,
-            DailyFoodDairyId = dailyFoodDairyUser1.Id
-        };
-        lunchProduct1 = await _lunchProductRepository.Add(lunchProduct1);
+        //LunchProduct lunchProduct1 = new LunchProduct
+        //{
+        //    ProductId = egg.Id,
+        //    GramsConsumed = 110,
+        //    DailyFoodDairyId = dailyFoodDairyUser1.Id
+        //};
+        //lunchProduct1 = await _lunchProductRepository.Add(lunchProduct1);
 
-        LunchProduct lunchProduct3 = new LunchProduct
-        {
-            ProductId = sandwich.Id,
-            GramsConsumed = 300,
-            DailyFoodDairyId = dailyFoodDairyUser1.Id
-        };
-        lunchProduct3 = await _lunchProductRepository.Add(lunchProduct3);
+        //LunchProduct lunchProduct3 = new LunchProduct
+        //{
+        //    ProductId = sandwich.Id,
+        //    GramsConsumed = 300,
+        //    DailyFoodDairyId = dailyFoodDairyUser1.Id
+        //};
+        //lunchProduct3 = await _lunchProductRepository.Add(lunchProduct3);
 
-        LunchProduct lunchProduct2 = new LunchProduct
-        {
-            ProductId = tommato.Id,
-            GramsConsumed = 224,
-            DailyFoodDairyId = dailyFoodDairyUser2.Id
-        };
-        lunchProduct2 = await _lunchProductRepository.Add(lunchProduct2);
+        //LunchProduct lunchProduct2 = new LunchProduct
+        //{
+        //    ProductId = tommato.Id,
+        //    GramsConsumed = 224,
+        //    DailyFoodDairyId = dailyFoodDairyUser2.Id
+        //};
+        //lunchProduct2 = await _lunchProductRepository.Add(lunchProduct2);
 
-        DinnerProduct dinnerProduct1 = new DinnerProduct
-        {
-            ProductId = cookie.Id,
-            GramsConsumed = 60,
-            DailyFoodDairyId = dailyFoodDairyUser2.Id
-        };
-        dinnerProduct1 = await _dinnerProductRepository.Add(dinnerProduct1);
+        //DinnerProduct dinnerProduct1 = new DinnerProduct
+        //{
+        //    ProductId = cookie.Id,
+        //    GramsConsumed = 60,
+        //    DailyFoodDairyId = dailyFoodDairyUser2.Id
+        //};
+        //dinnerProduct1 = await _dinnerProductRepository.Add(dinnerProduct1);
 
-        DinnerProduct dinnerProduct2 = new DinnerProduct
-        {
-            ProductId = juice.Id,
-            GramsConsumed = 300,
-            DailyFoodDairyId = dailyFoodDairyUser1.Id
-        };
-        dinnerProduct2 = await _dinnerProductRepository.Add(dinnerProduct2);
+        //DinnerProduct dinnerProduct2 = new DinnerProduct
+        //{
+        //    ProductId = juice.Id,
+        //    GramsConsumed = 300,
+        //    DailyFoodDairyId = dailyFoodDairyUser1.Id
+        //};
+        //dinnerProduct2 = await _dinnerProductRepository.Add(dinnerProduct2);
 
-        DinnerProduct dinnerProduct3 = new DinnerProduct
-        {
-            ProductId = cookie.Id,
-            GramsConsumed = 300,
-            DailyFoodDairyId = dailyFoodDairyUser1.Id
-        };
-        dinnerProduct3 = await _dinnerProductRepository.Add(dinnerProduct3);
+        //DinnerProduct dinnerProduct3 = new DinnerProduct
+        //{
+        //    ProductId = cookie.Id,
+        //    GramsConsumed = 300,
+        //    DailyFoodDairyId = dailyFoodDairyUser1.Id
+        //};
+        //dinnerProduct3 = await _dinnerProductRepository.Add(dinnerProduct3);
     }
 }

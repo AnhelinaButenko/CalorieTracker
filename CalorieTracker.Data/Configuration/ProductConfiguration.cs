@@ -22,17 +22,17 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
 
         builder.Property(x => x.CarbohydratePer100g);
 
-        builder.HasOne(x => x.Breakfast)
-            .WithOne(x => x.Product)
-            .HasForeignKey<BreakfastProduct>(x => x.ProductId);
+        //builder.HasOne(x => x.Breakfast)
+        //    .WithOne(x => x.Product)
+        //    .HasForeignKey<BreakfastProduct>(x => x.ProductId);
 
-        builder.HasOne(x => x.Lunch)
-            .WithOne(x => x.Product)
-            .HasForeignKey<LunchProduct>(x => x.ProductId);
+        //builder.HasOne(x => x.Lunch)
+        //    .WithOne(x => x.Product)
+        //    .HasForeignKey<LunchProduct>(x => x.ProductId);
 
-        builder.HasOne(x => x.Dinner)
-            .WithOne(x => x.Product)
-            .HasForeignKey<DinnerProduct>(x => x.ProductId);
+        //builder.HasOne(x => x.Dinner)
+        //    .WithOne(x => x.Product)
+        //    .HasForeignKey<DinnerProduct>(x => x.ProductId);
 
         builder.HasIndex(x => x.Name).IsUnique();
     }

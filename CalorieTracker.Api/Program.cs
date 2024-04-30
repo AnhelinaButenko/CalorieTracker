@@ -46,11 +46,7 @@ public class Program
 
         builder.Services.AddScoped<IDailyForDayRepository, DailyForDayRepository>();
 
-        builder.Services.AddScoped<IBreakfastProductRepository, BreakfastProductRepository>();
-
-        builder.Services.AddScoped<ILunchProductRepository, LunchProductRepository>();
-
-        builder.Services.AddScoped<IDinnerProductRepository, DinnerProductRepository>();
+        builder.Services.AddScoped<IMealProductRepository, MealProductRepository>();
 
         builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 

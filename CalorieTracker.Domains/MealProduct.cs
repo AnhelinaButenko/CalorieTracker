@@ -1,14 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace CalorieTracker.Domains;
 
-namespace CalorieTracker.Domains;
+public class MealNames
+{
+    public const string Breakfast = "Breakfast";
+    public const string Lunch = "Lunch";
+    public const string Dinner = "Dinner";
+}
 
-public class MealProduct : BaseNamedEntity
+public class MealProduct : BaseEntity
 {
     public int ProductId { get; set; }
+
+    public string MealName { get; set; }
 
     public Product Product { get; set; }
 

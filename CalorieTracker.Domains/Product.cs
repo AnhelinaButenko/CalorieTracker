@@ -10,11 +10,7 @@ public class Product : BaseNamedEntity
 
     public double CarbohydratePer100g { get; set; }
 
-    public BreakfastProduct Breakfast { get; set; }
-
-    public LunchProduct Lunch { get; set; }
-
-    public DinnerProduct Dinner { get; set; }
+    public MealProduct MealProduct { get; set; }
 
     public int? ManufacturerId { get; set; }
 

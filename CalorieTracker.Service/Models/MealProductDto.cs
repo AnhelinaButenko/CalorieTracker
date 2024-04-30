@@ -1,6 +1,6 @@
-﻿namespace CalorieTracker.Service.Models;
+﻿namespace CalorieTracker.Api.Models;
 
-public class DinnerProductDto
+public class MealProductDto
 {
     public int Id { get; set; }
 
