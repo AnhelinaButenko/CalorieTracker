@@ -2,6 +2,7 @@
 using CalorieTracker.Data.Repository;
 using CalorieTracker.Domains;
 using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace CalorieTracker.Service;
 
@@ -39,17 +40,18 @@ public class DailyForDayService : IDailyForDayService
             throw new ArgumentException($"DailyForDay not found for user Id {userId} and date {date}");
         }
 
-        var dailyMeals = new List<DailyMeal>
+        var dailyMeals = await Task.WhenAll(dailyForDay.MealProducts.GroupBy(m => m.MealName).Select(async group => new DailyMeal
         {
-            new DailyMeal { MealName = MealNames.Breakfast, ProductConsumptions = await GetProductConsumptions(dailyForDay.MealProducts) },
-            new DailyMeal { MealName = MealNames.Lunch, ProductConsumptions = await GetProductConsumptions(dailyForDay.MealProducts) },
-            new DailyMeal { MealName = MealNames.Dinner, ProductConsumptions = await GetProductConsumptions(dailyForDay.MealProducts) }
-        };
+            MealName = group.Key,
+            ProductConsumptions = await GetProductConsumptions(group)
+        }).ToList());
 
-        double totalCaloriesConsumed = dailyMeals.Sum(meal => meal.ProductConsumptions.Sum(pc => pc.CaloriesConsumed));
-        double totalProteinsConsumed = dailyMeals.Sum(meal => meal.ProductConsumptions.Sum(pc => pc.ProteinsConsumed));
-        double totalFatsConsumed = dailyMeals.Sum(meal => meal.ProductConsumptions.Sum(pc => pc.FatsConsumed));
-        double totalCarbohydratesConsumed = dailyMeals.Sum(meal => meal.ProductConsumptions.Sum(pc => pc.CarbohydratesConsumed));
+        var dailyMealsList = dailyMeals.ToList();
+
+        double totalCaloriesConsumed = dailyMealsList.Sum(meal => meal.ProductConsumptions.Sum(pc => pc.CaloriesConsumed));
+        double totalProteinsConsumed = dailyMealsList.Sum(meal => meal.ProductConsumptions.Sum(pc => pc.ProteinsConsumed));
+        double totalFatsConsumed = dailyMealsList.Sum(meal => meal.ProductConsumptions.Sum(pc => pc.FatsConsumed));
+        double totalCarbohydratesConsumed = dailyMealsList.Sum(meal => meal.ProductConsumptions.Sum(pc => pc.CarbohydratesConsumed));
 
         var dailyForDayUserDto = new DailyForDayUserDto
         {
@@ -59,7 +61,7 @@ public class DailyForDayService : IDailyForDayService
             FatsConsumed = totalFatsConsumed,
             CarbohydratesConsumed = totalCarbohydratesConsumed,
             CaloriesLeft = (int)(user.RecommendedCalories - (int)totalCaloriesConsumed),
-            DailyMeals = dailyMeals
+            DailyMeals = dailyMealsList
         };
 
         return dailyForDayUserDto;
