@@ -41,9 +41,9 @@ public class DailyForDayService : IDailyForDayService
 
         var dailyMeals = new List<DailyMeal>
         {
-            new DailyMeal { MealName = "Breakfast", ProductConsumptions = await GetProductConsumptions(dailyForDay.BreakfastProducts) },
-            new DailyMeal { MealName = "Lunch", ProductConsumptions = await GetProductConsumptions(dailyForDay.LunchProducts) },
-            new DailyMeal { MealName = "Dinner", ProductConsumptions = await GetProductConsumptions(dailyForDay.DinnerProducts) }
+            new DailyMeal { MealName = MealNames.Breakfast, ProductConsumptions = await GetProductConsumptions(dailyForDay.MealProducts) },
+            new DailyMeal { MealName = MealNames.Lunch, ProductConsumptions = await GetProductConsumptions(dailyForDay.MealProducts) },
+            new DailyMeal { MealName = MealNames.Dinner, ProductConsumptions = await GetProductConsumptions(dailyForDay.MealProducts) }
         };
 
         double totalCaloriesConsumed = dailyMeals.Sum(meal => meal.ProductConsumptions.Sum(pc => pc.CaloriesConsumed));
@@ -74,7 +74,7 @@ public class DailyForDayService : IDailyForDayService
             throw new ArgumentException($"DailyForday not found for user Id {userId} and date {date}");
         }
 
-        dailyForDay.BreakfastProducts.RemoveAll(p => p.ProductId == productId);
+        dailyForDay.MealProducts.RemoveAll(p => p.ProductId == productId);
 
         await _repository.Update(userId, dailyForDay);
 

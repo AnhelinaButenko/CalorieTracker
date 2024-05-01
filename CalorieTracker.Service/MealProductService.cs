@@ -2,12 +2,13 @@
 using CalorieTracker.Api.Models;
 using CalorieTracker.Data.Repository;
 using CalorieTracker.Domains;
-using System.ComponentModel.DataAnnotations;
+using System.Linq.Expressions;
 
 namespace CalorieTracker.Service;
 
 public interface IMealProductService
 {
+    Task<IEnumerable<MealProductDto>> GetAllMealProducts(Expression<Func<MealProduct, bool>> filter);
     Task<IEnumerable<MealProduct>> GetAllMealProduct();
     Task<MealProduct> GetMealProductById(int id);
     Task<MealProduct> AddMealProduct(MealProductDto mealProductDto);
@@ -28,16 +29,19 @@ public class MealProductService : IMealProductService
 
     private void ValidateMealProductDto(MealProductDto mealProductDto)
     {
-        var validationContext = new ValidationContext(mealProductDto, null, null);
-
-        var validationResults = new List<ValidationResult>();
-
-        bool isValid = Validator.TryValidateObject(mealProductDto, validationContext, validationResults, true);
-
-        if (!isValid)
+        if (mealProductDto == null)
         {
-            var errorMessage = string.Join(",", validationResults.Select(r => r.ErrorMessage));
-            throw new ArgumentException(errorMessage);
+            throw new ArgumentNullException(nameof(mealProductDto), "MealProductDto can`t be null");
+        }
+
+        if (mealProductDto.ProductWeightGr <= 0 || mealProductDto.ProductId <= 0 || mealProductDto.DailyFoodDairyId <= 0)
+        {
+            throw new ArgumentException("Product weight, Product ID, Daily food diary ID, must be greater than zero.");
+        }
+
+        if (string.IsNullOrWhiteSpace(mealProductDto.Name))
+        {
+            throw new ArgumentException("Meal product name cannot be empty or null.", nameof(mealProductDto.Name));
         }
     }
 
@@ -73,21 +77,15 @@ public class MealProductService : IMealProductService
         var mealProduct = await _repository.GetById(id);
         if (mealProduct == null) return null;
 
-        //user.UserName = userDto.UserName;
-        //user.Email = userDto.Email;
-        //user.CurrentWeight = userDto.CurrentWeight;
-        //user.DesiredWeight = userDto.DesiredWeight;
-        //user.Height = userDto.Height;
-        //user.Age = userDto.Age;
-        //user.Gender = userDto.Gender;
-        //user.ActivityLevel = userDto.ActivityLevel;
-
-        //user.RecommendedCalories = userDto.RecommendedCalories;
-        //user.RecommendedProtein = userDto.RecommendedProtein;
-        //user.RecommendedFat = userDto.RecommendedFat;
-        //user.RecommendedCarbs = userDto.RecommendedCarbs;
+        mealProduct.GramsConsumed = mealProductDto.ProductWeightGr;
 
         await _repository.Update(id, mealProduct);
         return mealProduct;
+    }
+
+    public async Task<IEnumerable<MealProductDto>> GetAllMealProducts(Expression<Func<MealProduct, bool>> filter)
+    {
+        var mealProducts = await _repository.GetAll(filter);
+        return _mapper.Map<IEnumerable<MealProductDto>>(mealProducts);
     }
 }

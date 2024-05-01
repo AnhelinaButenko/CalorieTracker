@@ -2,11 +2,7 @@
 
 public class DailyForDay : BaseNamedEntity
 {
-    public List<MealProduct> BreakfastProducts { get; set; } = new List<MealProduct>();
-
-    public List<MealProduct> LunchProducts { get; set; } = new List<MealProduct>();
-
-    public List<MealProduct> DinnerProducts { get; set; } = new List<MealProduct>();
+    public List<MealProduct> MealProducts { get; set; } = new List<MealProduct>();
 
     public  DateTime Date { get; set; }
 

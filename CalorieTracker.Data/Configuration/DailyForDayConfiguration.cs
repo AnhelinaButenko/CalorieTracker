@@ -9,10 +9,10 @@ public class DailyForDayConfiguration : IEntityTypeConfiguration<DailyForDay>
     {
         builder.HasKey(x => x.Id);
 
-        //builder.Property(x => x.DinnerProducts);
+        builder.Property(x => x.MealProducts);
 
-        //builder.HasMany(x => x.DinnerProducts)
-        //    .WithOne(x => x.DailyFoodDairy)
-        //    .HasForeignKey(x => x.DailyFoodDairyId);
+        builder.HasMany(x => x.MealProducts)
+            .WithOne(x => x.DailyFoodDairy)
+            .HasForeignKey(x => x.DailyFoodDairyId);
     }
 }
