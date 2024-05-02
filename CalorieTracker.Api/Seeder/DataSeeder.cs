@@ -15,26 +15,21 @@ public class DataSeeder : IDataSeeder
     private readonly IManufacturerRepository _manufacturerRepository;
     private readonly IProductRepository _productRepository;
     private readonly ICategoryRepository _categoryRepository;
-    private readonly ILunchProductRepository _lunchProductRepository;
-    private readonly IDinnerProductRepository _dinnerProductRepository;
+    private readonly IMealProductRepository _mealProductRepository;
     private readonly IDailyForDayRepository _dailyForDayRepository;
-    private readonly IBreakfastProductRepository _breakfastProductRepository;
 
     public DataSeeder(CalorieTrackerDbContext dbContext, UserManager<User> userManager,
          IManufacturerRepository manufacturerRepository, IProductRepository productRepository, 
-         ICategoryRepository categoryRepository, ILunchProductRepository lunchProductRepository,
-         IDinnerProductRepository dinnerProductRepository, IDailyForDayRepository dailyForDayRepository, 
-         IBreakfastProductRepository breakfastProductRepository)
+         ICategoryRepository categoryRepository, IMealProductRepository mealProductRepository,
+         IDailyForDayRepository dailyForDayRepository)
     {
         _dbContext = dbContext;
         _userManager = userManager;
         _manufacturerRepository = manufacturerRepository;
         _productRepository = productRepository;
         _categoryRepository = categoryRepository;
-        _lunchProductRepository = lunchProductRepository;
-        _dinnerProductRepository = dinnerProductRepository;
         _dailyForDayRepository = dailyForDayRepository;
-        _breakfastProductRepository = breakfastProductRepository;
+        _mealProductRepository = mealProductRepository;
     }
 
     public async Task Seed(bool recreateDb = false)
@@ -234,76 +229,85 @@ public class DataSeeder : IDataSeeder
         };
         dailyFoodDairyUser2 = await _dailyForDayRepository.Add(dailyFoodDairyUser2);
 
-        BreakfastProduct breakfastProduct1 = new BreakfastProduct
+        MealProduct breakfastProduct1 = new MealProduct
         {
+            MealName = MealNames.Breakfast,
             ProductId = egg.Id,
             GramsConsumed = 93,
             DailyFoodDairyId = dailyFoodDairyUser2.Id
         };
-        breakfastProduct1 = await _breakfastProductRepository.Add(breakfastProduct1);
+        breakfastProduct1 = await _mealProductRepository.Add(breakfastProduct1);
 
-        BreakfastProduct breakfastProduct3 = new BreakfastProduct
+        MealProduct breakfastProduct3 = new MealProduct
         {
+            MealName= MealNames.Breakfast,
             ProductId = candy.Id,
             GramsConsumed = 93,
             DailyFoodDairyId = dailyFoodDairyUser1.Id
         };
-        breakfastProduct3 = await _breakfastProductRepository.Add(breakfastProduct3);
+        breakfastProduct3 = await _mealProductRepository.Add(breakfastProduct3);
 
-        BreakfastProduct breakfastProduct2 = new BreakfastProduct
+        MealProduct breakfastProduct2 = new MealProduct
         {
+            MealName = MealNames.Breakfast,
             ProductId = porridge.Id,
             GramsConsumed = 202,
             DailyFoodDairyId = dailyFoodDairyUser1.Id
         };
-        breakfastProduct2 = await _breakfastProductRepository.Add(breakfastProduct2);
+        breakfastProduct2 = await _mealProductRepository.Add(breakfastProduct2);
 
-        LunchProduct lunchProduct1 = new LunchProduct
+        MealProduct lunchProduct1 = new MealProduct
         {
+            MealName = MealNames.Lunch,
             ProductId = egg.Id,
             GramsConsumed = 110,
             DailyFoodDairyId = dailyFoodDairyUser1.Id
         };
-        lunchProduct1 = await _lunchProductRepository.Add(lunchProduct1);
+        lunchProduct1 = await _mealProductRepository.Add(lunchProduct1);
 
-        LunchProduct lunchProduct3 = new LunchProduct
+        MealProduct lunchProduct3 = new MealProduct
         {
+            MealName = MealNames.Lunch,
             ProductId = sandwich.Id,
             GramsConsumed = 300,
             DailyFoodDairyId = dailyFoodDairyUser1.Id
         };
-        lunchProduct3 = await _lunchProductRepository.Add(lunchProduct3);
+        lunchProduct3 = await _mealProductRepository.Add(lunchProduct3);
 
-        LunchProduct lunchProduct2 = new LunchProduct
+        MealProduct lunchProduct2 = new MealProduct
         {
+            MealName = MealNames.Lunch,
             ProductId = tommato.Id,
             GramsConsumed = 224,
             DailyFoodDairyId = dailyFoodDairyUser2.Id
         };
-        lunchProduct2 = await _lunchProductRepository.Add(lunchProduct2);
+        lunchProduct2 = await _mealProductRepository.Add(lunchProduct2);
 
-        DinnerProduct dinnerProduct1 = new DinnerProduct
+        MealProduct dinnerProduct1 = new MealProduct
         {
+            MealName = MealNames.Dinner,
             ProductId = cookie.Id,
             GramsConsumed = 60,
             DailyFoodDairyId = dailyFoodDairyUser2.Id
         };
-        dinnerProduct1 = await _dinnerProductRepository.Add(dinnerProduct1);
+        dinnerProduct1 = await _mealProductRepository.Add(dinnerProduct1);
 
-        DinnerProduct dinnerProduct2 = new DinnerProduct
+        MealProduct dinnerProduct2 = new MealProduct
         {
+            MealName = MealNames.Dinner,
             ProductId = juice.Id,
             GramsConsumed = 300,
             DailyFoodDairyId = dailyFoodDairyUser1.Id
         };
-        dinnerProduct2 = await _dinnerProductRepository.Add(dinnerProduct2);
+        dinnerProduct2 = await _mealProductRepository.Add(dinnerProduct2);
 
-        DinnerProduct dinnerProduct3 = new DinnerProduct
+        MealProduct dinnerProduct3 = new MealProduct
         {
+            MealName = MealNames.Dinner,
             ProductId = cookie.Id,
             GramsConsumed = 300,
             DailyFoodDairyId = dailyFoodDairyUser1.Id
         };
-        dinnerProduct3 = await _dinnerProductRepository.Add(dinnerProduct3);
+        dinnerProduct3 = await _mealProductRepository.Add(dinnerProduct3);
     }
 }

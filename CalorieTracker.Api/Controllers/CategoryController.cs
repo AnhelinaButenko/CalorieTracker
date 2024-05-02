@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
 using CalorieTracker.Api.Models;
-using CalorieTracker.Data.Repository;
-using CalorieTracker.Domains;
 using CalorieTracker.Service;
 using Microsoft.AspNetCore.Mvc;
 

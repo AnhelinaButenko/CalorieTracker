@@ -1,7 +1,4 @@
 ﻿using CalorieTracker.Api.Models;
-using CalorieTracker.Data;
-using CalorieTracker.Data.Repository;
-using CalorieTracker.Domains;
 using CalorieTracker.Service;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;

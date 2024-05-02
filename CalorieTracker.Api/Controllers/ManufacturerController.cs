@@ -1,13 +1,7 @@
-﻿using AutoMapper;
-using CalorieTracker.Api.Models;
-using CalorieTracker.Data.Repository;
-using CalorieTracker.Domains;
+﻿using CalorieTracker.Api.Models;
 using CalorieTracker.Service;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+
 
 namespace CalorieTracker.Api.Controllers;
 

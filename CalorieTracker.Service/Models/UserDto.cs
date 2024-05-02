@@ -1,6 +1,4 @@
-﻿using CalorieTracker.Data.Repository;
-using CalorieTracker.Domains;
-using CalorieTracker.Domains.Enums;
+﻿using CalorieTracker.Domains.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace CalorieTracker.Api.Models;

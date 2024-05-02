@@ -22,5 +22,7 @@ public class MappingProfile
         CreateMap<Domains.Manufacturer, Models.ManufacturerDto>().ReverseMap();
 
         CreateMap<Domains.Category, Models.CategoryDto>().ReverseMap();
+
+        CreateMap<Domains.MealProduct, Models.MealProductDto>().ReverseMap();
     }
 }
