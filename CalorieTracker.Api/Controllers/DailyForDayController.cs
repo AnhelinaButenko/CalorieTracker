@@ -1,4 +1,5 @@
 ﻿using CalorieTracker.Api.Models;
+using CalorieTracker.Domains;
 using CalorieTracker.Service;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,12 +26,12 @@ public class DailyForDayController : ControllerBase
         return Ok(result);
     }
 
-    [HttpDelete("removeMealProduct/{userId}/{breakfastProductId}/{productId}")]
+    [HttpDelete("removeMealProduct/{userId}/{mealProductId}/{productId}")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    public async Task<ActionResult<DailyForDayUserDto>> RemoveProductFromBreakfastProductForCertainUser([FromRoute] int userId, [FromRoute] int breakfastProductId, [FromRoute] int productId, [FromQuery] DateTime date)
+    public async Task<ActionResult<DailyForDayUserDto>> RemoveProductFromBreakfastProductForCertainUser([FromRoute] int userId, [FromRoute] int mealProductId, [FromRoute] int productId, [FromQuery] DateTime date)
     {
-        var result = await _dailyForDayService.RemoveProductFromMealProductForCertainUser(userId, breakfastProductId, productId, date);
+        var result = await _dailyForDayService.RemoveProductFromMealProductForCertainUser( userId, mealProductId, productId, date);
         return Ok(result);
     }
 }
