@@ -8,6 +8,7 @@ public interface IDailyForDayService
 {
     Task<DailyForDayUserDto> GetDailyForDayDtoForCertainUser(int userId, DateTime date);
     Task<DailyForDayUserDto> RemoveProductFromMealProductForCertainUser(int userId, int mealProductId, int productId, DateTime date);
+    Task<DailyForDay> EditProductFromMealProductForCertainUser(MealProductDto mealProductDto, int userId, int mealProductId, int productId, DateTime date);
 }
 
 public class DailyForDayService : IDailyForDayService
@@ -19,6 +20,11 @@ public class DailyForDayService : IDailyForDayService
     {
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+    }
+
+    public Task<DailyForDay> EditProductFromMealProductForCertainUser(MealProductDto mealProductDto, int userId, int mealProductId, int productId, DateTime date)
+    {
+        throw new NotImplementedException();
     }
 
     public async Task<DailyForDayUserDto> GetDailyForDayDtoForCertainUser(int userId, DateTime date)
