@@ -1,8 +1,6 @@
 ﻿using CalorieTracker.Api.Models;
 using CalorieTracker.Data.Repository;
 using CalorieTracker.Domains;
-using System.ComponentModel.DataAnnotations;
-using System.Text.RegularExpressions;
 
 namespace CalorieTracker.Service;
 
@@ -16,7 +14,6 @@ public class DailyForDayService : IDailyForDayService
 {
     private readonly IDailyForDayRepository _repository;
     private readonly IUserService _userService;
-
 
     public DailyForDayService(IDailyForDayRepository repository, IUserService userService)
     {

@@ -16,11 +16,7 @@ public class DailyForDayUserDto
 
     public double CarbohydratesConsumed { get; set; }
 
-    public int BreakfastProductId { get; set; }
-
-    public int LunchProductId { get; set; }
-
-    public int DinnerProductId { get; set; }
+    public int MealProductId { get; set; }
 }
 
 public class DailyMeal
