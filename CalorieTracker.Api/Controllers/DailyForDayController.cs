@@ -1,4 +1,5 @@
-﻿using CalorieTracker.Api.Models;
+﻿using AutoMapper;
+using CalorieTracker.Api.Models;
 using CalorieTracker.Domains;
 using CalorieTracker.Service;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +12,12 @@ namespace CalorieTracker.Api.Controllers;
 public class DailyForDayController : ControllerBase
 {
     private readonly IDailyForDayService _dailyForDayService;
+    private readonly IMapper _mapper;
 
-    public DailyForDayController(IDailyForDayService dailyForDayService)
+    public DailyForDayController(IDailyForDayService dailyForDayService, IMapper mapper)
     {
         _dailyForDayService = dailyForDayService ?? throw new ArgumentNullException(nameof(dailyForDayService));
+        _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
     [HttpGet("{userId:int}")]
@@ -29,9 +32,17 @@ public class DailyForDayController : ControllerBase
     [HttpDelete("removeMealProduct/{userId}/{mealProductId}/{productId}")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    public async Task<ActionResult<DailyForDayUserDto>> RemoveProductFromBreakfastProductForCertainUser([FromRoute] int userId, [FromRoute] int mealProductId, [FromRoute] int productId, [FromQuery] DateTime date)
+    public async Task<ActionResult<DailyForDayUserDto>> RemoveProductFromMealProductForCertainUser([FromRoute] int userId, [FromRoute] int mealProductId, [FromRoute] int productId, [FromQuery] DateTime date)
     {
         var result = await _dailyForDayService.RemoveProductFromMealProductForCertainUser( userId, mealProductId, productId, date);
+        return Ok(result);
+    }
+
+    [HttpPut("updateMealProduct/{userId}/{mealProductId}/{productId}")]
+    public async Task<ActionResult> UpdateMealProductForCertainUser([FromRoute] int userId, [FromRoute] int mealProductId, [FromRoute] int productId, [FromBody] MealProductDto updatedMealProduct, [FromQuery] DateTime date)
+    {
+        DailyForDay dailyForDay = await _dailyForDayService.EditProductFromMealProductForCertainUser(updatedMealProduct, userId, mealProductId, productId, date);
+        var result = _mapper.Map<DailyForDayUserDto>(dailyForDay);
         return Ok(result);
     }
 }
