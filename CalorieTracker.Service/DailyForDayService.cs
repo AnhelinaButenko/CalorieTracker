@@ -25,14 +25,14 @@ public class DailyForDayService : IDailyForDayService
     public async Task<DailyForDay> EditProductFromMealProductForCertainUser(MealProductDto mealProductDto, int userId, int mealProductId, int productId, DateTime date)
     {
         {
-            DailyForDay dailyForDay = await _repository.GetDailyForDayForUser(userId, date);
+            DailyForDay? dailyForDay = await _repository.GetDailyForDayForUser(userId, date);
 
             if (dailyForDay == null)
             {
                 throw new ArgumentException($"DailyForDay not found for user Id {userId} and date {date}");
             }
 
-            MealProduct mealProductToUpdate = dailyForDay.MealProducts.FirstOrDefault(p => p.Id == mealProductId && p.ProductId == productId);
+            MealProduct? mealProductToUpdate = dailyForDay.MealProducts.FirstOrDefault(p => p.Id == mealProductId && p.ProductId == productId);
 
             if (mealProductToUpdate == null)
             {
@@ -92,7 +92,7 @@ public class DailyForDayService : IDailyForDayService
 
     public async Task<DailyForDayUserDto> RemoveProductFromMealProductForCertainUser(int userId, int mealProductId, int productId, DateTime date)
     {
-        DailyForDay dailyForDay = await _repository.GetDailyForDayForUser(userId, date);
+        DailyForDay? dailyForDay = await _repository.GetDailyForDayForUser(userId, date);
 
         if (dailyForDay == null)
         {
@@ -101,12 +101,12 @@ public class DailyForDayService : IDailyForDayService
 
         dailyForDay.MealProducts.RemoveAll(p => p.ProductId == productId);
 
-        await _repository.Update(userId, dailyForDay);
+        await _repository.Update(productId, dailyForDay);
 
         return await GetDailyForDayDtoForCertainUser(userId, date);
     }
 
-    private async Task<List<ProductConsumption>> GetProductConsumptions(IEnumerable<MealProduct> mealProducts)
+    private async Task<List<ProductConsumption>>? GetProductConsumptions(IEnumerable<MealProduct> mealProducts)
     {
         var productConsumptions = new List<ProductConsumption>();
 
