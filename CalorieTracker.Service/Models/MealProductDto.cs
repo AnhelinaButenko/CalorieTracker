@@ -6,7 +6,7 @@ public class MealProductDto
 
     public int MealProductId { get; set; }
 
-    public string Name { get; set; }
+    public string? MealName { get; set; }
 
     public int ProductWeightGr { get; set; }
 

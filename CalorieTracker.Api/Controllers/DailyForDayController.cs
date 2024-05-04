@@ -39,16 +39,10 @@ public class DailyForDayController : ControllerBase
     }
 
     [HttpPut("updateMealProduct/{userId}/{mealProductId}/{productId}")]
-    public async Task<ActionResult> EditProductFromMealProductForCertainUser([FromBody] MealProductDto mealProductDto, [FromRoute] int userId, [FromRoute] int mealProductId, [FromRoute] int productId, [FromQuery] DateTime date)
+    public async Task<ActionResult> UpdateMealProductForCertainUser([FromRoute] int userId, [FromRoute] int mealProductId, [FromRoute] int productId, [FromBody] MealProductDto updatedMealProduct, [FromQuery] DateTime date)
     {
-        MealProduct mealProduct = await _dailyForDayService.EditProductFromMealProductForCertainUser(mealProductDto, userId, mealProductId, productId, date);
-
-        mealProduct.Name = mealProductDto.Name;
-
-        //mealProduct.CaloriePer100g = mealProductDto.CaloriePer100g;
-
-        //await _productService.EditProduct(productDto, id);
-
-        return Ok(_mapper.Map<MealProductDto>(mealProduct));
+        DailyForDay dailyForDay = await _dailyForDayService.EditProductFromMealProductForCertainUser(updatedMealProduct, userId, mealProductId, productId, date);
+        var result = _mapper.Map<DailyForDayUserDto>(dailyForDay);
+        return Ok(result);
     }
 }
