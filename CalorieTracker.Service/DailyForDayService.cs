@@ -66,6 +66,7 @@ public class DailyForDayService : IDailyForDayService
         var dailyMeals = await Task.WhenAll(dailyForDay.MealProducts.GroupBy(m => m.MealName).Select(async group => new DailyMeal
         {
             MealName = group.Key,
+            //MealProductId
             ProductConsumptions = await GetProductConsumptions(group)
         }).ToList());
 
@@ -84,7 +85,7 @@ public class DailyForDayService : IDailyForDayService
             FatsConsumed = totalFatsConsumed,
             CarbohydratesConsumed = totalCarbohydratesConsumed,
             CaloriesLeft = (int)(user.RecommendedCalories - (int)totalCaloriesConsumed),
-            DailyMeals = dailyMealsList
+            DailyMeals = dailyMealsList,
         };
 
         return dailyForDayUserDto;
@@ -126,7 +127,8 @@ public class DailyForDayService : IDailyForDayService
                 GramsConsumed = mealProduct.GramsConsumed,
                 ProteinsConsumed = proteins,
                 FatsConsumed = fats,
-                CarbohydratesConsumed = carbohydrates
+                CarbohydratesConsumed = carbohydrates,
+                MealProductId = mealProduct.Id,
             });
         }
         return productConsumptions;

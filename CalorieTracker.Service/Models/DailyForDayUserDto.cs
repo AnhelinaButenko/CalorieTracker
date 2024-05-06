@@ -15,8 +15,6 @@ public class DailyForDayUserDto
     public double FatsConsumed { get; set; }
 
     public double CarbohydratesConsumed { get; set; }
-
-    public int MealProductId { get; set; }
 }
 
 public class DailyMeal
@@ -41,4 +39,6 @@ public class ProductConsumption
     public double FatsConsumed { get; set; }
 
     public double CarbohydratesConsumed { get; set; }
+
+    public int MealProductId { get; set; }
 }
