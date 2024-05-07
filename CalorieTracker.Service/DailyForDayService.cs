@@ -7,8 +7,8 @@ namespace CalorieTracker.Service;
 public interface IDailyForDayService
 {
     Task<DailyForDayUserDto> GetDailyForDayDtoForCertainUser(int userId, DateTime date);
-    Task<DailyForDayUserDto> RemoveProductFromMealProductForCertainUser(int userId, int mealProductId, int productId, DateTime date);
-    Task<DailyForDay> EditProductFromMealProductForCertainUser(MealProductDto mealProductDto, int userId, int mealProductId, int productId, DateTime date);
+    Task<DailyForDayUserDto> RemoveProductFromMealProductForCertainUser(int userId, int mealProductId, DateTime date);
+    Task<DailyForDay> EditProductFromMealProductForCertainUser(MealProductDto mealProductDto, int userId, int mealProductId, DateTime date);
 }
 
 public class DailyForDayService : IDailyForDayService
@@ -20,31 +20,6 @@ public class DailyForDayService : IDailyForDayService
     {
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         _userService = userService ?? throw new ArgumentNullException(nameof(userService));
-    }
-
-    public async Task<DailyForDay> EditProductFromMealProductForCertainUser(MealProductDto mealProductDto, int userId, int mealProductId, int productId, DateTime date)
-    {
-        {
-            DailyForDay? dailyForDay = await _repository.GetDailyForDayForUser(userId, date);
-
-            if (dailyForDay == null)
-            {
-                throw new ArgumentException($"DailyForDay not found for user Id {userId} and date {date}");
-            }
-
-            MealProduct? mealProductToUpdate = dailyForDay.MealProducts.FirstOrDefault(p => p.Id == mealProductId && p.ProductId == productId);
-
-            if (mealProductToUpdate == null)
-            {
-                throw new ArgumentException($"MealProduct not found with Id {mealProductId} and ProductId {productId}");
-            }
-
-            mealProductToUpdate.GramsConsumed = mealProductDto.ProductWeightGr;
-
-            await _repository.Update(userId, dailyForDay);
-
-            return dailyForDay;
-        }
     }
 
     public async Task<DailyForDayUserDto> GetDailyForDayDtoForCertainUser(int userId, DateTime date)
@@ -66,7 +41,6 @@ public class DailyForDayService : IDailyForDayService
         var dailyMeals = await Task.WhenAll(dailyForDay.MealProducts.GroupBy(m => m.MealName).Select(async group => new DailyMeal
         {
             MealName = group.Key,
-            //MealProductId
             ProductConsumptions = await GetProductConsumptions(group)
         }).ToList());
 
@@ -91,7 +65,30 @@ public class DailyForDayService : IDailyForDayService
         return dailyForDayUserDto;
     }
 
-    public async Task<DailyForDayUserDto> RemoveProductFromMealProductForCertainUser(int userId, int mealProductId, int productId, DateTime date)
+    public async Task<DailyForDay> EditProductFromMealProductForCertainUser(MealProductDto mealProductDto, int userId, int mealProductId, DateTime date)
+    {
+            DailyForDay? dailyForDay = await _repository.GetDailyForDayForUser(userId, date);
+
+            if (dailyForDay == null)
+            {
+                throw new ArgumentException($"DailyForDay not found for user Id {userId} and date {date}");
+            }
+
+            MealProduct? mealProductToUpdate = dailyForDay.MealProducts.FirstOrDefault(p => p.Id == mealProductId);
+
+            if (mealProductToUpdate == null)
+            {
+                throw new ArgumentException($"MealProduct not found with Id {mealProductId}");
+            }
+
+            mealProductToUpdate.GramsConsumed = mealProductDto.ProductWeightGr;
+
+            await _repository.Update(dailyForDay.Id, dailyForDay);
+
+            return dailyForDay;
+    }
+
+    public async Task<DailyForDayUserDto> RemoveProductFromMealProductForCertainUser(int userId, int mealProductId, DateTime date)
     {
         DailyForDay? dailyForDay = await _repository.GetDailyForDayForUser(userId, date);
 
@@ -99,10 +96,17 @@ public class DailyForDayService : IDailyForDayService
         {
             throw new ArgumentException($"DailyForday not found for user Id {userId} and date {date}");
         }
+       
+        MealProduct? mealProductToDelete = dailyForDay.MealProducts.FirstOrDefault(x => x.Id == mealProductId);
 
-        dailyForDay.MealProducts.RemoveAll(p => p.ProductId == productId);
+        if (mealProductToDelete == null)
+        {
+            throw new ArgumentException($"MealProduct not found {mealProductToDelete}");
+        }
 
-        await _repository.Update(productId, dailyForDay);
+        dailyForDay.MealProducts.Remove(mealProductToDelete);
+
+        await _repository.Update(dailyForDay.Id, dailyForDay);
 
         return await GetDailyForDayDtoForCertainUser(userId, date);
     }

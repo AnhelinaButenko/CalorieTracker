@@ -54,14 +54,14 @@ public abstract class GenericRepository<T> : IGenericRepository<T>
 
     public virtual async Task<T> Update(int id, T entity)
     {
-        T entityForUpdate = await DbContext.Set<T>().SingleAsync(x => x.Id == id);
+        T entityForUpdate = await DbContext.Set<T>().SingleOrDefaultAsync(x => x.Id == id);
 
-        if (entityForUpdate == null) 
+        if (entityForUpdate == null)
         {
-            return entity;
+            throw new ArgumentException($"Entity with id {id} not found.");
         }
 
-        DbContext.Set<T>().Update(entity);
+        DbContext.Entry(entityForUpdate).CurrentValues.SetValues(entity);
         await DbContext.SaveChangesAsync();
         return entity;
     }

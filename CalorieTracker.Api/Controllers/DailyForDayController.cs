@@ -29,19 +29,19 @@ public class DailyForDayController : ControllerBase
         return Ok(result);
     }
 
-    [HttpDelete("removeMealProduct/{userId}/{mealProductId}/{productId}")]
+    [HttpDelete("removeMealProduct/{userId}/{mealProductId}")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    public async Task<ActionResult<DailyForDayUserDto>> RemoveProductFromMealProductForCertainUser([FromRoute] int userId, [FromRoute] int mealProductId, [FromRoute] int productId, [FromQuery] DateTime date)
+    public async Task<ActionResult<DailyForDayUserDto>> RemoveProductFromMealProductForCertainUser([FromRoute] int userId, [FromRoute] int mealProductId, [FromQuery] DateTime date)
     {
-        var result = await _dailyForDayService.RemoveProductFromMealProductForCertainUser( userId, mealProductId, productId, date);
+        var result = await _dailyForDayService.RemoveProductFromMealProductForCertainUser( userId, mealProductId, date);
         return Ok(result);
     }
 
-    [HttpPut("updateMealProduct/{userId}/{mealProductId}/{productId}")]
-    public async Task<ActionResult> UpdateMealProductForCertainUser([FromRoute] int userId, [FromRoute] int mealProductId, [FromRoute] int productId, [FromBody] MealProductDto updatedMealProduct, [FromQuery] DateTime date)
+    [HttpPut("updateMealProduct/{userId}/{mealProductId}")]
+    public async Task<ActionResult> UpdateMealProductForCertainUser([FromRoute] int userId, [FromRoute] int mealProductId, [FromBody] MealProductDto updatedMealProduct, [FromQuery] DateTime date)
     {
-        DailyForDay dailyForDay = await _dailyForDayService.EditProductFromMealProductForCertainUser(updatedMealProduct, userId, mealProductId, productId, date);
+        DailyForDay dailyForDay = await _dailyForDayService.EditProductFromMealProductForCertainUser(updatedMealProduct, userId, mealProductId, date);
         var result = _mapper.Map<DailyForDayUserDto>(dailyForDay);
         return Ok(result);
     }
