@@ -13,6 +13,7 @@ public class MealProductConfiguration : IEntityTypeConfiguration<MealProduct>
         builder.Property(x => x.GramsConsumed);
         builder.Property(x => x.ProductId);
         builder.Property(x => x.DailyFoodDairyId);
+        builder.Property(x => x.ProductName);
 
         builder.Property(x => x.MealName)
             .IsRequired()

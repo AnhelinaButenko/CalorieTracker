@@ -8,6 +8,8 @@ public class MealProductDto
 
     public string? MealName { get; set; }
 
+    public string? ProductName { get; set; }
+
     public int ProductWeightGr { get; set; }
 
     public int ProductId { get; set; }

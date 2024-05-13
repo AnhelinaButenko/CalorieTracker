@@ -2,6 +2,7 @@
 using CalorieTracker.Api.Models;
 using CalorieTracker.Domains;
 using CalorieTracker.Service;
+using CalorieTracker.Service.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CalorieTracker.Api.Controllers;
@@ -43,6 +44,13 @@ public class DailyForDayController : ControllerBase
     {
         DailyForDay dailyForDay = await _dailyForDayService.EditProductFromMealProductForCertainUser(updatedMealProduct, userId, mealProductId, date);
         var result = _mapper.Map<DailyForDayUserDto>(dailyForDay);
+        return Ok(result);
+    }
+
+    [HttpPost("getMealProductSummary")]
+    public async Task<ActionResult> GetMealProductWithSummaryForCertainUser([FromBody] MealProductSummaryRequestDto mealProductSummaryRequestDto)
+    {
+        MealProductDto result = await _dailyForDayService.GetProductFromMealProductWithSummaryForCertainUser(mealProductSummaryRequestDto);
         return Ok(result);
     }
 }

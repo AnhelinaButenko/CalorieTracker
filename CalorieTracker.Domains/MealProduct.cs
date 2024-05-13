@@ -13,6 +13,8 @@ public class MealProduct : BaseEntity
 
     public string MealName { get; set; }
 
+    public string? ProductName { get; set; }
+
     public Product Product { get; set; }
 
     public int DailyFoodDairyId { get; set; }
